@@ -1,5 +1,5 @@
 # Hail Caesar
-An attempt to recreate RoM / RoT / A████ P█████ in Node.
+An attempt to recreate RoM / RoT in Node.
 
 # Progress
 ## Legionarius
