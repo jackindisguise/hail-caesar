@@ -1,0 +1,5 @@
+{
+	"check-coverage": true,
+	"100": true,
+	"reporter": ["text-summary", "html"]
+}

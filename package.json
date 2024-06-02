@@ -6,8 +6,11 @@
 	"type": "module",
 	"scripts": {
 		"test": "npx mocha build/**/*.spec.js",
+		"coverage": "npx c8 npm run test",
 		"prebuild": "node clean build/",
-		"build": "npx tsc"
+		"build": "npx tsc",
+		"prerelease": "npm run build && npm run coverage",
+		"release": "npx standard-version --dry-run"
 	},
 	"author": "jackindisguise",
 	"license": "GPL-3.0",
@@ -27,6 +30,7 @@
 		"@types/chai": "^4.3.16",
 		"@types/mocha": "^10.0.6",
 		"@types/node": "^20.13.0",
+		"c8": "^9.1.0",
 		"chai": "^5.1.1",
 		"mocha": "^10.4.0",
 		"standard-version": "^9.5.0",
