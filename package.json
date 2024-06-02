@@ -7,7 +7,7 @@
 	"scripts": {
 		"test": "npx mocha build/**/*.spec.js",
 		"coverage": "npx c8 npm run test",
-		"prebuild": "node clean build/",
+		"prebuild": "node clean.js build/",
 		"build": "npx tsc",
 		"prerelease": "npm run build && npm run test",
 		"release": "npx standard-version --dry-run"
@@ -31,9 +31,12 @@
 		"@types/mocha": "^10.0.6",
 		"@types/node": "^20.13.0",
 		"c8": "^9.1.0",
-		"chai": "^5.1.1",
+		"chai": "^4.4.1",
 		"mocha": "^10.4.0",
 		"standard-version": "^9.5.0",
 		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"chalk": "^4.1.2"
 	}
 }
