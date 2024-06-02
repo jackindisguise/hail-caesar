@@ -9,8 +9,8 @@ describe("init.ts", () => {
 			done();
 		});
 		it("add(a,b)", (done) => {
-			//const line2 = add(1, 2);
-			//expect(line2).is.equal(3);
+			const line2 = add(1, 2);
+			expect(line2).is.equal(3);
 			done();
 		});
 	});
