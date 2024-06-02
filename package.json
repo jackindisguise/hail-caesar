@@ -9,7 +9,7 @@
 		"coverage": "npx c8 npm run test",
 		"prebuild": "node clean build/",
 		"build": "npx tsc",
-		"prerelease": "npm run build && npm run coverage",
+		"prerelease": "npm run build && npm run test",
 		"release": "npx standard-version --dry-run"
 	},
 	"author": "jackindisguise",
