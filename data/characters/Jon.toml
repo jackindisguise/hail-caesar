@@ -1,0 +1,15 @@
+[character] # character data (basically stuff about the player)
+id = 92392319
+name = "Jon" # this is their legal name. distinct from the mob's name.
+
+[character.settings]
+password = "asdjkajsdajlqdqerq2e4" # some hashed password
+salt = "129i3129031290" # some random bytes
+
+[mob] # mob data (this is a more literal representation of the mob object)
+name = "Jon"
+description = "A gay guy named Jon."
+
+[[mob.inventory]]
+name = "an iPhone"
+description = "This guy has an iPhone."
