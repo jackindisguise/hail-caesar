@@ -9,10 +9,19 @@ describe("array.ts", () => {
 		done();
 	});
 
-	it("replace", (done) => {
-		const str: string[] = ["This", "is", "a", "test."];
-		const replaced: string[] = replace(str, "test.", "stick-up.");
-		expect(replaced.join(" ")).is.equal("This is a stick-up.");
-		done();
+	describe("replace", () => {
+		it("RegExp", (done) => {
+			const str: string[] = ["This", "is", "a", "test."];
+			const replaced: string[] = replace(str, /[tT].+/g, "stick-up.");
+			expect(replaced.join(" ")).is.equal("stick-up. is a stick-up.");
+			done();
+		});
+
+		it("Non-RegExp", (done) => {
+			const str: string[] = ["This", "is", "a", "test."];
+			const replaced: string[] = replace(str, "test.", "stick-up.");
+			expect(replaced.join(" ")).is.equal("This is a stick-up.");
+			done();
+		});
 	});
 });
