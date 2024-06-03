@@ -12,7 +12,11 @@ describe("player.ts", () => {
 	});
 
 	it("check(password)", (done) => {
+		const np = new Player();
+		expect(np.check(password)).is.false;
 		const original = p.password;
+		const bad = p.check(password + "1");
+		expect(bad).is.false;
 		const checked = p.check(password);
 		expect(checked).is.true;
 		done();
