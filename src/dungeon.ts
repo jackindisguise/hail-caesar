@@ -5,7 +5,7 @@ export class Dungeon {
 	#tiles: Tile[][][] = [];
 
 	constructor(width: number, height: number, layers: number) {
-		this.setDimensions(width, height, layers);
+		this.#setDimensions(width, height, layers);
 	}
 
 	get width() {
@@ -33,9 +33,7 @@ export class Dungeon {
 		return this.#tiles[z][y][x];
 	}
 
-	setDimensions(width: number, height: number, layers: number) {
-		if (this.#tiles.length !== 0)
-			throw new Error("Dungeon already initialized"); // throw a warning?
+	#setDimensions(width: number, height: number, layers: number) {
 		this.#width = width;
 		this.#height = height;
 		this.#layers = layers;
@@ -63,11 +61,7 @@ export class Dungeon {
 						this.#tiles[z][y].push(new Tile());
 				}
 			}
-
-			// nothing
-		} else {
 		}
-
 		this.#width = width;
 	}
 
@@ -84,11 +78,7 @@ export class Dungeon {
 					for (let x = 0; x < this.#width; x++) row.push(new Tile());
 				}
 			}
-
-			// nothing
-		} else {
 		}
-
 		this.#height = height;
 	}
 
@@ -106,11 +96,7 @@ export class Dungeon {
 					for (let x = 0; x < this.#width; x++) row.push(new Tile());
 				}
 			}
-
-			// nothing
-		} else {
 		}
-
 		this.#layers = layers;
 	}
 }
@@ -130,9 +116,9 @@ export class Tile extends DungeonObject {
 }
 
 export class Movable extends DungeonObject {
-	moveTo(object: DungeonObject) {
+	/*moveTo(object: DungeonObject) {
 		this.location = object;
-	}
+	}*/
 }
 
 export class Mob extends Movable {}
