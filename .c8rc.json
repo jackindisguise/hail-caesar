@@ -1,5 +1,6 @@
 {
 	"check-coverage": true,
 	"100": true,
-	"reporter": ["text-summary", "html"]
+	"reporter": ["text-summary", "html"],
+	"exclude": ["**/*.spec.js"]
 }
