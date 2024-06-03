@@ -32,11 +32,11 @@
 		"@types/node": "^20.13.0",
 		"c8": "^9.1.0",
 		"chai": "^4.4.1",
+		"chalk": "^4.1.2",
+		"json2toml": "^6.1.0",
 		"mocha": "^10.4.0",
 		"standard-version": "^9.5.0",
+		"toml": "^3.0.0",
 		"typescript": "^5.4.5"
-	},
-	"dependencies": {
-		"chalk": "^4.1.2"
 	}
 }
