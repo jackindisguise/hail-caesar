@@ -3,149 +3,155 @@ import { expect } from "chai";
 import chalk from "chalk";
 
 describe("string.ts", () => {
-	describe("padders", () => {
-		it("pad", (done) => {
-			expect(
-				string.pad({ string: "test", width: 10, side: string.PAD_SIDE.LEFT })
-			).is.equal("      test");
-			expect(string.pad("test", 10, string.PAD_SIDE.LEFT, "-")).is.equal(
-				"------test"
-			);
-			expect(string.pad("50", 10, string.PAD_SIDE.LEFT, "0")).is.equal(
-				"0000000050"
-			);
-			expect(
-				string.pad({ string: "test", width: 10, side: string.PAD_SIDE.RIGHT })
-			).is.equal("test      ");
-			expect(
-				string.pad({
-					string: "test",
-					width: 10,
-					side: string.PAD_SIDE.RIGHT,
-					padder: "<>{}",
-				})
-			).is.equal("test<>{}<>");
-			expect(
-				string.pad({
-					string: "test",
-					width: 10,
-					side: string.PAD_SIDE.RIGHT,
-					padder: "-",
-				})
-			).is.equal("test------");
-			expect(
-				string.pad({
-					string: "50.",
-					width: 10,
-					side: string.PAD_SIDE.RIGHT,
-					padder: "0",
-				})
-			).is.equal("50.0000000");
-			expect(
-				string.pad({ string: "test", side: string.PAD_SIDE.CENTER, width: 10 })
-			).is.equal("   test   ");
-			expect(
-				string.pad({
-					string: "test",
-					width: 10,
-					side: string.PAD_SIDE.CENTER,
-					padder: "<>",
-				})
-			).is.equal("<><test><>");
-			expect(
-				string.pad({
-					string: "test",
-					width: 80,
-					side: string.PAD_SIDE.CENTER,
-					padder: "<->",
-				})
-			).is.equal(
-				"<-><-><-><-><-><-><-><-><-><-><-><-><-test<-><-><-><-><-><-><-><-><-><-><-><-><-"
-			);
-			expect(
-				string.pad({
-					string: "test",
-					width: 10,
-					side: string.PAD_SIDE.CENTER,
-					padder: "-",
-				})
-			).is.equal("---test---");
-			expect(
-				string.pad({
-					string: "test",
-					width: 11,
-					side: string.PAD_SIDE.CENTER,
-					padder: "-",
-				})
-			).is.equal("---test----");
-			done();
-		});
-
-		it("padLeft", (done) => {
-			expect(string.padLeft({ string: "test", width: 10 })).is.equal(
-				"      test"
-			);
-			expect(
-				string.padLeft({ string: "test", width: 10, padder: "-" })
-			).is.equal("------test");
-			expect(string.padLeft({ string: "50", width: 10, padder: "0" })).is.equal(
-				"0000000050"
-			);
-			done();
-		});
-
-		it("padRight", (done) => {
-			expect(string.padRight({ string: "test", width: 10 })).is.equal(
-				"test      "
-			);
-			expect(
-				string.padRight({ string: "test", width: 10, padder: "<>{}" })
-			).is.equal("test<>{}<>");
-			expect(
-				string.padRight({ string: "test", width: 10, padder: "-" })
-			).is.equal("test------");
-			expect(
-				string.padRight({ string: "50.", width: 10, padder: "0" })
-			).is.equal("50.0000000");
-			done();
-		});
-
-		it("padCenter", (done) => {
-			expect(string.padCenter({ string: "test", width: 10 })).is.equal(
-				"   test   "
-			);
-			expect(
-				string.padCenter({ string: "test", width: 10, padder: "<>" })
-			).is.equal("<><test><>");
-			expect(
-				string.padCenter({ string: "test", width: 80, padder: "<->" })
-			).is.equal(
-				"<-><-><-><-><-><-><-><-><-><-><-><-><-test<-><-><-><-><-><-><-><-><-><-><-><-><-"
-			);
-			expect(
-				string.padCenter({ string: "test", width: 10, padder: "-" })
-			).is.equal("---test---");
-			expect(
-				string.padCenter({ string: "test", width: 11, padder: "-" })
-			).is.equal("---test----");
-			done();
-		});
-
-		it("color", (done) => {
-			const str = chalk.red("this is a test");
-			const padded = string.padCenter({
-				string: str,
-				width: 50,
+	it("pad", (done) => {
+		expect(string.pad("test", 10, string.PAD_SIDE.LEFT)).is.equal("      test");
+		expect(
+			string.pad({ string: "test", width: 10, side: string.PAD_SIDE.LEFT })
+		).is.equal("      test");
+		expect(string.pad("test", 10, string.PAD_SIDE.LEFT, "-")).is.equal(
+			"------test"
+		);
+		expect(string.pad("50", 10, string.PAD_SIDE.LEFT, "0")).is.equal(
+			"0000000050"
+		);
+		expect(
+			string.pad({ string: "test", width: 10, side: string.PAD_SIDE.RIGHT })
+		).is.equal("test      ");
+		expect(
+			string.pad({
+				string: "test",
+				width: 10,
+				side: string.PAD_SIDE.RIGHT,
+				padder: "<>{}",
+			})
+		).is.equal("test<>{}<>");
+		expect(
+			string.pad({
+				string: "test",
+				width: 10,
+				side: string.PAD_SIDE.RIGHT,
 				padder: "-",
-				sizer: string.TERM_SIZER,
-				color: chalk.blue,
-			});
-			const expected = `${chalk.blue("------------------")}${str}${chalk.blue(
-				"------------------"
-			)}`;
-			expect(expected).is.equal(padded);
-			done();
+			})
+		).is.equal("test------");
+		expect(
+			string.pad({
+				string: "50.",
+				width: 10,
+				side: string.PAD_SIDE.RIGHT,
+				padder: "0",
+			})
+		).is.equal("50.0000000");
+		expect(
+			string.pad({
+				string: "test",
+				side: string.PAD_SIDE.CENTER,
+				width: 10,
+			})
+		).is.equal("   test   ");
+		expect(
+			string.pad({
+				string: "test",
+				width: 10,
+				side: string.PAD_SIDE.CENTER,
+				padder: "<>",
+			})
+		).is.equal("<><test><>");
+		expect(
+			string.pad({
+				string: "test",
+				width: 80,
+				side: string.PAD_SIDE.CENTER,
+				padder: "<->",
+			})
+		).is.equal(
+			"<-><-><-><-><-><-><-><-><-><-><-><-><-test<-><-><-><-><-><-><-><-><-><-><-><-><-"
+		);
+		expect(
+			string.pad({
+				string: "test",
+				width: 10,
+				side: string.PAD_SIDE.CENTER,
+				padder: "-",
+			})
+		).is.equal("---test---");
+		expect(
+			string.pad({
+				string: "test",
+				width: 11,
+				side: string.PAD_SIDE.CENTER,
+				padder: "-",
+			})
+		).is.equal("---test----");
+		done();
+	});
+
+	it("padLeft", (done) => {
+		expect(string.padLeft("test", 10)).is.equal("      test");
+		expect(string.padLeft({ string: "test", width: 10 })).is.equal(
+			"      test"
+		);
+		expect(string.padLeft({ string: "test", width: 10, padder: "-" })).is.equal(
+			"------test"
+		);
+		expect(string.padLeft({ string: "50", width: 10, padder: "0" })).is.equal(
+			"0000000050"
+		);
+		done();
+	});
+
+	it("padRight", (done) => {
+		expect(string.padRight("test", 10)).is.equal("test      ");
+		expect(string.padRight({ string: "test", width: 10 })).is.equal(
+			"test      "
+		);
+		expect(
+			string.padRight({ string: "test", width: 10, padder: "<>{}" })
+		).is.equal("test<>{}<>");
+		expect(
+			string.padRight({ string: "test", width: 10, padder: "-" })
+		).is.equal("test------");
+		expect(string.padRight({ string: "50.", width: 10, padder: "0" })).is.equal(
+			"50.0000000"
+		);
+		done();
+	});
+
+	it("padCenter", (done) => {
+		expect(string.padCenter("test", 10)).is.equal("   test   ");
+		expect(string.padCenter({ string: "test", width: 10 })).is.equal(
+			"   test   "
+		);
+		expect(
+			string.padCenter({ string: "test", width: 10, padder: "<>" })
+		).is.equal("<><test><>");
+		expect(
+			string.padCenter({ string: "test", width: 80, padder: "<->" })
+		).is.equal(
+			"<-><-><-><-><-><-><-><-><-><-><-><-><-test<-><-><-><-><-><-><-><-><-><-><-><-><-"
+		);
+		expect(
+			string.padCenter({ string: "test", width: 10, padder: "-" })
+		).is.equal("---test---");
+		expect(
+			string.padCenter({ string: "test", width: 11, padder: "-" })
+		).is.equal("---test----");
+		done();
+	});
+
+	it("color", (done) => {
+		const str = chalk.red("this is a test");
+		const padded = string.padCenter({
+			string: str,
+			width: 50,
+			padder: "-",
+			sizer: string.TERM_SIZER,
+			color: chalk.blue,
 		});
+		const expected = `${chalk.blue("------------------")}${str}${chalk.blue(
+			"------------------"
+		)}`;
+		expect(expected).is.equal(padded);
+		done();
 	});
 
 	describe("wrap", () => {
@@ -210,7 +216,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 				"Vestibulum dolor magna, iaculis in velit eu, fermentum tincidunt metus.",
 			];
 			const blob = lorem.join(" ");
-			const limited = string.wrap({ string: blob, width: 80 }).join("-");
+			const limited = string.wrap(blob, 80).join("-");
 			const expected = [
 				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis",
 				"tortor a risus varius, sed euismod lectus ultricies. Nam sodales gravida lectus",
@@ -291,16 +297,16 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 				hAlign: string.PAD_SIDE.CENTER,
 			};
 
-			const box = string.box({
-				input: [
+			const box = string.box(
+				[
 					"This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test.",
 				],
-				style: style,
-				title: `Go to ${chalk.yellow.bold("HELL")}`,
-				width: 30,
-				sizer: string.TERM_SIZER,
-				color: chalk.yellow,
-			});
+				30,
+				`Go to ${chalk.yellow.bold("HELL")}`,
+				style,
+				string.TERM_SIZER,
+				chalk.yellow
+			);
 
 			const expected = [
 				"\x1B[33m+\x1B[39m\x1B[33m-\x1B[39m\x1B[33m<\x1B[39m Go to \x1B[33m\x1B[1mHELL\x1B[22m\x1B[39m \x1B[33m>\x1B[39m\x1B[33m-------------\x1B[39m\x1B[33m+\x1B[39m",
