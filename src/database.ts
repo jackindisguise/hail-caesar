@@ -3,6 +3,7 @@ import { join, dirname, extname } from "path";
 import { fileURLToPath } from "url";
 import { parse } from "toml";
 
+// basic paths
 const rootPath = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dataPath = join(rootPath, "data");
 
@@ -47,7 +48,7 @@ async function loadClasses() {
  * Front facing access to database loading.
  * @param done Callback to run on successful database load.
  */
-export async function load(done: Function) {
+export async function load(done: () => void) {
 	await loadRaces();
 	await loadClasses();
 	done();
