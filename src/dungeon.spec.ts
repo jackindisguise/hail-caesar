@@ -12,49 +12,76 @@ describe("dungeon.ts", () => {
 			done();
 		});
 
-		it("setDimensions", (done) => {
-			try {
-				d.setDimensions(3, 3, 3);
-			} catch (e) {
-				expect((e as Error).message).is.equal("Dungeon already initialized");
+		describe("resizeWidth", () => {
+			it("expand", (done) => {
+				try {
+					d.getTile(2, 0, 0);
+				} catch (e) {
+					expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
+				}
+				d.resizeWidth(4);
+				expect(d.getTile(3, 0, 0)).is.not.undefined;
 				done();
-			}
+			});
+
+			it("shrink", (done) => {
+				d.resizeWidth(3);
+				try {
+					d.getTile(3, 0, 0);
+				} catch (e) {
+					expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
+				}
+				done();
+			});
 		});
 
-		it("resizeWidth", (done) => {
-			try {
-				d.getTile(2, 0, 0);
-			} catch (e) {
-				expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
-			}
-			d.resizeWidth(3);
-			expect(d.getTile(2, 0, 0)).is.not.undefined;
-			done();
+		describe("resizeHeight", () => {
+			it("expand", (done) => {
+				try {
+					d.getTile(0, 2, 0);
+				} catch (e) {
+					expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
+				}
+				d.resizeHeight(4);
+				expect(d.getTile(0, 3, 0)).is.not.undefined;
+				done();
+			});
+
+			it("shrink", (done) => {
+				d.resizeHeight(3);
+				try {
+					d.getTile(0, 3, 0);
+				} catch (e) {
+					expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
+				}
+				done();
+			});
 		});
 
-		it("resizeHeight", (done) => {
-			try {
-				d.getTile(0, 2, 0);
-			} catch (e) {
-				expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
-			}
-			d.resizeHeight(3);
-			expect(d.getTile(0, 2, 0)).is.not.undefined;
-			done();
+		describe("resizeLayers", () => {
+			it("expand", (done) => {
+				try {
+					d.getTile(0, 0, 2);
+				} catch (e) {
+					expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
+				}
+				d.resizeLayers(4);
+				expect(d.getTile(0, 0, 3)).is.not.undefined;
+				done();
+			});
+
+			it("shrink", (done) => {
+				d.resizeLayers(3);
+				try {
+					d.getTile(0, 0, 3);
+				} catch (e) {
+					expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
+				}
+				done();
+			});
 		});
 
-		it("resizeLayers", (done) => {
-			try {
-				d.getTile(0, 0, 2);
-			} catch (e) {
-				expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
-			}
-			d.resizeLayers(3);
-			expect(d.getTile(0, 0, 2)).is.not.undefined;
-			done();
-		});
-
-		it("getTile()", (done) => {
+		it("getTile", (done) => {
 			let t = d.getTile(0, 0, 0);
 			expect(t).is.not.undefined;
 			expect((t as Tile).display).is.equal("Tile");
