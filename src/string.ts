@@ -137,7 +137,7 @@ export const TERM_SIZER: Sizer = {
 };
 
 /** Describes how to size strings with HTML elements colors. */
-export const HTML_SIZER: Sizer = {
+/*export const HTML_SIZER: Sizer = {
 	open: "<",
 	close: ">",
 	size: (str: string) => {
@@ -146,7 +146,7 @@ export const HTML_SIZER: Sizer = {
 		if (!result) return str.length;
 		return str.length - result.reduce((a, b) => a + b.length, 0);
 	},
-};
+};*/
 
 /** A default sizer that respects no unrendered characters. */
 export const DEFAULT_SIZER: Sizer = {
@@ -218,15 +218,16 @@ export function pad(
 	sizer?: Sizer,
 	color?: StringTransformer
 ): string {
-	if (typeof options === "string")
+	if (typeof options === "string") {
 		return padWithOptions({
 			string: options,
-			width: width || 0,
-			side: side || PAD_SIDE.RIGHT,
-			padder: padder || " ",
+			width: width as number,
+			side: side as PAD_SIDE,
+			padder: padder,
 			sizer: sizer || DEFAULT_SIZER,
 			color: color || undefined,
 		});
+	}
 	return padWithOptions(options);
 }
 
@@ -270,8 +271,8 @@ export function padLeft(
 	if (typeof options === "string")
 		return padLeftWithOptions({
 			string: options,
-			width: width || 0,
-			padder: padder || " ",
+			width: width as number,
+			padder: padder,
 			sizer: sizer || DEFAULT_SIZER,
 			color: color || undefined,
 		});
@@ -321,8 +322,8 @@ export function padRight(
 	if (typeof options === "string")
 		return padRightWithOptions({
 			string: options,
-			width: width || 0,
-			padder: padder || " ",
+			width: width as number,
+			padder: padder,
 			sizer: sizer || DEFAULT_SIZER,
 			color: color || undefined,
 		});
@@ -372,8 +373,8 @@ export function padCenter(
 	if (typeof options === "string")
 		return padCenterWithOptions({
 			string: options,
-			width: width || 0,
-			padder: padder || " ",
+			width: width as number,
+			padder: padder,
 			sizer: sizer || DEFAULT_SIZER,
 			color: color || undefined,
 		});
@@ -432,7 +433,7 @@ export function wrap(
 	if (typeof options === "string")
 		return wrapWithOptions({
 			string: options,
-			width: width || 0,
+			width: width as number,
 			sizer: sizer || DEFAULT_SIZER,
 		});
 	return wrapWithOptions(options);
@@ -547,13 +548,13 @@ export function box(
 	if (Array.isArray(options))
 		return boxWithOptions({
 			input: options,
-			width: width || 0,
+			width: width as number,
 			title: title || undefined,
 			style: style || undefined,
 			sizer: sizer || undefined,
 			color: color || undefined,
 		});
-	return boxWithOptions(options);
+	return boxWithOptions(options as BoxOptions);
 }
 
 function boxWithOptions(options: BoxOptions): string[] {
