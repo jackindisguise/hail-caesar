@@ -1,31 +1,35 @@
 interface ClassificationInterface {
-	name?: string;
-	description?: string;
+	name: string;
+	description: string;
 }
 
 export class Classification {
-	name?: string;
-	description?: string;
-
-	static validateInterface(data: unknown): ClassificationInterface | undefined {
-		if (!data) return;
-		if (typeof data !== "object") return;
-		const obj: Record<string, unknown> = data as Record<string, unknown>;
-		if (typeof obj.name !== "string") return;
-		if (typeof obj.description !== "string") return;
-		return obj as ClassificationInterface;
+	name: string;
+	description: string;
+	constructor(name: string, description: string) {
+		this.name = name;
+		this.description = description;
 	}
 
-	static fromJSON(data: unknown): Classification | undefined {
+	static validateInterface(data: any): ClassificationInterface {
+		if (typeof data !== "object")
+			throw new TypeError("given non-object for validation");
+		if (typeof data.name !== "string")
+			throw new TypeError("missing/bad field for 'name'");
+		if (typeof data.description !== "string")
+			throw new TypeError("missing/bad field for 'description'");
+		return {
+			name: data.name,
+			description: data.description,
+		};
+	}
+
+	static fromJSON(data: any): Classification {
 		// validate JSON
-		const obj: ClassificationInterface | undefined =
-			Classification.validateInterface(data);
-		if (!obj) return;
+		const obj: ClassificationInterface = Classification.validateInterface(data);
 
 		// load classification
-		const c = new Classification();
-		if (obj.name) c.name = obj.name;
-		if (obj.description) c.description = obj.description;
+		const c = new Classification(obj.name, obj.description);
 		return c;
 	}
 }

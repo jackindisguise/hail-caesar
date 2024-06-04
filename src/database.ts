@@ -23,7 +23,9 @@ async function loadRaces() {
 		const data = await readFile(racePath, "utf8");
 		const json: any = parse(data);
 		const race = Classification.fromJSON(json);
-		if (race) races.push(race);
+		if (race) {
+			races.push(race);
+		}
 	}
 }
 
@@ -40,16 +42,33 @@ async function loadClasses() {
 		const data = await readFile(classPath, "utf8");
 		const json = parse(data);
 		const _class = Classification.fromJSON(json);
-		if (_class) classes.push(_class);
+		if (_class) {
+			classes.push(_class);
+		}
 	}
+}
+
+/**
+ * Load calendar and shit.
+ */
+import { Calendar, Month } from "./calendar.js";
+const calendarPath = join(dataPath, "calendar.toml");
+export let calendar: Calendar;
+async function loadCalendar() {
+	const data = await readFile(calendarPath, "utf8");
+	const json = parse(data);
+	calendar = Calendar.fromJSON(json);
 }
 
 /**
  * Front facing access to database loading.
  * @param done Callback to run on successful database load.
  */
-export async function load(done: () => void) {
+export async function load(done: (ms: number) => void) {
+	const start = Date.now();
 	await loadRaces();
 	await loadClasses();
-	done();
+	await loadCalendar();
+	const end = Date.now();
+	done(end - start);
 }
