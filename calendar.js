@@ -1,4 +1,5 @@
-import { load, calendar } from "./build/database.js";
+import { setAbsoluteInterval, setRelativeInterval } from "./build/time.js";
+import { load, calendar, world } from "./build/database.js";
 function nth(n) {
 	if (n > 3 && n < 21) return `${n}th`;
 	switch (n % 10) {
@@ -15,24 +16,26 @@ function nth(n) {
 
 load((delay) => {
 	console.log(`took ${delay} milliseconds to load database.`);
-	const then = Date.now();
 	const report = () => {
-		const now = Date.now() - then;
+		const now = world.runtime;
 		console.log(
-			`Today is ${calendar.monthName(now)} ${nth(
-				calendar.dayOfMonth(now)
+			`Today is the ${nth(calendar.dayOfMonth(now))} of ${calendar.monthName(
+				now
 			)}, year #${calendar.year(now)}`
 		);
 		const hour = calendar.hour(now);
 		const minute = calendar.minute(now);
 		const second = calendar.second(now);
+		const ms = calendar.millisecond(now);
 		console.log(
 			`It is currently ${hour < 10 ? "0" + hour : hour}:${
 				minute < 10 ? "0" + minute : minute
-			}:${second < 10 ? "0" + second : second}`
+			}:${second < 10 ? "0" + second : second}.${ms}`
 		);
 	};
 
 	report();
-	setInterval(report, 1000);
+	setRelativeInterval(report, 1000);
+	// setAbsoluteInterval(report, 1000);
+	//	setInterval(report, 500);
 });

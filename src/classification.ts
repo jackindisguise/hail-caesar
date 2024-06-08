@@ -32,4 +32,11 @@ export class Classification {
 		const c = new Classification(obj.name, obj.description);
 		return c;
 	}
+
+	toJSON(): ClassificationInterface {
+		return {
+			name: this.name,
+			description: this.description,
+		};
+	}
 }

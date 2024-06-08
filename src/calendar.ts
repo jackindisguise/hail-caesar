@@ -12,6 +12,9 @@ export class Calendar {
 	 * Seconds per year (as dictated by months within the calendar).
 	 */
 	#period: number = 0;
+	get period(): number {
+		return this.#period;
+	}
 
 	// conversion of timestamp into time
 	hoursPerDay: number;
@@ -78,6 +81,18 @@ export class Calendar {
 		this.secondsPerMinute = secondsPerMinute;
 	}
 
+	add(...months: Month[]) {
+		for (let month of months) {
+			this.#months.push(month);
+			this.#period +=
+				month.days *
+				millisecondsPerSecond *
+				this.secondsPerMinute *
+				this.minutesPerHour *
+				this.hoursPerDay;
+		}
+	}
+
 	periodify(timestamp: number) {
 		return timestamp % this.#period;
 	}
@@ -96,27 +111,28 @@ export class Calendar {
 		let day = this.day(timestamp);
 		for (let i = 0; i < this.#months.length; i++) {
 			const month = this.#months[i];
-			if (month.days < day) day -= month.days;
+			if (month.days <= day) day -= month.days;
 			else break;
 		}
 
-		return day + 1;
+		return day;
 	}
 
 	year(timestamp: number): number {
 		const now = Math.floor(timestamp / this.#period);
-		return now + 1;
+		return now;
 	}
 
 	month(timestamp: number): number {
 		let day = this.day(timestamp);
-		for (let i = 0; i < this.#months.length; i++) {
-			let m = this.#months[i];
-			if (m.days < day) day -= m.days;
-			else return i;
+		let month = 0;
+		for (month; month < this.#months.length; month++) {
+			let m = this.#months[month];
+			if (m.days <= day) day -= m.days;
+			else break;
 		}
 
-		return 0; // should never happen
+		return month;
 	}
 
 	monthName(timestamp: number): string {
@@ -135,7 +151,7 @@ export class Calendar {
 
 	minute(timestamp: number) {
 		const now =
-			(Math.floor(timestamp / millisecondsPerSecond) * this.secondsPerMinute) %
+			Math.floor(timestamp / (millisecondsPerSecond * this.secondsPerMinute)) %
 			this.minutesPerHour;
 		return now;
 	}
@@ -146,16 +162,8 @@ export class Calendar {
 		return now;
 	}
 
-	add(...months: Month[]) {
-		for (let month of months) {
-			this.#months.push(month);
-			this.#period +=
-				month.days *
-				millisecondsPerSecond *
-				this.secondsPerMinute *
-				this.minutesPerHour *
-				this.hoursPerDay;
-		}
+	millisecond(timestamp: number) {
+		return timestamp % millisecondsPerSecond;
 	}
 }
 

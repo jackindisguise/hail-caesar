@@ -1,38 +1,38 @@
-name = "Gregorian"
-hoursPerDay = 1
-minutesPerHour = 30
+name = "Julian"
+hoursPerDay = 24
+minutesPerHour = 60
 secondsPerMinute = 1
 
 [[month]]
-name = "January"
+name = "Ianuarius"
 days = 31
 
 [[month]]
-name = "February"
+name = "Februarius"
 days = 28
 
 [[month]]
-name = "March"
+name = "Martius"
 days = 31
 
 [[month]]
-name = "April"
+name = "Aprilis"
 days = 30
 
 [[month]]
-name = "May"
+name = "Maius"
 days = 31
 
 [[month]]
-name = "June"
+name = "Iunius"
 days = 30
 
 [[month]]
-name = "July"
+name = "Quintilis"
 days = 31
 
 [[month]]
-name = "August"
+name = "Sextilis"
 days = 31
 
 [[month]]

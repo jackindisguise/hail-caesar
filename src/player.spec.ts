@@ -4,14 +4,14 @@ import { expect } from "chai";
 describe("player.ts", () => {
 	const p = new Player();
 	const password = "cake";
-	it("set password", (done) => {
+	it("password=", (done) => {
 		expect(p.password).is.equal(undefined);
 		p.password = "cake";
 		expect(p.password).is.not.equal(undefined);
 		done();
 	});
 
-	it("check(password)", (done) => {
+	it("check", (done) => {
 		const np = new Player();
 		expect(np.check(password)).is.false;
 		const original = p.password;

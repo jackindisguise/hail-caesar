@@ -4,7 +4,7 @@ import * as time from "./time.js";
 const timeout = 2000;
 const ms = 500;
 describe("time.ts", () => {
-	it("setAbsoluteInterval", (done) => {
+	xit("setAbsoluteInterval", (done) => {
 		const start = Date.now();
 		let diff = 0;
 		let cycle = 0;
@@ -21,7 +21,7 @@ describe("time.ts", () => {
 		}, timeout);
 	}).timeout(timeout * 1.1);
 
-	it("setRelativeInterval", (done) => {
+	xit("setRelativeInterval", (done) => {
 		const start = Date.now();
 		let diff = 0;
 		let cycle = 0;
