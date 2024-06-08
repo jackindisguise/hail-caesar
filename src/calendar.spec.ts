@@ -1,8 +1,30 @@
 import { expect } from "chai";
-import { Calendar, Month } from "./calendar.js";
+import { Calendar, Month, CalendarInterface } from "./calendar.js";
 
 describe("calendar.ts", () => {
 	describe("Calendar", () => {
+		let calendarInterface: CalendarInterface;
+		it("validateInterface", (done) => {
+			const json: any = {
+				name: "blah",
+				hoursPerDay: 24,
+				minutesPerHour: 10,
+				secondsPerMinute: 5,
+				months: [
+					{ name: "January", days: 30 },
+					{ name: "February", days: 28 },
+				],
+			};
+
+			calendarInterface = Calendar.validateInterface(json);
+			done();
+		});
+
+		it("fromJSON", (done) => {
+			const c: Calendar = Calendar.fromJSON(calendarInterface);
+			done();
+		});
+
 		let c: Calendar;
 		const spm = 10;
 		const mph = 10;

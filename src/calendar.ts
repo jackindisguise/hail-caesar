@@ -1,4 +1,4 @@
-interface CalendarInterface {
+export interface CalendarInterface {
 	hoursPerDay: number;
 	minutesPerHour: number;
 	secondsPerMinute: number;
@@ -33,12 +33,12 @@ export class Calendar {
 			throw new TypeError("missing/bad field 'minutesPerHour");
 		if (typeof data.secondsPerMinute !== "number")
 			throw new TypeError("missing/bad field 'secondsPerMinute'");
-		if (!Array.isArray(data.month))
+		if (!Array.isArray(data.months))
 			throw new TypeError("missing/bad field 'month'");
 
 		// convert month data to interfaces
 		const MIs: MonthInterface[] = [];
-		for (let entry of data.month) {
+		for (let entry of data.months) {
 			const MI = Month.validateInterface(entry);
 			if (!MI) continue;
 			MIs.push(MI);

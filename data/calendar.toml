@@ -1,52 +1,51 @@
-name = "Julian"
 hoursPerDay = 24
 minutesPerHour = 60
 secondsPerMinute = 1
 
-[[month]]
+[[months]]
 name = "Ianuarius"
 days = 31
 
-[[month]]
+[[months]]
 name = "Februarius"
 days = 28
 
-[[month]]
+[[months]]
 name = "Martius"
 days = 31
 
-[[month]]
+[[months]]
 name = "Aprilis"
 days = 30
 
-[[month]]
+[[months]]
 name = "Maius"
 days = 31
 
-[[month]]
+[[months]]
 name = "Iunius"
 days = 30
 
-[[month]]
+[[months]]
 name = "Quintilis"
 days = 31
 
-[[month]]
+[[months]]
 name = "Sextilis"
 days = 31
 
-[[month]]
+[[months]]
 name = "September"
 days = 30
 
-[[month]]
+[[months]]
 name = "October"
 days = 31
 
-[[month]]
+[[months]]
 name = "November"
 days = 30
 
-[[month]]
+[[months]]
 name = "December"
 days = 31
