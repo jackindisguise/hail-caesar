@@ -5,4 +5,4 @@
 <p align='center'><img src='https://raw.githubusercontent.com/jackindisguise/hail-caesar/main/logo.png'/></p>
 
 # About
-Hail Caesar is an attempt to recreate a RoM/RoT-style game completely in Node.git
+Hail Caesar is an attempt to recreate a RoM/RoT-style game completely in Node.
