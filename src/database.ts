@@ -3,10 +3,6 @@ import { join, dirname, extname } from "path";
 import { fileURLToPath } from "url";
 import { parse } from "toml";
 
-// package data
-import { version as v } from "../package.json";
-export const version = v;
-
 // basic paths
 const rootPath = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dataPath = join(rootPath, "data");
