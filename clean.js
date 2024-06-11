@@ -9,12 +9,12 @@ for (let file of args) {
 	const joined = join(dir, file);
 	const rel = relative(dir, joined);
 	if (!rel) {
-		console.log("ignoring attempt to delete root");
+		console.log("ignoring attempt to delete root directory");
 		continue;
 	}
 
 	if (rel.includes("..")) {
-		console.log("ignoring attempt to delete parent");
+		console.log("ignoring attempt to delete parent directory");
 		continue;
 	}
 
