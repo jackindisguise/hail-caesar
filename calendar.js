@@ -1,21 +1,10 @@
 import { setAbsoluteInterval, setRelativeInterval } from "./build/time.js";
-import { load, calendar, world } from "./build/database.js";
-function nth(n) {
-	if (n > 3 && n < 21) return `${n}th`;
-	switch (n % 10) {
-		case 1:
-			return `${n}st`;
-		case 2:
-			return `${n}nd`;
-		case 3:
-			return `${n}rd`;
-		default:
-			return `${n}th`;
-	}
-}
+import { load, calendar, world, version } from "./build/database.js";
 
+console.log("Loading game database...");
 load((delay) => {
-	console.log(`took ${delay} milliseconds to load database.`);
+	console.log(`Took ${delay} milliseconds to load database.`);
+	console.log(`Loaded ${world.name} (@${__.version})`);
 	const report = () => {
 		const now = world.runtime;
 		console.log(
