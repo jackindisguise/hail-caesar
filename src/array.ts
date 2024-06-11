@@ -2,8 +2,8 @@ import { randomInt } from "./number.js";
 
 /**
  * Pick an element from a set of options.
- * @param options
- * @returns
+ * @param options A set of arguments.
+ * @returns A random element from the arguments provided.
  */
 export function pick<type>(...options: type[]): type {
 	return options[randomInt(0, options.length - 1)];
@@ -11,10 +11,10 @@ export function pick<type>(...options: type[]): type {
 
 /**
  * Replace elements in an array based on on a rule.
- * @param array
- * @param rule
- * @param replace
- * @returns
+ * @param array The array to replace elements from.
+ * @param rule The rules for replacing elements.
+ * @param replace The value to replace the element with.
+ * @returns A new array with the replaced values.
  */
 export function replace<type>(
 	array: type[],

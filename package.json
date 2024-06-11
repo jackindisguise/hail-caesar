@@ -7,6 +7,7 @@
 	"scripts": {
 		"test": "npx mocha build/**/*.spec.js",
 		"coverage": "npx c8 npm run test",
+		"docs": "npx typedoc",
 		"prebuild": "node clean.js build/",
 		"build": "npx tsc",
 		"prerelease": "npm run build && npm run test",
@@ -37,6 +38,8 @@
 		"mocha": "^10.4.0",
 		"standard-version": "^9.5.0",
 		"toml": "^3.0.0",
+		"typedoc": "^0.25.13",
+		"typedoc-theme-hierarchy": "^4.1.2",
 		"typescript": "^5.4.5"
 	}
 }
