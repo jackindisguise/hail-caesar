@@ -4,6 +4,7 @@ import chalk from "chalk";
 
 describe("string.ts", () => {
 	it("pad", (done) => {
+		expect(string.pad("test", 3, string.PAD_SIDE.LEFT)).is.equal("test");
 		expect(string.pad("test", 10, string.PAD_SIDE.LEFT)).is.equal("      test");
 		expect(
 			string.pad({ string: "test", width: 10, side: string.PAD_SIDE.LEFT })
@@ -86,7 +87,12 @@ describe("string.ts", () => {
 	});
 
 	it("padLeft", (done) => {
+		expect(string.padLeft("test", 3)).is.equal("test");
 		expect(string.padLeft("test", 10)).is.equal("      test");
+		expect(string.padLeft("test", 10, "<><>")).is.equal("<><><>test");
+		expect(
+			string.padLeft("test", 10, "<>", string.TERM_SIZER, chalk.yellow)
+		).is.equal(`${chalk.yellow("<><><>")}test`);
 		expect(string.padLeft({ string: "test", width: 10 })).is.equal(
 			"      test"
 		);
@@ -100,7 +106,12 @@ describe("string.ts", () => {
 	});
 
 	it("padRight", (done) => {
+		expect(string.padRight("test", 3)).is.equal("test");
 		expect(string.padRight("test", 10)).is.equal("test      ");
+		expect(string.padRight("test", 10, "<><>")).is.equal("test<><><>");
+		expect(
+			string.padRight("test", 10, "<>", string.TERM_SIZER, chalk.yellow)
+		).is.equal(`test${chalk.yellow("<><><>")}`);
 		expect(string.padRight({ string: "test", width: 10 })).is.equal(
 			"test      "
 		);
@@ -117,7 +128,16 @@ describe("string.ts", () => {
 	});
 
 	it("padCenter", (done) => {
+		expect(string.padCenter("test", 3)).is.equal("test");
 		expect(string.padCenter("test", 10)).is.equal("   test   ");
+		expect(string.padCenter("test", 10, "<><>")).is.equal("<><test><>");
+		expect(
+			string.padCenter("test", 10, "<>", string.TERM_SIZER, chalk.yellow)
+		).is.equal(`${chalk.yellow("<><")}test${chalk.yellow("><>")}`);
+		expect(
+			string.padCenter("test", 5, "<>", string.TERM_SIZER, chalk.yellow)
+		).is.equal(`test${chalk.yellow("<")}`);
+
 		expect(string.padCenter({ string: "test", width: 10 })).is.equal(
 			"   test   "
 		);
@@ -263,6 +283,161 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 	});
 
 	describe("box", () => {
+		it("plain", (done) => {
+			const box = string.box(["cake", "pie"], 80);
+			const expected = [
+				"cake                                                                            ",
+				"pie                                                                             ",
+			];
+			expect(box.join("\n")).is.equal(expected.join("\n"));
+			done();
+		});
+		it("top-right specified with title but no top-left", (done) => {
+			const box = string.box(["cake", "pie"], 80, "title", {
+				top: { right: "." },
+			});
+			const expected = [
+				"  title                                                                        .",
+				"cake                                                                            ",
+				"pie                                                                             ",
+			];
+			expect(box.join("\n")).is.equal(expected.join("\n"));
+			done();
+		});
+		it("top-left specified with title but no top-right", (done) => {
+			const box = string.box(["cake", "pie"], 80, "title", {
+				top: { left: "." },
+			});
+			const expected = [
+				".  title                                                                        ",
+				"cake                                                                            ",
+				"pie                                                                             ",
+			];
+			expect(box.join("\n")).is.equal(expected.join("\n"));
+			done();
+		});
+		it("top-right specified with no title but no top-left", (done) => {
+			const box = string.box(["cake", "pie"], 80, undefined, {
+				top: { right: "." },
+			});
+			const expected = [
+				"                                                                               .",
+				"cake                                                                            ",
+				"pie                                                                             ",
+			];
+			expect(box.join("\n")).is.equal(expected.join("\n"));
+			done();
+		});
+		it("top-left specified with no title but no top-right", (done) => {
+			const box = string.box(["cake", "pie"], 80, undefined, {
+				top: { left: "." },
+			});
+			const expected = [
+				".                                                                               ",
+				"cake                                                                            ",
+				"pie                                                                             ",
+			];
+			expect(box.join("\n")).is.equal(expected.join("\n"));
+			done();
+		});
+		it("titled", (done) => {
+			const box = string.box(["cake", "pie"], 80, "A title.");
+			const expected = [
+				"A title.                                                                        ",
+				"cake                                                                            ",
+				"pie                                                                             ",
+			];
+			expect(box.join("\n")).is.equal(expected.join("\n"));
+			done();
+		});
+		it("super long centered title", (done) => {
+			const box = string.box(
+				["cake", "pie"],
+				30,
+				"A really long title for this box.",
+				{
+					top: { middle: "-" },
+					titleHAlign: string.PAD_SIDE.CENTER,
+				}
+			);
+			const expected = [
+				" A really long title for this box. ",
+				"cake                          ",
+				"pie                           ",
+			];
+			expect(box.join("-")).is.equal(expected.join("-"));
+			done();
+		});
+		it("title centered", (done) => {
+			const box = string.box(["cake", "pie"], 80, "A title.", {
+				titleHAlign: string.PAD_SIDE.CENTER,
+			});
+			const expected = [
+				"                                    A title.                                    ",
+				"cake                                                                            ",
+				"pie                                                                             ",
+			];
+			expect(box.join("\n")).is.equal(expected.join("\n"));
+			done();
+		});
+		it("right specified but no left", (done) => {
+			const style: string.BoxStyle = {
+				horizontal: "-",
+				corner: "+",
+				right: "<",
+			};
+			const box = string.box(["cake", "pie"], 80, "cake", style);
+			const expected = [
+				"+- cake ----------------------------------------------------------------------+",
+				" cake                                                                         <",
+				" pie                                                                          <",
+				"+-----------------------------------------------------------------------------+",
+			];
+			done();
+		});
+		it("left specified but no right", (done) => {
+			const style: string.BoxStyle = {
+				horizontal: "-",
+				corner: "+",
+				left: ">",
+			};
+			const box = string.box(["cake", "pie"], 80, "cake", style);
+			const expected = [
+				"+- cake ----------------------------------------------------------------------+",
+				"> cake                                                                         ",
+				"> pie                                                                          ",
+				"+-----------------------------------------------------------------------------+",
+			];
+			done();
+		});
+		it("left-only title border", (done) => {
+			const box = string.box(["cake", "pie"], 80, "cake", {
+				...string.BOX_STYLES.PLAIN,
+				titleBorder: { left: ">" },
+			});
+			const expected = [
+				"+-> cake-----------------------------------------------------------------------+",
+				"| cake                                                                         |",
+				"| pie                                                                          |",
+				"+------------------------------------------------------------------------------+",
+			];
+			expect(box.join("\n")).is.equal(expected.join("\n"));
+			done();
+		});
+		it("right-only title border", (done) => {
+			const box = string.box(["cake", "pie"], 80, "cake", {
+				...string.BOX_STYLES.PLAIN,
+				titleBorder: { right: "<" },
+			});
+			const expected = [
+				"+-cake <-----------------------------------------------------------------------+",
+				"| cake                                                                         |",
+				"| pie                                                                          |",
+				"+------------------------------------------------------------------------------+",
+			];
+			expect(box.join("\n")).is.equal(expected.join("\n"));
+			done();
+		});
 		it("color", (done) => {
 			const style: string.BoxStyle = {
 				...string.BOX_STYLES.PLAIN,
@@ -498,6 +673,29 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		expect(string.matchKeywords("cake", "the cake is a lie")).is.true;
 		expect(string.matchKeywords("the cake", "the cake is a lie")).is.true;
 		expect(string.matchKeywords("the pie", "the cake is a lie")).is.false;
+		done();
+	});
+
+	it("toOrdinal", (done) => {
+		const a = [1, 2, 3, 4, 5, 11, 12, 13, 14, 15, 21, 22, 23, 24, 25];
+		const b = [
+			"1st",
+			"2nd",
+			"3rd",
+			"4th",
+			"5th",
+			"11th",
+			"12th",
+			"13th",
+			"14th",
+			"15th",
+			"21st",
+			"22nd",
+			"23rd",
+			"24th",
+			"25th",
+		];
+		for (let i = 0; i < 15; i++) expect(string.toOrdinal(a[i])).is.equal(b[i]);
 		done();
 	});
 });

@@ -188,6 +188,25 @@ export interface PadWithSideOptions extends PadOptions {
 }
 
 /**
+ * Convert a number to its ordinal form.
+ * @param n The number to ordinalify.
+ * @returns The ordinal-form of the given number.
+ */
+export function toOrdinal(n: number): string {
+	if (n > 3 && n < 21) return `${n}th`;
+	switch (n % 10) {
+		case 1:
+			return `${n}st`;
+		case 2:
+			return `${n}nd`;
+		case 3:
+			return `${n}rd`;
+		default:
+			return `${n}th`;
+	}
+}
+
+/**
  * Pad a string to the given size.
  * @param options {PadWithSideOptions} The padding options.
  * @returns {string} The padded string.
@@ -394,7 +413,7 @@ function padCenterWithOptions(options: PadOptions) {
 	let rpad = tpad.slice(lsize + csize, lsize + csize + rsize);
 	if (options.color) {
 		lpad = lpad ? options.color(lpad) : "";
-		rpad = rpad ? options.color(rpad) : "";
+		rpad = options.color(rpad);
 	}
 	return `${lpad}${options.string}${rpad}`;
 }
