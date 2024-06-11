@@ -1,21 +1,65 @@
 import { expect } from "chai";
-import { Calendar, Month, CalendarInterface } from "./calendar.js";
+import {
+	Calendar,
+	Month,
+	CalendarInterface,
+	MonthInterface,
+} from "./calendar.js";
 
 describe("calendar.ts", () => {
 	describe("Calendar", () => {
 		let calendarInterface: CalendarInterface;
 		it("validateInterface", (done) => {
-			const json: any = {
-				name: "blah",
-				hoursPerDay: 24,
-				minutesPerHour: 10,
-				secondsPerMinute: 5,
-				months: [
-					{ name: "January", days: 30 },
-					{ name: "February", days: 28 },
-				],
-			};
-
+			try {
+				Calendar.validateInterface(1);
+			} catch (e) {
+				expect((e as Error).message).is.equal(
+					"given non-object for validation"
+				);
+			}
+			const json: any = {};
+			try {
+				Calendar.validateInterface(json);
+			} catch (e) {
+				expect((e as Error).message).is.equal(
+					"missing/bad field 'hoursPerDay'"
+				);
+			}
+			json.hoursPerDay = 24;
+			try {
+				Calendar.validateInterface(json);
+			} catch (e) {
+				expect((e as Error).message).is.equal(
+					"missing/bad field 'minutesPerHour'"
+				);
+			}
+			json.minutesPerHour = 10;
+			try {
+				Calendar.validateInterface(json);
+			} catch (e) {
+				expect((e as Error).message).is.equal(
+					"missing/bad field 'secondsPerMinute'"
+				);
+			}
+			json.secondsPerMinute = 5;
+			try {
+				Calendar.validateInterface(json);
+			} catch (e) {
+				expect((e as Error).message).is.equal("missing/bad field 'months'");
+			}
+			json.months = [
+				{ name: "January", day: 30 },
+				{ name: "February", days: 28 },
+			];
+			try {
+				Calendar.validateInterface(json);
+			} catch (e) {
+				expect((e as Error).message).is.equal("missing/bad field 'days'");
+			}
+			json.months = [
+				{ name: "January", days: 30 },
+				{ name: "February", days: 28 },
+			];
 			calendarInterface = Calendar.validateInterface(json);
 			done();
 		});
@@ -109,6 +153,39 @@ describe("calendar.ts", () => {
 		it("year", (done) => {
 			expect(c.year(0)).is.equal(0);
 			expect(c.year(day * (30 + 28))).is.equal(1);
+			done();
+		});
+	});
+
+	describe("Month", () => {
+		let monthInterface: MonthInterface;
+		it("validateInterface", (done) => {
+			try {
+				Month.validateInterface(1);
+			} catch (e) {
+				expect((e as Error).message).is.equal(
+					"given non-object for validation"
+				);
+			}
+			const json: any = {};
+			try {
+				Month.validateInterface(json);
+			} catch (e) {
+				expect((e as Error).message).is.equal("missing/bad field 'name'");
+			}
+			json.name = "January";
+			try {
+				Month.validateInterface(json);
+			} catch (e) {
+				expect((e as Error).message).is.equal("missing/bad field 'days'");
+			}
+			json.days = 30;
+			monthInterface = Month.validateInterface(json);
+			done();
+		});
+
+		it("fromJSON", (done) => {
+			const m: Month = Month.fromJSON(monthInterface);
 			done();
 		});
 	});

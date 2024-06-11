@@ -30,17 +30,16 @@ export class Calendar {
 		if (typeof data.hoursPerDay !== "number")
 			throw new TypeError("missing/bad field 'hoursPerDay'");
 		if (typeof data.minutesPerHour !== "number")
-			throw new TypeError("missing/bad field 'minutesPerHour");
+			throw new TypeError("missing/bad field 'minutesPerHour'");
 		if (typeof data.secondsPerMinute !== "number")
 			throw new TypeError("missing/bad field 'secondsPerMinute'");
 		if (!Array.isArray(data.months))
-			throw new TypeError("missing/bad field 'month'");
+			throw new TypeError("missing/bad field 'months'");
 
 		// convert month data to interfaces
 		const MIs: MonthInterface[] = [];
 		for (let entry of data.months) {
 			const MI = Month.validateInterface(entry);
-			if (!MI) continue;
 			MIs.push(MI);
 		}
 
@@ -184,9 +183,9 @@ export class Month {
 		if (typeof data !== "object")
 			throw new TypeError("given non-object for validation");
 		if (typeof data.name !== "string")
-			throw new TypeError("missing/bad field for 'name'");
+			throw new TypeError("missing/bad field 'name'");
 		if (typeof data.days !== "number")
-			throw new TypeError("missing/bad field for 'days'");
+			throw new TypeError("missing/bad field 'days'");
 		return {
 			name: data.name,
 			days: data.days,
