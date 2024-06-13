@@ -20,7 +20,7 @@ export class Dungeon {
 		return this.#layers;
 	}
 
-	getTile(x: number, y: number, z: number): Tile | undefined {
+	getTile(x: number, y: number, z: number): Tile {
 		if (
 			x < 0 ||
 			x >= this.#width ||
