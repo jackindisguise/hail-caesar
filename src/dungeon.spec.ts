@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Dungeon, Tile } from "./dungeon.js";
+import { Dungeon, DungeonObject, Mob, Tile } from "./dungeon.js";
 
 describe("dungeon.ts", () => {
 	describe("Dungeon", () => {
@@ -84,7 +84,7 @@ describe("dungeon.ts", () => {
 		it("getTile", (done) => {
 			let t = d.getTile(0, 0, 0);
 			expect(t).is.not.undefined;
-			expect((t as Tile).display).is.equal("Tile");
+			expect(t.display).is.equal("Tile");
 
 			try {
 				d.getTile(10, 10, 10);
@@ -92,6 +92,74 @@ describe("dungeon.ts", () => {
 				expect((e as Error).message).is.equal("invalid Dungeon tile bounds");
 			}
 			done();
+		});
+	});
+
+	describe("DungeonObject", () => {
+		const dung = new Dungeon(3, 3, 3);
+		const dung2 = new Dungeon(3, 3, 3);
+		let dungo: DungeonObject;
+		it("new", (done) => {
+			dungo = new DungeonObject();
+			expect(dungo.dungeon).is.undefined;
+			done();
+		});
+
+		describe("location=", () => {
+			const tileA = dung.getTile(0, 0, 0);
+			const tileB = dung.getTile(1, 0, 0);
+			const tileC = dung2.getTile(0, 0, 0);
+			it("intial", (done) => {
+				expect(dungo.dungeon).is.not.equal(tileA.dungeon);
+				expect(dungo.dungeon).is.not.equal(tileB.dungeon);
+				expect(dungo.dungeon).is.not.equal(tileC.dungeon);
+				dungo.location = tileA;
+				expect(dungo.dungeon).is.equal(tileA.dungeon);
+				expect(dungo.dungeon).is.equal(tileB.dungeon);
+				expect(dungo.dungeon).is.not.equal(tileC.dungeon);
+				expect(dungo.dungeon).is.equal(dung);
+				expect(dungo.dungeon).is.not.equal(dung2);
+				expect(tileA.contains(dungo)).is.true;
+				expect(tileB.contains(dungo)).is.false;
+				expect(tileC.contains(dungo)).is.false;
+				expect(dung.contains(dungo)).is.true;
+				expect(dung2.contains(dungo)).is.false;
+				done();
+			});
+			it("secondary", (done) => {
+				expect(dungo.dungeon).is.equal(tileA.dungeon);
+				expect(dungo.dungeon).is.equal(tileB.dungeon);
+				expect(dungo.dungeon).is.not.equal(tileC.dungeon);
+				dungo.location = tileB;
+				expect(dungo.dungeon).is.equal(tileA.dungeon);
+				expect(dungo.dungeon).is.equal(tileB.dungeon);
+				expect(dungo.dungeon).is.not.equal(tileC.dungeon);
+				expect(dungo.dungeon).is.equal(dung);
+				expect(dungo.dungeon).is.not.equal(dung2);
+				expect(tileA.contains(dungo)).is.false;
+				expect(tileB.contains(dungo)).is.true;
+				expect(tileC.contains(dungo)).is.false;
+				expect(dung.contains(dungo)).is.true;
+				expect(dung2.contains(dungo)).is.false;
+				done();
+			});
+			it("different dungeon", (done) => {
+				expect(dungo.dungeon).is.equal(tileA.dungeon);
+				expect(dungo.dungeon).is.equal(tileB.dungeon);
+				expect(dungo.dungeon).is.not.equal(tileC.dungeon);
+				dungo.location = tileC;
+				expect(dungo.dungeon).is.not.equal(tileA.dungeon);
+				expect(dungo.dungeon).is.not.equal(tileB.dungeon);
+				expect(dungo.dungeon).is.equal(tileC.dungeon);
+				expect(dungo.dungeon).is.not.equal(dung);
+				expect(dungo.dungeon).is.equal(dung2);
+				expect(tileA.contains(dungo)).is.false;
+				expect(tileB.contains(dungo)).is.false;
+				expect(tileC.contains(dungo)).is.true;
+				expect(dung.contains(dungo)).is.false;
+				expect(dung2.contains(dungo)).is.true;
+				done();
+			});
 		});
 	});
 });
