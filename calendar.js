@@ -1,16 +1,17 @@
 import { setAbsoluteInterval, setRelativeInterval } from "./build/time.js";
-import { load, calendar, world, version } from "./build/database.js";
+import { load, calendar, world } from "./build/database.js";
+import { toOrdinal } from "./build/string.js";
 
 console.log("Loading game database...");
 load((delay) => {
 	console.log(`Took ${delay} milliseconds to load database.`);
-	console.log(`Loaded ${world.name} (@${__.version})`);
+	console.log(`Loaded ${world.name} (@1.0.0)`);
 	const report = () => {
 		const now = world.runtime;
 		console.log(
-			`Today is the ${nth(calendar.dayOfMonth(now))} of ${calendar.monthName(
-				now
-			)}, year #${calendar.year(now)}`
+			`Today is the ${toOrdinal(
+				calendar.dayOfMonth(now)
+			)} of ${calendar.monthName(now)}, year #${calendar.year(now)}`
 		);
 		const hour = calendar.hour(now);
 		const minute = calendar.minute(now);

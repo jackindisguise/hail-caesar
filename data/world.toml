@@ -1,2 +1,5 @@
 name = "Hail Caesar"
 runtime = 6307200000
+pulseTime = 1000 # pulses every 1 second
+violencePulse = 4 # violence occurs once every 4 pulses
+tickPulse = 60 # ticks occur once every 60 pulses

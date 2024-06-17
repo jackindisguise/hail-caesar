@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
-		"test": "npx mocha build/**/*.spec.js",
+		"test": "npx mocha build/**/*.spec.js -nolog",
 		"coverage": "npx c8 npm run test",
 		"docs": "npx typedoc",
 		"prebuild": "node clean.js build/",
@@ -34,12 +34,15 @@
 		"c8": "^9.1.0",
 		"chai": "^4.4.1",
 		"chalk": "^4.1.2",
+		"i18next": "^23.11.5",
+		"i18next-fs-backend": "^2.3.1",
 		"json2toml": "^6.1.0",
 		"mocha": "^10.4.0",
 		"standard-version": "^9.5.0",
 		"toml": "^3.0.0",
 		"typedoc": "^0.25.13",
 		"typedoc-theme-hierarchy": "^4.1.2",
-		"typescript": "^5.4.5"
+		"typescript": "^5.4.5",
+		"winston": "^3.13.0"
 	}
 }

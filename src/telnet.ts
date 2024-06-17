@@ -1,0 +1,17 @@
+export const IAC = 255; /* interpret as command: */
+export const DONT = 254; /* you are not to use option */
+export const DO = 253; /* please, you use option */
+export const WONT = 252; /* I won't use option */
+export const WILL = 251; /* I will use option */
+export const SB = 250; /* interpret as subnegotiation */
+export const GA = 249; /* you may reverse the line */
+export const EL = 248; /* erase the current line */
+export const EC = 247; /* erase the current character */
+export const AYT = 246; /* are you there */
+export const AO = 245; /* abort output--but let prog finish */
+export const IP = 244; /* interrupt process--permanently */
+export const BREAK = 243; /* break */
+export const DM = 242; /* data mark--for connect. cleaning */
+export const NOP = 241; /* nop */
+export const SE = 240; /* end sub negotiation */
+export const EOR = 239; /* end of record (transparent mode) */
