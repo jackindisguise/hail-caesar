@@ -1,10 +1,15 @@
-import { t, use } from "i18next";
-import i18next_backend from "i18next-fs-backend";
+import i18next from "i18next";
+import Backend, { FsBackendOptions } from "i18next-fs-backend";
 
-const backend = new i18next_backend({
-	loadPath: "/locales/{{lng}}/{{ns}}.json",
+await i18next.use(Backend).init<FsBackendOptions>({
+	lng: "ja",
+	saveMissing: true,
+	saveMissingTo: "fallback",
+	fallbackLng: "en",
+	backend: {
+		loadPath: "./xlocales/{{lng}}/{{ns}}.json",
+		addPath: "./xlocales/{{lng}}/{{ns}}.missing.json",
+	},
 });
 
-use(backend).init();
-
-export { t as _ };
+export const _ = i18next.t;

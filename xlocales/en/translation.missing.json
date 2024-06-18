@@ -1,0 +1,34 @@
+{
+	"> > Loading file {{file}}": "> > Loading file {{file}}",
+	"> Loading classes": {
+		"": "> Loading classes."
+	},
+	"> Loading calendar": {
+		"": "> Loading calendar."
+	},
+	"> Loading world": {
+		"": "> Loading world."
+	},
+	"Database loaded in {{duration}} seconds": {
+		"": "Database loaded in {{duration}} seconds."
+	},
+	"Server listening on port 23": {
+		"": "Server listening on port 23."
+	},
+	"Instantiating MUDClient": {
+		"": "Instantiating MUDClient."
+	},
+	"> Assigned address @{{address}}": "> Assigned address @{{address}}",
+	"Server opened connection to @{{address}}!": "Server opened connection to @{{address}}!",
+	"@{{address}}: input '{{input}}'": "@{{address}}: input '{{input}}'",
+	"@{{address}} closed connection": {
+		"": "@{{address}} closed connection."
+	},
+	"Server closed connection to @{{address}}!": "Server closed connection to @{{address}}!",
+	"Loading database": {
+		"": "Loading database."
+	},
+	"> Loading races": {
+		"": "> Loading races."
+	}
+}
