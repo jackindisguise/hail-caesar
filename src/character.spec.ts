@@ -1,10 +1,8 @@
 import { Character } from "./character.js";
-import { Mob } from "./dungeon.js";
 import { expect } from "chai";
 
 describe("player.ts", () => {
-	const m = new Mob();
-	const p = new Character(m);
+	const p = new Character();
 	const password = "cake";
 	it("password=", (done) => {
 		expect(p.password).is.equal(undefined);
@@ -14,7 +12,7 @@ describe("player.ts", () => {
 	});
 
 	it("check", (done) => {
-		const np = new Character(m);
+		const np = new Character();
 		expect(np.check(password)).is.false;
 		const original = p.password;
 		const bad = p.check(password + "1");

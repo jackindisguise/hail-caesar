@@ -1,34 +1,47 @@
 {
-	"> > Loading file {{file}}": "> > Loading file {{file}}",
-	"> Loading classes": {
-		"": "> Loading classes."
-	},
-	"> Loading calendar": {
-		"": "> Loading calendar."
-	},
-	"> Loading world": {
-		"": "> Loading world."
-	},
-	"Database loaded in {{duration}} seconds": {
-		"": "Database loaded in {{duration}} seconds."
-	},
-	"Server listening on port 23": {
-		"": "Server listening on port 23."
-	},
-	"Instantiating MUDClient": {
-		"": "Instantiating MUDClient."
-	},
-	"> Assigned address @{{address}}": "> Assigned address @{{address}}",
-	"Server opened connection to @{{address}}!": "Server opened connection to @{{address}}!",
-	"@{{address}}: input '{{input}}'": "@{{address}}: input '{{input}}'",
-	"@{{address}} closed connection": {
-		"": "@{{address}} closed connection."
-	},
-	"Server closed connection to @{{address}}!": "Server closed connection to @{{address}}!",
-	"Loading database": {
-		"": "Loading database."
-	},
-	"> Loading races": {
-		"": "> Loading races."
-	}
+  "Started loading database at {{time}}": {
+    "": "Started loading database at {{time}}."
+  },
+  "Loading races": {
+    "": "Loading races."
+  },
+  "Loading file {{file}}": "Loading file {{file}}",
+  "Loading classes": {
+    "": "Loading classes."
+  },
+  "Loading calendar": {
+    "": "Loading calendar."
+  },
+  "Loading world": {
+    "": "Loading world."
+  },
+  "Finished loading database at {{time}}": {
+    "": "Finished loading database at {{time}}."
+  },
+  "Database loaded in {{duration}} seconds": {
+    "": "Database loaded in {{duration}} seconds."
+  },
+  "Server listening on port 23": {
+    "": "Server listening on port 23."
+  },
+  "Instantiating MUDClient": {
+    "": "Instantiating MUDClient."
+  },
+  "Assigned address @{{address}}": "Assigned address @{{address}}",
+  "Server opened connection to {{client}}!": "Server opened connection to {{client}}!",
+  "[{{character}}]": "[{{character}}]",
+  "new connection @{{address}}": "new connection @{{address}}",
+  "Welcome to {{world}}!": "Welcome to {{world}}!",
+  "What's your name?": "What's your name?",
+  "{{client}}: '{{input}}'": "{{client}}: '{{input}}'",
+  "Is your name {{name}}? [y/n]": "Is your name {{name}}? [y/n]",
+  "yes": "yes",
+  "This is the MOTD!": "This is the MOTD!",
+  "Hit enter to continue: ": "Hit enter to continue: ",
+  "{{client}} is playing as {{name}}": {
+    "": "{{client}} is playing as {{name}}."
+  },
+  "Welcome to {{world}}, {{name}}!": "Welcome to {{world}}, {{name}}!",
+  "<{{character}}>": "<{{character}}>",
+  "You OOC: {{comment}}": "You OOC: {{comment}}"
 }

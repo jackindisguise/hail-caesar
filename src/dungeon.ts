@@ -1,35 +1,35 @@
 export class Dungeon {
-	#width: number = 0;
-	#height: number = 0;
-	#layers: number = 0;
-	#tiles: Tile[][][] = [];
-	#contents: DungeonObject[] = [];
+	protected _width: number = 0;
+	protected _height: number = 0;
+	protected _layers: number = 0;
+	protected _tiles: Tile[][][] = [];
+	protected _contents: DungeonObject[] = [];
 
 	constructor(width: number, height: number, layers: number) {
-		this.#setDimensions(width, height, layers);
+		this._setDimensions(width, height, layers);
 	}
 
 	get width() {
-		return this.#width;
+		return this._width;
 	}
 
 	get height() {
-		return this.#height;
+		return this._height;
 	}
 
 	get layers() {
-		return this.#layers;
+		return this._layers;
 	}
 
 	get contents() {
-		return this.#contents;
+		return this._contents;
 	}
 
 	add(...objects: DungeonObject[]) {
 		for (let object of objects) {
 			// add to contents only
-			const pos = this.#contents.indexOf(object);
-			if (pos === -1) this.#contents.push(object);
+			const pos = this._contents.indexOf(object);
+			if (pos === -1) this._contents.push(object);
 
 			// cyclical add here
 			if (object.dungeon !== this) object.dungeon = this;
@@ -39,9 +39,9 @@ export class Dungeon {
 	remove(...objects: DungeonObject[]) {
 		for (let object of objects) {
 			// remove from contents only
-			const pos = this.#contents.indexOf(object);
+			const pos = this._contents.indexOf(object);
 			if (pos === -1) continue;
-			this.#contents.splice(pos, 1);
+			this._contents.splice(pos, 1);
 
 			// cyclical remove here
 			if (object.dungeon === this) object.dungeon = undefined;
@@ -51,23 +51,23 @@ export class Dungeon {
 	getTile(x: number, y: number, z: number): Tile {
 		if (
 			x < 0 ||
-			x >= this.#width ||
+			x >= this._width ||
 			y < 0 ||
-			y >= this.#height ||
+			y >= this._height ||
 			z < 0 ||
-			z >= this.#layers
+			z >= this._layers
 		)
 			throw new Error("invalid Dungeon tile bounds");
-		return this.#tiles[z][y][x];
+		return this._tiles[z][y][x];
 	}
 
-	#setDimensions(width: number, height: number, layers: number) {
-		this.#width = width;
-		this.#height = height;
-		this.#layers = layers;
+	protected _setDimensions(width: number, height: number, layers: number) {
+		this._width = width;
+		this._height = height;
+		this._layers = layers;
 		for (let z = 0; z < layers; z++) {
 			let layer: Tile[][] = [];
-			this.#tiles.push(layer);
+			this._tiles.push(layer);
 			for (let y = 0; y < height; y++) {
 				let row: Tile[] = [];
 				layer.push(row);
@@ -78,59 +78,59 @@ export class Dungeon {
 
 	resizeWidth(width: number) {
 		// shrink
-		if (width < this.#width)
-			for (let z = 0; z < this.#layers; z++)
-				for (let y = 0; y < this.#height; y++) this.#tiles[z][y].length = width;
+		if (width < this._width)
+			for (let z = 0; z < this._layers; z++)
+				for (let y = 0; y < this._height; y++) this._tiles[z][y].length = width;
 		// expand
-		else if (width > this.#width) {
-			for (let z = 0; z < this.#layers; z++) {
-				for (let y = 0; y < this.#height; y++) {
-					for (let x = this.#width; x < width; x++)
-						this.#tiles[z][y].push(new Tile(this));
+		else if (width > this._width) {
+			for (let z = 0; z < this._layers; z++) {
+				for (let y = 0; y < this._height; y++) {
+					for (let x = this._width; x < width; x++)
+						this._tiles[z][y].push(new Tile(this));
 				}
 			}
 		}
-		this.#width = width;
+		this._width = width;
 	}
 
 	resizeHeight(height: number) {
 		// shrink
-		if (height < this.#height)
-			for (let z = 0; z < this.#layers; z++) this.#tiles[z].length = height;
+		if (height < this._height)
+			for (let z = 0; z < this._layers; z++) this._tiles[z].length = height;
 		// expand
-		else if (height > this.#height) {
-			for (let z = 0; z < this.#layers; z++) {
-				for (let y = this.#height; y < height; y++) {
+		else if (height > this._height) {
+			for (let z = 0; z < this._layers; z++) {
+				for (let y = this._height; y < height; y++) {
 					let row: Tile[] = [];
-					this.#tiles[z].push(row);
-					for (let x = 0; x < this.#width; x++) row.push(new Tile(this));
+					this._tiles[z].push(row);
+					for (let x = 0; x < this._width; x++) row.push(new Tile(this));
 				}
 			}
 		}
-		this.#height = height;
+		this._height = height;
 	}
 
 	resizeLayers(layers: number) {
 		// shrink
-		if (layers < this.#layers) this.#tiles.length = layers;
+		if (layers < this._layers) this._tiles.length = layers;
 		// expand
-		else if (layers > this.#layers) {
-			for (let z = this.#tiles.length; z < layers; z++) {
+		else if (layers > this._layers) {
+			for (let z = this._tiles.length; z < layers; z++) {
 				let layer: Tile[][] = [];
-				this.#tiles.push(layer);
-				for (let y = 0; y < this.#height; y++) {
+				this._tiles.push(layer);
+				for (let y = 0; y < this._height; y++) {
 					let row: Tile[] = [];
 					layer.push(row);
-					for (let x = 0; x < this.#width; x++) row.push(new Tile(this));
+					for (let x = 0; x < this._width; x++) row.push(new Tile(this));
 				}
 			}
 		}
-		this.#layers = layers;
+		this._layers = layers;
 	}
 
 	contains(...objects: DungeonObject[]) {
 		for (let object of objects)
-			if (!this.#contents.includes(object)) return false;
+			if (!this._contents.includes(object)) return false;
 		return true;
 	}
 }
@@ -139,45 +139,58 @@ export class DungeonObject {
 	keyword: string = "object";
 	display: string = "an object";
 	description: string = "It's an object.";
-	#dungeon?: Dungeon;
-	#location?: DungeonObject;
-	#contents: DungeonObject[] = [];
+	protected _dungeon?: Dungeon;
+	protected _location?: DungeonObject;
+	protected _contents: DungeonObject[] = [];
 	constructor(dungeon?: Dungeon) {
 		if (dungeon) this.dungeon = dungeon;
 	}
 
 	get dungeon() {
-		return this.#dungeon;
+		return this._dungeon;
 	}
 
 	set dungeon(dungeon: Dungeon | undefined) {
-		if (dungeon === this.#dungeon) return; // same dungeon
-		const oDungeon = this.#dungeon;
-		this.#dungeon = undefined; // setup for remove() call
+		if (dungeon === this._dungeon) return; // same dungeon
+		const oDungeon = this._dungeon;
+		this._dungeon = undefined; // setup for remove() call
 		if (oDungeon) oDungeon.remove(this);
-		this.#dungeon = dungeon; // setup for add() call
+		this._dungeon = dungeon; // setup for add() call
 		if (dungeon) dungeon.add(this);
 	}
 
+	get name() {
+		return this.display;
+	}
+
+	set name(name: string) {
+		this.keyword = name;
+		this.display = name;
+	}
+
+	toString() {
+		return this.name;
+	}
+
 	get location() {
-		return this.#location;
+		return this._location;
 	}
 
 	set location(location: DungeonObject | undefined) {
-		if (location === this.#location) return; // same location
-		const oLocation = this.#location;
-		this.#location = undefined; // setup for remove() call
+		if (location === this._location) return; // same location
+		const oLocation = this._location;
+		this._location = undefined; // setup for remove() call
 		if (oLocation) oLocation.remove(this);
-		this.#location = location; // setup for add() call
+		this._location = location; // setup for add() call
 		if (location) location.add(this);
 	}
 
 	add(...objects: DungeonObject[]) {
 		for (let object of objects) {
 			// add to contents exclusively
-			const pos = this.#contents.indexOf(object);
+			const pos = this._contents.indexOf(object);
 			if (pos !== -1) continue; // ignore, already in our contents
-			this.#contents.push(object);
+			this._contents.push(object);
 
 			// cyclical add handled here
 			if (object.location !== this) object.location = this;
@@ -190,9 +203,9 @@ export class DungeonObject {
 	remove(...objects: DungeonObject[]) {
 		for (let object of objects) {
 			// remove from contents exclusively
-			const pos = this.#contents.indexOf(object);
+			const pos = this._contents.indexOf(object);
 			if (pos === -1) continue; // ignore, not in our contents
-			this.#contents.splice(pos, 1); // remove from contents
+			this._contents.splice(pos, 1); // remove from contents
 
 			// cyclical removal handled here
 			if (object.location !== this) continue; // not actively tracking us
@@ -205,7 +218,7 @@ export class DungeonObject {
 
 	contains(...objects: DungeonObject[]) {
 		for (let object of objects)
-			if (!this.#contents.includes(object)) return false;
+			if (!this._contents.includes(object)) return false;
 		return true;
 	}
 }

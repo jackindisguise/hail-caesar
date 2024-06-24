@@ -1,7 +1,0 @@
-{
-	"cake": "ケーキ",
-	"> > Loading file {{file}}": "> > {{file}}というファイルをロード中",
-	"> Loading classes": {
-		"": "> クラースをロード中"
-	}
-}

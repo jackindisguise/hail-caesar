@@ -29,7 +29,15 @@ const dateString = `${year}${padLeft(month.toString(), 2, "0")}${padLeft(
  */
 export const logger = createLogger({
 	level: "info",
-	format: format.combine(format.timestamp(), format.prettyPrint()),
+	format: format.combine(
+		format.timestamp({
+			format: "YYYY-MM-DD hh:mm:ss.SSS A",
+		}),
+		format.align(),
+		format.printf(
+			(info) => `[${info.timestamp}] ${info.level}: ${info.message}`
+		)
+	),
 	transports: [
 		new transports.File({
 			filename: `logs/${dateString}-error.log`,
