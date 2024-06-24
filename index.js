@@ -1,18 +1,18 @@
 import { _ } from "./build/i18n.js";
 import { logger } from "./build/winston.js";
 import { MUDClient, MUDServer } from "./build/io.js";
-import { load, world } from "./build/database.js";
+import { load as loadDatabase } from "./build/database.js";
 import { login } from "./build/nanny.js";
-import { command } from "./build/handle.js";
+import { load as loadHandle, command } from "./build/handle.js";
 
-logger.error("This is an error.");
-
-await load();
+await loadDatabase();
+await loadHandle();
 const server = new MUDServer();
 server.on("connection", (client) => {
 	login(client);
 	client.on("command", (input) => {
-		command(client.character, input);
+		const result = command(client.character, input);
+		if (!result) client.sendLine(_("Do what, now?"));
 	});
 });
 

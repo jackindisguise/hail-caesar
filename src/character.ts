@@ -71,4 +71,8 @@ export class Character {
 	ask(question: string, callback: (command: string) => void) {
 		this._client?.ask(question, callback);
 	}
+
+	yesno(question: string, callback: (agree: boolean) => void) {
+		this._client?.yesno(question, callback);
+	}
 }

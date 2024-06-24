@@ -1,19 +1,11 @@
 import { EventEmitter } from "events";
-import { setAbsoluteInterval, clearCustomInterval } from "./time.js";
-import { logger } from "./winston.js";
 import { _ } from "./i18n.js";
 
-export interface WorldInterface {
-	name: string;
+export interface ClockInterface {
 	runtime: number;
 }
 
-export class World extends EventEmitter {
-	/**
-	 * The world name.
-	 */
-	name: string;
-
+export class Clock extends EventEmitter {
 	/**
 	 * The global runtime of the world.
 	 */
@@ -23,9 +15,8 @@ export class World extends EventEmitter {
 	 * When the world started this session.
 	 */
 	protected _start: number;
-	constructor(name: string, runtime: number) {
+	constructor(runtime: number) {
 		super();
-		this.name = name;
 		this._runtime = runtime;
 		this._start = Date.now();
 	}
@@ -37,31 +28,27 @@ export class World extends EventEmitter {
 		return this._runtime + (Date.now() - this._start);
 	}
 
-	static validateInterface(data: any): WorldInterface {
+	static validateInterface(data: any): ClockInterface {
 		if (typeof data !== "object")
 			throw new TypeError("given non-object for validation");
-		if (typeof data.name !== "string")
-			throw new TypeError("missing/bad field 'name'");
 		if (typeof data.runtime !== "number")
 			throw new TypeError("missing/bad field 'runtime'");
 		return {
-			name: data.name,
 			runtime: data.runtime,
 		};
 	}
 
-	static fromJSON(data: any): World {
+	static fromJSON(data: any): Clock {
 		// validate JSON
-		const wi: WorldInterface = World.validateInterface(data);
+		const wi: ClockInterface = Clock.validateInterface(data);
 
 		// load world
-		const w = new World(wi.name, wi.runtime);
+		const w = new Clock(wi.runtime);
 		return w;
 	}
 
-	toJSON(): WorldInterface {
+	toJSON(): ClockInterface {
 		return {
-			name: this.name,
 			runtime: this.runtime,
 		};
 	}

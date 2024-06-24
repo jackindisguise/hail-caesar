@@ -4,9 +4,7 @@ import { _ } from "./i18n.js";
 export class Command {
 	protected rule?: RegExp;
 	test(input: string) {
-		console.log(this);
 		if (!this.rule) return false;
-		console.log(input, this.rule, this.rule.test(input));
 		const result = this.rule.test(input);
 		if (!result) return false;
 		return true;

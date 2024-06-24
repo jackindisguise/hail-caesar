@@ -2,7 +2,7 @@ import { Command } from "./command.js";
 import { Character } from "./character.js";
 import { _ } from "./i18n.js";
 import { logger } from "./winston.js";
-import { readdir, readFile } from "fs/promises";
+import { readdir } from "fs/promises";
 import { join, dirname, extname, relative, parse as pparse } from "path";
 import { fileURLToPath } from "url";
 import { parse } from "toml";
@@ -22,7 +22,6 @@ export async function load(callback?: () => void) {
 		commands.push(command);
 	}
 }
-await load();
 
 export function command(character: Character, input: string): boolean {
 	for (let command of commands) {

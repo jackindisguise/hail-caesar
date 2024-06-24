@@ -3,6 +3,7 @@ import { logger } from "./winston.js";
 import { _ } from "./i18n.js";
 import { Socket, Server, createConnection, createServer } from "net";
 import { Character } from "./character.js";
+import { autocomplete } from "./string.js";
 
 export class MUDClient extends EventEmitter {
 	protected _socket: Socket;
@@ -56,6 +57,17 @@ export class MUDClient extends EventEmitter {
 	ask(question: string, callback: (command: string) => void) {
 		this.send(`${question} `);
 		this._callback = callback;
+	}
+
+	yesno(question: string, callback: (agree: boolean) => void) {
+		const listener = (command: string) => {
+			if (command && autocomplete(command, "yes")) callback(true);
+			else if (command && autocomplete(command, "no")) callback(false);
+			// repeat
+			else this.ask(`${question} [y/n]`, listener);
+		};
+
+		this.ask(`${question} [y/n]`, listener);
 	}
 
 	interrupt() {

@@ -4,6 +4,8 @@ import { readdir, readFile } from "fs/promises";
 import { join, dirname, extname, relative } from "path";
 import { fileURLToPath } from "url";
 import { parse } from "toml";
+import json2toml from "json2toml";
+import { setAbsoluteInterval } from "./time.js";
 
 // basic paths
 const ROOT_PATH = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -77,19 +79,19 @@ async function loadCalendar() {
 /**
  * Load world data and shit.
  */
-import { World } from "./world.js";
-const WORLD_PATH = join(DATA_PATH, "world.toml");
-export let world: World;
-async function loadWorld() {
-	logger.debug(_("Loading world."));
+import { Clock } from "./clock.js";
+const CLOCK_PATH = join(DATA_PATH, "clock.toml");
+export let clock: Clock;
+async function loadClock() {
+	logger.debug(_("Loading clock."));
 	logger.debug(
 		_("Loading file {{file}}", {
-			file: relative(DATA_PATH, WORLD_PATH),
+			file: relative(DATA_PATH, CLOCK_PATH),
 		})
 	);
-	const data = await readFile(WORLD_PATH, "utf8");
+	const data = await readFile(CLOCK_PATH, "utf8");
 	const json = parse(data);
-	world = World.fromJSON(json);
+	clock = Clock.fromJSON(json);
 }
 /**
  * Front facing access to database loading.
@@ -105,7 +107,7 @@ export async function load() {
 		await loadRaces();
 		await loadClasses();
 		await loadCalendar();
-		await loadWorld();
+		await loadClock();
 		const end = Date.now();
 		logger.debug(
 			_("Finished loading database at {{time}}.", {

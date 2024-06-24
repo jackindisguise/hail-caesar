@@ -43,5 +43,15 @@
   },
   "Welcome to {{world}}, {{name}}!": "Welcome to {{world}}, {{name}}!",
   "<{{character}}>": "<{{character}}>",
-  "You OOC: {{comment}}": "You OOC: {{comment}}"
+  "You OOC: {{comment}}": "You OOC: {{comment}}",
+  "Loading clock": {
+    "": "Loading clock."
+  },
+  "Is your name {{name}}?": "Is your name {{name}}?",
+  "Do what, now?": "Do what, now?",
+  "{{client}} closed connection": {
+    "": "{{client}} closed connection."
+  },
+  "Server closed connection to {{client}}!": "Server closed connection to {{client}}!",
+  "@{{address}}: non-command input from client: {{input}}": "@{{address}}: non-command input from client: {{input}}"
 }

@@ -1,4 +1,4 @@
-import { world } from "./database.js";
+import { clock } from "./database.js";
 import { _ } from "./i18n.js";
 import { logger } from "./winston.js";
 import { autocomplete } from "./string.js";
@@ -7,6 +7,8 @@ import { Classification } from "./classification.js";
 import { MUDClient } from "./io.js";
 import { Mob } from "./dungeon.js";
 
+const WORLD_NAME = "Hail Caesar";
+
 export function login(client: MUDClient) {
 	let name: string,
 		password: string,
@@ -14,21 +16,20 @@ export function login(client: MUDClient) {
 		race: Classification,
 		_class: Classification;
 
-	client.sendLine(_("Welcome to {{world}}!", { world: world.name }));
+	client.sendLine(_("Welcome to {{world}}!", { world: WORLD_NAME }));
 
 	function getName() {
 		client.ask(_("What's your name?"), confirmName);
 	}
 
 	function confirmName(pName: string) {
-		client.ask(
-			_("Is your name {{name}}? [y/n]", { name: pName }),
-			(answer: string) => {
-				if (autocomplete(answer, _("yes"))) {
+		client.yesno(
+			_("Is your name {{name}}?", { name: pName }),
+			(agreed: boolean) => {
+				if (agreed) {
 					name = pName;
 					motd();
-				} else if (autocomplete(answer, _("no"))) getName();
-				else confirmName(pName);
+				} else getName();
 			}
 		);
 	}
@@ -50,7 +51,7 @@ export function login(client: MUDClient) {
 		character.mob.name = name;
 		client.character = character;
 		client.sendLine(
-			_("Welcome to {{world}}, {{name}}!", { world: world.name, name: name })
+			_("Welcome to {{world}}, {{name}}!", { world: WORLD_NAME, name: name })
 		);
 	}
 
