@@ -3,6 +3,9 @@ import { logger } from "./winston.js";
 import { _ } from "./i18n.js";
 export class Command {
 	protected rule?: RegExp;
+	keyword?: string;
+	syntax?: string;
+	description?: string;
 	test(input: string) {
 		if (!this.rule) return false;
 		const result = this.rule.test(input);

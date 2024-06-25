@@ -53,5 +53,13 @@
     "": "{{client}} closed connection."
   },
   "Server closed connection to {{client}}!": "Server closed connection to {{client}}!",
-  "@{{address}}: non-command input from client: {{input}}": "@{{address}}: non-command input from client: {{input}}"
+  "@{{address}}: non-command input from client: {{input}}": "@{{address}}: non-command input from client: {{input}}",
+  "New client connection": {
+    "": {
+      "": {
+        "": "New client connection..."
+      }
+    }
+  },
+  "Assigned address: @{{address}}": "Assigned address: @{{address}}"
 }

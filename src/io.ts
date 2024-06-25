@@ -4,6 +4,7 @@ import { _ } from "./i18n.js";
 import { Socket, Server, createConnection, createServer } from "net";
 import { Character } from "./character.js";
 import { autocomplete } from "./string.js";
+import { colorize } from "./color.js";
 
 export class MUDClient extends EventEmitter {
 	protected _socket: Socket;
@@ -12,11 +13,13 @@ export class MUDClient extends EventEmitter {
 	address: string;
 	constructor(socket: Socket) {
 		super();
-		logger.debug(_("Instantiating MUDClient."));
+		logger.debug(_("New client connection..."));
 		this._socket = socket;
 		let address: any = socket.address();
 		this.address = address.address || "???.???.???.???";
-		logger.debug(_("Assigned address @{{address}}", { address: this.address }));
+		logger.debug(
+			_("Assigned address: @{{address}}", { address: this.address })
+		);
 		socket.on("data", (data: Buffer) => {
 			let safe: string = data.toString("utf8");
 			const commands = safe.split("\r\n");
@@ -34,6 +37,9 @@ export class MUDClient extends EventEmitter {
 			logger.debug(_("{{client}} closed connection.", { client: this }));
 			this.emit("close");
 		});
+		socket.on("error", (err: Error) => {
+			logger.error(err.stack);
+		});
 	}
 
 	set character(character: Character) {
@@ -47,7 +53,8 @@ export class MUDClient extends EventEmitter {
 	}
 
 	send(message: string) {
-		this._socket.write(message);
+		if (this._socket.closed) return;
+		this._socket.write(colorize(message));
 	}
 
 	sendLine(message: string) {
