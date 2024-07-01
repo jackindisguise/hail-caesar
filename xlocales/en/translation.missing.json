@@ -61,5 +61,8 @@
       }
     }
   },
-  "Assigned address: @{{address}}": "Assigned address: @{{address}}"
+  "Assigned address: @{{address}}": "Assigned address: @{{address}}",
+  "Loading commands": {
+    "": "Loading commands."
+  }
 }

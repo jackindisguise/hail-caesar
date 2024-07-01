@@ -4,12 +4,65 @@ import { readdir, readFile } from "fs/promises";
 import { join, dirname, extname, relative } from "path";
 import { fileURLToPath } from "url";
 import { parse } from "toml";
+import { Character } from "./character.js";
+import { autocomplete } from "./string.js";
 import json2toml from "json2toml";
 import { setAbsoluteInterval } from "./time.js";
 
 // basic paths
 const ROOT_PATH = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA_PATH = join(ROOT_PATH, "data");
+
+// command type
+import { Command } from "./command.js";
+
+/**
+ * Load commands and shit.
+ */
+const COMMANDS_PATH = join(DATA_PATH, "commands");
+export const commands: Command[] = [];
+async function loadCommands() {
+	logger.debug(_("Loading commands."));
+	const files = await readdir(COMMANDS_PATH);
+	for (let file of files) {
+		const COMMAND_PATH = join(COMMANDS_PATH, file);
+		if (extname(COMMAND_PATH) !== ".js") continue;
+		logger.debug(
+			_("Loading file {{file}}", { file: relative(DATA_PATH, COMMAND_PATH) })
+		);
+		let data: any = await import(`file://${COMMAND_PATH}`);
+		const command = new Command(
+			data.rule,
+			data.keyword,
+			data.syntax,
+			data.description,
+			data.script
+		);
+		commands.push(command);
+	}
+}
+
+export function command(character: Character, input: string) {
+	for (let command of commands) {
+		const test = command.test(input);
+		if (!test) {
+			const rule = /^(\S+)\s*/;
+			const results = input.match(rule);
+			if (!results) continue;
+			const word = results[1];
+			if (!autocomplete(word, command.keyword)) continue;
+			character.sendLine(`${command.syntax}`);
+			character.sendLine(`${command.description}`);
+			return true;
+		}
+		const args = input.match(command.rule);
+		if (args) command.script(character, ...args.slice(1));
+		else command.script(character);
+		return true;
+	}
+
+	return false;
+}
 
 // shared by races and classes
 import { Classification } from "./classification.js";
@@ -104,6 +157,7 @@ export async function load() {
 			})
 		);
 		const start = Date.now();
+		await loadCommands();
 		await loadRaces();
 		await loadClasses();
 		await loadCalendar();

@@ -4,8 +4,6 @@ export const COLOR_ESCAPE = "{";
 
 export const LETTER_CODES: { [key: string]: string } = {
 	CLEAR: "x",
-	BOLD: "!",
-	FAINT: ".",
 	ITALIC: "@",
 	UNDERLINE: "#",
 	BLINK: "$",
