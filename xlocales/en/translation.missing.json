@@ -64,5 +64,19 @@
   "Assigned address: @{{address}}": "Assigned address: @{{address}}",
   "Loading commands": {
     "": "Loading commands."
-  }
+  },
+  "What's your password?": "What's your password?",
+  "Please confirm your password:": "Please confirm your password:",
+  "Your name is {{name}}": {
+    "": "Your name is {{name}}."
+  },
+  "Your password is {{password}}": {
+    "": "Your password is {{password}}."
+  },
+  "Please choose a password:": "Please choose a password:",
+  "Your password hash is:": "Your password hash is:",
+  "    Name: {{name}}": {
+    "": "    Name: {{name}}."
+  },
+  "Name: {{name}}": "Name: {{name}}"
 }

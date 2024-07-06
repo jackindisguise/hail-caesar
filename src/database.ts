@@ -5,7 +5,8 @@ import { join, dirname, extname, relative } from "path";
 import { fileURLToPath } from "url";
 import { parse } from "toml";
 import { Character } from "./character.js";
-import { autocomplete } from "./string.js";
+import { autocomplete, box, BOX_STYLES, PAD_SIDE } from "./string.js";
+import { ESCAPE_SIZER, Colorizer } from "./color.js";
 import json2toml from "json2toml";
 import { setAbsoluteInterval } from "./time.js";
 
@@ -44,18 +45,31 @@ async function loadCommands() {
 
 export function command(character: Character, input: string) {
 	for (let command of commands) {
-		const test = command.test(input);
+		const safe = input.trim();
+		const test = command.test(safe);
 		if (!test) {
 			const rule = /^(\S+)\s*/;
-			const results = input.match(rule);
+			const results = safe.match(rule);
 			if (!results) continue;
 			const word = results[1];
 			if (!autocomplete(word, command.keyword)) continue;
-			character.sendLine(`${command.syntax}`);
-			character.sendLine(`${command.description}`);
+			const msg = box(
+				[command.description],
+				80,
+				`{WSyntax: {y${command.syntax}{x`,
+				{
+					...BOX_STYLES.PLAIN,
+					titleHAlign: PAD_SIDE.CENTER,
+					vPadding: 1,
+					hAlign: PAD_SIDE.CENTER,
+				},
+				ESCAPE_SIZER,
+				Colorizer.yellow
+			);
+			character.sendLine(msg.join("\r\n"));
 			return true;
 		}
-		const args = input.match(command.rule);
+		const args = safe.match(command.rule);
 		if (args) command.script(character, ...args.slice(1));
 		else command.script(character);
 		return true;

@@ -470,9 +470,16 @@ function wrapWithOptions(options: WrapOptions): string[] {
 		if (sizer.open) {
 			for (let i = last; i <= cursor; i++) {
 				if (options.string[i] === sizer.open) {
+					if (!sizer.close) {
+						cursor += 2;
+						unrendered += 2;
+						i += 1;
+						continue;
+					}
 					while (true) {
 						cursor++;
 						unrendered++;
+						// this is not approriate, sadly.
 						if (options.string[i] === sizer.close) break; // account for closer and then end
 						i++; // keep searching
 					}
@@ -647,7 +654,7 @@ function boxWithOptions(options: BoxOptions): string[] {
 			// no title -- just a basic rule
 		} else
 			lines.push(
-				`${topleft ? color(topleft) : ""}${safeRule}${
+				`${topleft ? color(topleft) : ""}${color(safeRule)}${
 					topright ? color(topright) : ""
 				}`
 			);

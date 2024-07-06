@@ -28,10 +28,26 @@ export function login(client: MUDClient) {
 			(agreed: boolean) => {
 				if (agreed) {
 					name = pName;
-					motd();
+					getPassword();
 				} else getName();
 			}
 		);
+	}
+
+	function getPassword() {
+		client.ask(_("Please choose a password:"), confirmPassword);
+	}
+
+	function confirmPassword(iPassword: string) {
+		client.ask(_("Please confirm your password:"), (cPassword: string) => {
+			if (iPassword !== cPassword) {
+				client.sendLine("Those passwords don't match!");
+				getPassword();
+			} else {
+				password = iPassword;
+				motd();
+			}
+		});
 	}
 
 	function motd() {
@@ -47,6 +63,7 @@ export function login(client: MUDClient) {
 			})
 		);
 		const character = new Character();
+		character.password = password;
 		character.mob = new Mob();
 		character.mob.name = name;
 		client.character = character;
