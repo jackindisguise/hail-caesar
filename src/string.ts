@@ -643,16 +643,14 @@ function boxWithOptions(options: BoxOptions): string[] {
 				start = ruleWidth - safeTitleWidth - offset;
 			else if (options.style?.titleHAlign === PAD_SIDE.CENTER)
 				start = Math.floor((ruleWidth - safeTitleWidth) / 2);
-			const titled =
-				(start > 0 ? borderColor(safeRule.slice(0, start)) : "") +
-				formattedTitle +
+			const tLeft =
+				(topleft || "") + (start > 0 ? safeRule.slice(0, start) : "");
+			const tRight =
 				(start + safeTitleWidth < ruleWidth
-					? borderColor(safeRule.slice(start + safeTitleWidth, ruleWidth))
-					: "");
+					? safeRule.slice(start + safeTitleWidth, ruleWidth)
+					: "") + (topright || "");
 			lines.push(
-				`${topleft ? borderColor(topleft) : ""}${titled}${
-					topright ? borderColor(topright) : ""
-				}`
+				`${borderColor(tLeft)}${formattedTitle}${borderColor(tRight)}`
 			);
 
 			// no title -- just a basic rule

@@ -455,13 +455,13 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			});
 
 			const expected = [
-				"\x1B[33m+\x1B[39m\x1B[33m-\x1B[39m\x1B[33m<\x1B[39m Go to \x1B[33m\x1B[1mHELL\x1B[22m\x1B[39m \x1B[33m>\x1B[39m\x1B[33m-------------\x1B[39m\x1B[33m+\x1B[39m",
+				"\x1B[33m+-\x1B[39m\x1B[33m<\x1B[39m Go to \x1B[33m\x1B[1mHELL\x1B[22m\x1B[39m \x1B[33m>\x1B[39m\x1B[33m-------------+\x1B[39m",
 				"\x1B[33m|\x1B[39m      This is a test.       \x1B[33m|\x1B[39m",
 				"\x1B[33m|\x1B[39m      This is a \x1B[31mtest\x1B[39m.       \x1B[33m|\x1B[39m",
 				"\x1B[33m+----------------------------+\x1B[39m",
 			];
 
-			expect(box.join("")).is.equal(expected.join(""));
+			expect(box.join("\r\n")).is.equal(expected.join("\r\n"));
 			done();
 		});
 
@@ -485,7 +485,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			);
 
 			const expected = [
-				"\x1B[33m+\x1B[39m\x1B[33m-\x1B[39m\x1B[33m<\x1B[39m Go to \x1B[33m\x1B[1mHELL\x1B[22m\x1B[39m \x1B[33m>\x1B[39m\x1B[33m-------------\x1B[39m\x1B[33m+\x1B[39m",
+				"\x1B[33m+-\x1B[39m\x1B[33m<\x1B[39m Go to \x1B[33m\x1B[1mHELL\x1B[22m\x1B[39m \x1B[33m>\x1B[39m\x1B[33m-------------+\x1B[39m",
 				"\x1B[33m|\x1B[39m \x1B[92mThis is a test. This is a\x1B[39m  \x1B[33m|\x1B[39m",
 				"\x1B[33m|\x1B[39m \x1B[92mtest. This is a test. This\x1B[39m \x1B[33m|\x1B[39m",
 				"\x1B[33m|\x1B[39m \x1B[92mis a test. This is a test.\x1B[39m \x1B[33m|\x1B[39m",
