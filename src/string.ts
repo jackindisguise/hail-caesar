@@ -76,6 +76,15 @@ export interface BoxStyle {
 
 	/** The horizontal alignment of the title of the box. */
 	titleHAlign?: PAD_SIDE;
+
+	/** Colorizes the title text of a box. */
+	titleColor?: StringTransformer;
+
+	/** Colorizes the body text of a box. */
+	bodyColor?: StringTransformer;
+
+	/** Colorizes the border of a box. */
+	borderColor?: StringTransformer;
 }
 
 /**
@@ -535,9 +544,6 @@ export interface BoxOptions {
 
 	/** The sizer for any unrendered elements. */
 	sizer?: Sizer;
-
-	/** A colorizer that adds unrendered elements to the box elements after calculation. */
-	color?: StringTransformer;
 }
 
 /**
@@ -553,23 +559,20 @@ export function box(options: BoxOptions): string[];
  * @param title The title of the box.
  * @param style The box style.
  * @param sizer A sizer for handling unrendered characters in the input.
- * @param color A colorizer for the borders of the box.
  */
 export function box(
 	input: string[],
 	width: number,
 	title?: string,
 	style?: BoxStyle,
-	sizer?: Sizer,
-	color?: StringTransformer
+	sizer?: Sizer
 ): string[];
 export function box(
 	options: BoxOptions | string[],
 	width?: number,
 	title?: string,
 	style?: BoxStyle,
-	sizer?: Sizer,
-	color?: StringTransformer
+	sizer?: Sizer
 ): string[] {
 	if (Array.isArray(options))
 		return boxWithOptions({
@@ -578,14 +581,15 @@ export function box(
 			title: title || undefined,
 			style: style || undefined,
 			sizer: sizer || undefined,
-			color: color || undefined,
 		});
 	return boxWithOptions(options as BoxOptions);
 }
 
 function boxWithOptions(options: BoxOptions): string[] {
 	const sizer = options.sizer || DEFAULT_SIZER; // default to string length
-	const color = options.color || ((str: string) => str);
+	const borderColor = options.style?.borderColor || ((str: string) => str);
+	const bodyColor = options.style?.bodyColor || ((str: string) => str);
+	const titleColor = options.style?.titleColor || ((str: string) => str);
 	const lines: string[] = [];
 
 	// consolidate top elements
@@ -614,7 +618,7 @@ function boxWithOptions(options: BoxOptions): string[] {
 			// titles are offset from the edge character by 1 -- titles don't touch the edge by default
 			// might make this an option later
 			const offset = 1;
-			let formattedTitle = options.title;
+			let formattedTitle;
 
 			// add padding to title -- might make this an option later
 			if (options.style?.titleBorder) {
@@ -622,14 +626,14 @@ function boxWithOptions(options: BoxOptions): string[] {
 				const tRightPadding = options.style.titleBorder?.right ? " " : "";
 				formattedTitle = `${
 					options.style.titleBorder?.left
-						? color(options.style.titleBorder?.left)
+						? borderColor(options.style.titleBorder.left)
 						: ""
-				}${tLeftPadding}${options.title}${tRightPadding}${
+				}${tLeftPadding}${titleColor(options.title)}${tRightPadding}${
 					options.style.titleBorder?.right
-						? color(options.style.titleBorder?.right)
+						? borderColor(options.style.titleBorder.right)
 						: ""
 				}`;
-			} else formattedTitle = ` ${options.title} `;
+			} else formattedTitle = ` ${titleColor(options.title)} `;
 
 			// respect vertical alignment for titles
 			//const titleWidth = formattedTitle.length;
@@ -640,24 +644,20 @@ function boxWithOptions(options: BoxOptions): string[] {
 			else if (options.style?.titleHAlign === PAD_SIDE.CENTER)
 				start = Math.floor((ruleWidth - safeTitleWidth) / 2);
 			const titled =
-				(start > 0 ? color(safeRule.slice(0, start)) : "") +
+				(start > 0 ? borderColor(safeRule.slice(0, start)) : "") +
 				formattedTitle +
 				(start + safeTitleWidth < ruleWidth
-					? color(safeRule.slice(start + safeTitleWidth, ruleWidth))
+					? borderColor(safeRule.slice(start + safeTitleWidth, ruleWidth))
 					: "");
 			lines.push(
-				`${topleft ? color(topleft) : ""}${titled}${
-					topright ? color(topright) : ""
+				`${topleft ? borderColor(topleft) : ""}${titled}${
+					topright ? borderColor(topright) : ""
 				}`
 			);
 
 			// no title -- just a basic rule
 		} else
-			lines.push(
-				`${topleft ? color(topleft) : ""}${color(safeRule)}${
-					topright ? color(topright) : ""
-				}`
-			);
+			lines.push(borderColor(`${topleft || ""}${safeRule}${topright || ""}`));
 
 		// has a title but no box visual elements
 	} else if (options.title) {
@@ -679,10 +679,10 @@ function boxWithOptions(options: BoxOptions): string[] {
 		) {
 			const leftVert = options.style?.left || options.style?.vertical || "";
 			const leftHPadding = leftVert ? options.style?.hPadding || 1 : 0;
-			const left = color(leftVert) + " ".repeat(leftHPadding);
+			const left = borderColor(leftVert) + " ".repeat(leftHPadding);
 			const rightVert = options.style?.right || options.style?.vertical || "";
 			const rightHPadding = rightVert ? options.style?.hPadding || 1 : 0;
-			const right = " ".repeat(rightHPadding) + color(rightVert);
+			const right = " ".repeat(rightHPadding) + borderColor(rightVert);
 			const wrapped: string[] = wrap({
 				string: line,
 				width: options.width - sizer.size(left) - sizer.size(right),
@@ -691,7 +691,7 @@ function boxWithOptions(options: BoxOptions): string[] {
 			for (const _line of wrapped)
 				lines.push(
 					`${left}${pad({
-						string: _line,
+						string: bodyColor(_line),
 						width: options.width - sizer.size(left) - sizer.size(right),
 						side: options.style?.hAlign || PAD_SIDE.RIGHT,
 						sizer: sizer,
@@ -708,7 +708,7 @@ function boxWithOptions(options: BoxOptions): string[] {
 			for (const _line of wrapped)
 				lines.push(
 					`${left}${pad({
-						string: _line,
+						string: bodyColor(_line),
 						width: options.width - left.length - right.length,
 						side: options.style?.hAlign || PAD_SIDE.RIGHT,
 						sizer: sizer,
@@ -720,7 +720,11 @@ function boxWithOptions(options: BoxOptions): string[] {
 	// construct content lines
 	if (options.style?.vPadding)
 		for (let i = 0; i < options.style.vPadding; i++) addLine("");
-	for (const line of options.input) addLine(line);
+	for (let i = 0; i < options.input.length; i++) {
+		const line = options.input[i];
+		//if (i > 0) addLine("");
+		addLine(line);
+	}
 	if (options.style?.vPadding)
 		for (let i = 0; i < options.style.vPadding; i++) addLine("");
 
@@ -746,7 +750,7 @@ function boxWithOptions(options: BoxOptions): string[] {
 			Math.ceil(ruleWidth / bottommiddle.length)
 		); // repeats the horizontal padder enough times to fit rule width
 		const safeRule = rule.slice(0, ruleWidth); // only use what we need for the full size;
-		lines.push(color(`${bottomleft}${safeRule}${bottomright}`));
+		lines.push(borderColor(`${bottomleft}${safeRule}${bottomright}`));
 	}
 
 	return lines;

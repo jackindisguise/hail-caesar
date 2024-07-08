@@ -443,6 +443,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 				...string.BOX_STYLES.PLAIN,
 				titleBorder: { left: "<", right: ">" },
 				hAlign: string.PAD_SIDE.CENTER,
+				borderColor: chalk.yellow,
 			};
 
 			const box = string.box({
@@ -451,7 +452,6 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 				title: `Go to ${chalk.yellow.bold("HELL")}`,
 				width: 30,
 				sizer: string.TERM_SIZER,
-				color: chalk.yellow,
 			});
 
 			const expected = [
@@ -470,6 +470,8 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 				...string.BOX_STYLES.PLAIN,
 				titleBorder: { left: "<", right: ">" },
 				hAlign: string.PAD_SIDE.CENTER,
+				borderColor: chalk.yellow,
+				bodyColor: chalk.greenBright,
 			};
 
 			const box = string.box(
@@ -479,17 +481,16 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 				30,
 				`Go to ${chalk.yellow.bold("HELL")}`,
 				style,
-				string.TERM_SIZER,
-				chalk.yellow
+				string.TERM_SIZER
 			);
 
 			const expected = [
 				"\x1B[33m+\x1B[39m\x1B[33m-\x1B[39m\x1B[33m<\x1B[39m Go to \x1B[33m\x1B[1mHELL\x1B[22m\x1B[39m \x1B[33m>\x1B[39m\x1B[33m-------------\x1B[39m\x1B[33m+\x1B[39m",
-				"\x1B[33m|\x1B[39m This is a test. This is a  \x1B[33m|\x1B[39m",
-				"\x1B[33m|\x1B[39m test. This is a test. This \x1B[33m|\x1B[39m",
-				"\x1B[33m|\x1B[39m is a test. This is a test. \x1B[33m|\x1B[39m",
-				"\x1B[33m|\x1B[39m This is a test. This is a  \x1B[33m|\x1B[39m",
-				"\x1B[33m|\x1B[39m           test.            \x1B[33m|\x1B[39m",
+				"\x1B[33m|\x1B[39m \x1B[92mThis is a test. This is a\x1B[39m  \x1B[33m|\x1B[39m",
+				"\x1B[33m|\x1B[39m \x1B[92mtest. This is a test. This\x1B[39m \x1B[33m|\x1B[39m",
+				"\x1B[33m|\x1B[39m \x1B[92mis a test. This is a test.\x1B[39m \x1B[33m|\x1B[39m",
+				"\x1B[33m|\x1B[39m \x1B[92mThis is a test. This is a\x1B[39m  \x1B[33m|\x1B[39m",
+				"\x1B[33m|\x1B[39m           \x1B[92mtest.\x1B[39m            \x1B[33m|\x1B[39m",
 				"\x1B[33m+----------------------------+\x1B[39m",
 			];
 

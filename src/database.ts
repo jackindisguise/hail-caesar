@@ -62,9 +62,9 @@ export function command(character: Character, input: string) {
 					titleHAlign: PAD_SIDE.CENTER,
 					vPadding: 1,
 					hAlign: PAD_SIDE.CENTER,
+					borderColor: Colorizer.yellow,
 				},
-				ESCAPE_SIZER,
-				Colorizer.yellow
+				ESCAPE_SIZER
 			);
 			character.sendLine(msg.join("\r\n"));
 			return true;

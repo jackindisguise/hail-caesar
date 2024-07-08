@@ -45,5 +45,34 @@ describe("color.ts", () => {
 			);
 			done();
 		});
+		it("box", (done) => {
+			const str = [
+				"In the {Ddimly{x lit chamber, the {Cair{x hung heavy with the scent of {yaged leather{x and {ymusty parchment{x.",
+				"{YSunlight{x filtered reluctantly through heavy {pvelvet{x curtains, casting faint {Ygolden rays{x that danced upon the polished {yoak floor{x.",
+			];
+			const box = string.box(
+				[str.join(" ")],
+				80,
+				"EXAMPLE",
+				{
+					...string.BOX_STYLES.PLAIN,
+					borderColor: color.Colorizer.yellow,
+					titleColor: color.Colorizer.lime,
+					bodyColor: color.Colorizer.white,
+				},
+				color.ESCAPE_SIZER
+			);
+			expect(box.join("\r\n")).is.equal(
+				[
+					"{Y+{x{Y-{x {GEXAMPLE{x {Y--------------------------------------------------------------------{x{Y+{x",
+					"{Y|{x {WIn the {Ddimly{x{W lit chamber, the {Cair{x{W hung heavy with the scent of {yaged leather{x{W{x  {Y|{x",
+					"{Y|{x {Wand {ymusty parchment{x{W. {YSunlight{x{W filtered reluctantly through heavy {pvelvet{x{W{x      {Y|{x",
+					"{Y|{x {Wcurtains, casting faint {Ygolden rays{x{W that danced upon the polished {yoak floor{x{W.{x {Y|{x",
+					"{Y+------------------------------------------------------------------------------+{x",
+				].join("\r\n")
+			);
+			console.log(color.colorize(box.join("\r\n")));
+			done();
+		});
 	});
 });
