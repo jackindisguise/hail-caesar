@@ -55,7 +55,7 @@ describe("color.ts", () => {
 				80,
 				"EXAMPLE",
 				{
-					...string.BOX_STYLES.PLAIN,
+					...string.BOX_STYLE.PLAIN,
 					borderColor: color.Colorizer.yellow,
 					titleColor: color.Colorizer.lime,
 					bodyColor: color.Colorizer.white,

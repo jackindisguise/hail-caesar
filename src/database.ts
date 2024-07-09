@@ -5,7 +5,7 @@ import { join, dirname, extname, relative } from "path";
 import { fileURLToPath } from "url";
 import { parse } from "toml";
 import { Character } from "./character.js";
-import { autocomplete, box, BOX_STYLES, PAD_SIDE } from "./string.js";
+import { autocomplete, box, BOX_STYLE, PAD_SIDE } from "./string.js";
 import { ESCAPE_SIZER, Colorizer } from "./color.js";
 import json2toml from "json2toml";
 import { setAbsoluteInterval } from "./time.js";
@@ -20,7 +20,7 @@ import { Command } from "./command.js";
 /**
  * Load commands and shit.
  */
-const COMMANDS_PATH = join(DATA_PATH, "commands");
+const COMMANDS_PATH = join(ROOT_PATH, "build", "commands");
 export const commands: Command[] = [];
 async function loadCommands() {
 	logger.debug(_("Loading commands."));
@@ -32,13 +32,7 @@ async function loadCommands() {
 			_("Loading file {{file}}", { file: relative(DATA_PATH, COMMAND_PATH) })
 		);
 		let data: any = await import(`file://${COMMAND_PATH}`);
-		const command = new Command(
-			data.rule,
-			data.keyword,
-			data.syntax,
-			data.description,
-			data.script
-		);
+		const command: Command = data.COMMAND;
 		commands.push(command);
 	}
 }
@@ -58,7 +52,7 @@ export function command(character: Character, input: string) {
 				80,
 				`{WSyntax: {y${command.syntax}{x`,
 				{
-					...BOX_STYLES.PLAIN,
+					...BOX_STYLE.PLAIN,
 					titleHAlign: PAD_SIDE.CENTER,
 					vPadding: 1,
 					hAlign: PAD_SIDE.CENTER,

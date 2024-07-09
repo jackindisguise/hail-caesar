@@ -90,7 +90,13 @@ export interface BoxStyle {
 /**
  * Some generic boxes I invented due to my ingenuity.
  */
-export const BOX_STYLES: { PLAIN: BoxStyle; ROUNDED: BoxStyle; O: BoxStyle } = {
+export const BOX_STYLE: {
+	PLAIN: BoxStyle;
+	ROUNDED: BoxStyle;
+	O: BoxStyle;
+	HASHED: BoxStyle;
+	STARRED: BoxStyle;
+} = {
 	/** A plain box. */
 	PLAIN: {
 		horizontal: "-",
@@ -112,12 +118,18 @@ export const BOX_STYLES: { PLAIN: BoxStyle; ROUNDED: BoxStyle; O: BoxStyle } = {
 
 	/** A box made of Os */
 	O: {
-		titleBorder: {
-			left: "(",
-			right: ")",
-		},
 		horizontal: "O",
 		vertical: "O",
+	},
+
+	HASHED: {
+		horizontal: "#",
+		vertical: "#",
+	},
+
+	STARRED: {
+		vertical: "*",
+		horizontal: "*",
 	},
 };
 
@@ -479,6 +491,15 @@ function wrapWithOptions(options: WrapOptions): string[] {
 		if (sizer.open) {
 			for (let i = last; i <= cursor; i++) {
 				if (options.string[i] === sizer.open) {
+					// 2 escape characters in a row escape themselves and renders the escape code
+					if (options.string[i + 1] === sizer.open) {
+						cursor += 1;
+						unrendered += 1;
+						i += 1;
+						continue;
+					}
+					// if there's no close character, it consumes the next character implicitly
+					// this should have some kind of specific implementation
 					if (!sizer.close) {
 						cursor += 2;
 						unrendered += 2;

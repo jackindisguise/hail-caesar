@@ -4,7 +4,7 @@ import { _ } from "./i18n.js";
 import { Socket, Server, createConnection, createServer } from "net";
 import { Character } from "./character.js";
 import { autocomplete } from "./string.js";
-import { colorize } from "./color.js";
+import { colorize, Colorizer } from "./color.js";
 
 export class MUDClient extends EventEmitter {
 	protected _socket: Socket;
@@ -54,6 +54,7 @@ export class MUDClient extends EventEmitter {
 
 	send(message: string) {
 		if (this._socket.closed) return;
+		//		this._socket.write(colorize(Colorizer.green(message)));
 		this._socket.write(colorize(message));
 	}
 

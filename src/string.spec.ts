@@ -187,7 +187,7 @@ describe("string.ts", () => {
 				.box({
 					input: [line],
 					width: 80,
-					style: string.BOX_STYLES.O,
+					style: string.BOX_STYLE.O,
 					sizer: string.TERM_SIZER,
 				})
 				.join("\n");
@@ -412,7 +412,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		});
 		it("left-only title border", (done) => {
 			const box = string.box(["cake", "pie"], 80, "cake", {
-				...string.BOX_STYLES.PLAIN,
+				...string.BOX_STYLE.PLAIN,
 				titleBorder: { left: ">" },
 			});
 			const expected = [
@@ -426,7 +426,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		});
 		it("right-only title border", (done) => {
 			const box = string.box(["cake", "pie"], 80, "cake", {
-				...string.BOX_STYLES.PLAIN,
+				...string.BOX_STYLE.PLAIN,
 				titleBorder: { right: "<" },
 			});
 			const expected = [
@@ -440,7 +440,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		});
 		it("color", (done) => {
 			const style: string.BoxStyle = {
-				...string.BOX_STYLES.PLAIN,
+				...string.BOX_STYLE.PLAIN,
 				titleBorder: { left: "<", right: ">" },
 				hAlign: string.PAD_SIDE.CENTER,
 				borderColor: chalk.yellow,
@@ -467,7 +467,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 		it("color + multiline", (done) => {
 			const style: string.BoxStyle = {
-				...string.BOX_STYLES.PLAIN,
+				...string.BOX_STYLE.PLAIN,
 				titleBorder: { left: "<", right: ">" },
 				hAlign: string.PAD_SIDE.CENTER,
 				borderColor: chalk.yellow,
@@ -542,7 +542,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			const generated = string
 				.box({
 					style: {
-						...string.BOX_STYLES.PLAIN,
+						...string.BOX_STYLE.PLAIN,
 						hPadding: 2,
 						top: { left: ">>", right: "<<" },
 						bottom: { left: ">>", right: "<<" },
@@ -569,7 +569,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		it("center-aligned", (done) => {
 			// copy rounded box style
 			const rounded = {
-				...string.BOX_STYLES.ROUNDED,
+				...string.BOX_STYLE.ROUNDED,
 				hAlign: string.PAD_SIDE.CENTER,
 				titleHAlign: string.PAD_SIDE.CENTER,
 				vPadding: 1,
@@ -602,7 +602,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		it("left-aligned", (done) => {
 			// copy O box style
 			const obox: string.BoxStyle = {
-				...string.BOX_STYLES.O,
+				...string.BOX_STYLE.O,
 				top: { corner: "o" },
 				hAlign: string.PAD_SIDE.LEFT,
 				titleHAlign: string.PAD_SIDE.LEFT,

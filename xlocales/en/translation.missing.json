@@ -78,5 +78,6 @@
   "    Name: {{name}}": {
     "": "    Name: {{name}}."
   },
-  "Name: {{name}}": "Name: {{name}}"
+  "Name: {{name}}": "Name: {{name}}",
+  "Loaded command: {{syntax}}": "Loaded command: {{syntax}}"
 }
