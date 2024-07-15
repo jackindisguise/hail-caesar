@@ -1,10 +1,21 @@
 import { EventEmitter } from "node:events";
 import { logger } from "./winston.js";
-import { _ } from "./i18n.js";
+import { t } from "./i18n.js";
 import { Socket, Server, createConnection, createServer } from "net";
 import { Character } from "./character.js";
 import { autocomplete } from "./string.js";
 import { colorize, Colorizer } from "./color.js";
+
+export declare interface MUDClient {
+	on(event: "close", listener: () => void): this;
+	on(event: "command", listener: (command: string) => void): this;
+	off(event: "close", listener: () => void): this;
+	off(event: "command", listener: (command: string) => void): this;
+	once(event: "close", listener: () => void): this;
+	once(event: "command", listener: (command: string) => void): this;
+	emit(event: "close"): boolean;
+	emit(event: "command", command: string): boolean;
+}
 
 export class MUDClient extends EventEmitter {
 	protected _socket: Socket;
@@ -13,12 +24,12 @@ export class MUDClient extends EventEmitter {
 	address: string;
 	constructor(socket: Socket) {
 		super();
-		logger.debug(_("New client connection..."));
+		logger.debug(t("New client connection..."));
 		this._socket = socket;
 		let address: any = socket.address();
-		this.address = address.address || "???.???.???.???";
+		this.address = address.address;
 		logger.debug(
-			_("Assigned address: @{{address}}", { address: this.address })
+			t("Assigned address: @{{address}}", { address: this.address })
 		);
 		socket.on("data", (data: Buffer) => {
 			let safe: string = data.toString("utf8");
@@ -26,7 +37,7 @@ export class MUDClient extends EventEmitter {
 			const remainder = commands.pop();
 			if (remainder)
 				logger.debug(
-					_("@{{address}}: non-command input from client: {{input}}", {
+					t("@{{address}}: non-command input from client: {{input}}", {
 						address: this.address,
 						input: remainder,
 					})
@@ -34,7 +45,7 @@ export class MUDClient extends EventEmitter {
 			for (let command of commands) this.command(command);
 		});
 		socket.on("close", () => {
-			logger.debug(_("{{client}} closed connection.", { client: this }));
+			logger.debug(t("{{client}} closed connection.", { client: this }));
 			this.emit("close");
 		});
 		socket.on("error", (err: Error) => {
@@ -86,7 +97,7 @@ export class MUDClient extends EventEmitter {
 
 	command(command: string) {
 		logger.debug(
-			_("{{client}}: '{{input}}'", {
+			t("{{client}}: '{{input}}'", {
 				client: this.toString(),
 				input: command,
 			})
@@ -104,48 +115,60 @@ export class MUDClient extends EventEmitter {
 
 	toString() {
 		if (this._character)
-			return _("[{{character}}]", {
+			return t("[{{character}}]", {
 				character: this._character.toString(),
 			});
-		return _("[{{character}}]", {
+		return t("[{{character}}]", {
 			character: `@${this.address}`,
 		});
 	}
 }
 
+export declare interface MUDServer {
+	on(event: "connection", listener: (client: MUDClient) => void): this;
+	on(event: "disconnection", listener: (client: MUDClient) => void): this;
+	once(event: "connection", listener: (client: MUDClient) => void): this;
+	once(event: "disconnection", listener: (client: MUDClient) => void): this;
+	off(event: "connection", listener: (client: MUDClient) => void): this;
+	off(event: "disconnection", listener: (client: MUDClient) => void): this;
+	emit(event: "connection", client: MUDClient): boolean;
+	emit(event: "disconnection", client: MUDClient): boolean;
+}
+
 export class MUDServer extends EventEmitter {
-	#server: Server;
-	#clients: MUDClient[] = [];
+	protected _server: Server;
+	protected _clients: MUDClient[] = [];
 	constructor() {
 		super();
-		this.#server = createServer((socket: Socket) => {
+		this._server = createServer((socket: Socket) => {
 			this.initialize(socket);
 		});
 	}
 
 	start(port: number, callback?: () => void) {
-		this.#server.listen(port, () => {
-			logger.debug(_("Server listening on port 23."));
+		this._server.listen(port, () => {
+			logger.debug(t("Server listening on port 23."));
 			if (callback) callback();
 		});
 	}
 
 	stop() {
-		this.#server.close();
+		this._server.close();
 	}
 
 	initialize(socket: Socket) {
 		let client: MUDClient = new MUDClient(socket);
 		logger.debug(
-			_("Server opened connection to {{client}}!", {
+			t("Server opened connection to {{client}}!", {
 				client: client,
 			})
 		);
 		this.add(client);
 		this.emit("connection", client);
 		client.on("close", () => {
+			this.emit("disconnection", client);
 			logger.debug(
-				_("Server closed connection to {{client}}!", {
+				t("Server closed connection to {{client}}!", {
 					client: client,
 				})
 			);
@@ -155,15 +178,15 @@ export class MUDServer extends EventEmitter {
 
 	add(...clients: MUDClient[]) {
 		for (let client of clients) {
-			this.#clients.push(client);
+			this._clients.push(client);
 		}
 	}
 
 	remove(...clients: MUDClient[]) {
 		for (let client of clients) {
-			const pos = this.#clients.indexOf(client);
+			const pos = this._clients.indexOf(client);
 			if (pos === -1) continue;
-			this.#clients.splice(pos, 1);
+			this._clients.splice(pos, 1);
 		}
 	}
 }

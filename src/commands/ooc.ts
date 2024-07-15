@@ -1,4 +1,4 @@
-import { _ } from "../i18n.js";
+import { t } from "../i18n.js";
 import { Command } from "../command.js";
 import { Colorizer } from "../color.js";
 export const COMMAND = new Command(
@@ -9,7 +9,7 @@ export const COMMAND = new Command(
 	(character, comment) => {
 		character.sendLine(
 			Colorizer.yellow(
-				_("You OOC: {{comment}}", { comment: Colorizer.white(comment) })
+				t("You OOC: {{comment}}", { comment: Colorizer.white(comment) })
 			)
 		);
 	}

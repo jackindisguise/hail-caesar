@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { _ } from "./i18n.js";
+import { t } from "./i18n.js";
 
 export interface ClockInterface {
 	runtime: number;

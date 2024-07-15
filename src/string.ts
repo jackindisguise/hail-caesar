@@ -116,17 +116,19 @@ export const BOX_STYLE: {
 		},
 	},
 
-	/** A box made of Os */
+	/** A box made of Os. */
 	O: {
 		horizontal: "O",
 		vertical: "O",
 	},
 
+	/** A box made of hashtags (pound?). */
 	HASHED: {
 		horizontal: "#",
 		vertical: "#",
 	},
 
+	/** A box made of stars. */
 	STARRED: {
 		vertical: "*",
 		horizontal: "*",

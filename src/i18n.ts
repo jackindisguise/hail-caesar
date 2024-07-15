@@ -13,4 +13,4 @@ await i18next.use(Backend).init<FsBackendOptions>({
 	},
 });
 
-export const _ = i18next.t;
+export const t = i18next.t;

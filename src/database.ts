@@ -1,5 +1,5 @@
 import { logger } from "./winston.js";
-import { _ } from "./i18n.js";
+import { t } from "./i18n.js";
 import { readdir, readFile } from "fs/promises";
 import { join, dirname, extname, relative } from "path";
 import { fileURLToPath } from "url";
@@ -23,13 +23,13 @@ import { Command } from "./command.js";
 const COMMANDS_PATH = join(ROOT_PATH, "build", "commands");
 export const commands: Command[] = [];
 async function loadCommands() {
-	logger.debug(_("Loading commands."));
+	logger.debug(t("Loading commands."));
 	const files = await readdir(COMMANDS_PATH);
 	for (let file of files) {
 		const COMMAND_PATH = join(COMMANDS_PATH, file);
 		if (extname(COMMAND_PATH) !== ".js") continue;
 		logger.debug(
-			_("Loading file {{file}}", { file: relative(DATA_PATH, COMMAND_PATH) })
+			t("Loading file {{file}}", { file: relative(DATA_PATH, COMMAND_PATH) })
 		);
 		let data: any = await import(`file://${COMMAND_PATH}`);
 		const command: Command = data.COMMAND;
@@ -81,13 +81,13 @@ import { Classification } from "./classification.js";
 const RACES_PATH = join(DATA_PATH, "races");
 export const races: Classification[] = [];
 async function loadRaces() {
-	logger.debug(_("Loading races."));
+	logger.debug(t("Loading races."));
 	const files = await readdir(RACES_PATH);
 	for (let file of files) {
 		const RACE_PATH = join(RACES_PATH, file);
 		if (extname(RACE_PATH) !== ".toml") continue;
 		logger.debug(
-			_("Loading file {{file}}", { file: relative(DATA_PATH, RACE_PATH) })
+			t("Loading file {{file}}", { file: relative(DATA_PATH, RACE_PATH) })
 		);
 		const data = await readFile(RACE_PATH, "utf8");
 		const json: any = parse(data);
@@ -102,13 +102,13 @@ async function loadRaces() {
 const CLASSES_PATH = join(DATA_PATH, "classes");
 export const classes: Classification[] = [];
 async function loadClasses() {
-	logger.debug(_("Loading classes."));
+	logger.debug(t("Loading classes."));
 	const files = await readdir(CLASSES_PATH);
 	for (let file of files) {
 		const CLASS_PATH = join(CLASSES_PATH, file);
 		if (extname(CLASS_PATH) !== ".toml") continue;
 		logger.debug(
-			_("Loading file {{file}}", {
+			t("Loading file {{file}}", {
 				file: relative(DATA_PATH, CLASS_PATH),
 			})
 		);
@@ -126,9 +126,9 @@ import { Calendar, Month } from "./calendar.js";
 const CALENDAR_PATH = join(DATA_PATH, "calendar.toml");
 export let calendar: Calendar;
 async function loadCalendar() {
-	logger.debug(_("Loading calendar."));
+	logger.debug(t("Loading calendar."));
 	logger.debug(
-		_("Loading file {{file}}", {
+		t("Loading file {{file}}", {
 			file: relative(DATA_PATH, CALENDAR_PATH),
 		})
 	);
@@ -144,9 +144,9 @@ import { Clock } from "./clock.js";
 const CLOCK_PATH = join(DATA_PATH, "clock.toml");
 export let clock: Clock;
 async function loadClock() {
-	logger.debug(_("Loading clock."));
+	logger.debug(t("Loading clock."));
 	logger.debug(
-		_("Loading file {{file}}", {
+		t("Loading file {{file}}", {
 			file: relative(DATA_PATH, CLOCK_PATH),
 		})
 	);
@@ -160,7 +160,7 @@ async function loadClock() {
 export async function load() {
 	return new Promise<void>(async (resolve) => {
 		logger.debug(
-			_("Started loading database at {{time}}.", {
+			t("Started loading database at {{time}}.", {
 				time: new Date().toLocaleTimeString(),
 			})
 		);
@@ -172,12 +172,12 @@ export async function load() {
 		await loadClock();
 		const end = Date.now();
 		logger.debug(
-			_("Finished loading database at {{time}}.", {
+			t("Finished loading database at {{time}}.", {
 				time: new Date().toLocaleTimeString(),
 			})
 		);
 		logger.debug(
-			_("Database loaded in {{duration}} seconds.", {
+			t("Database loaded in {{duration}} seconds.", {
 				duration: (end - start) / 1000,
 			})
 		);

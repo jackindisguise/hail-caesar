@@ -620,7 +620,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 			// test against expected
 			const expected = [
-				"oOOOOOOOOOOOOOO( Box Title )Oo",
+				"oOOOOOOOOOOOOOOOO Box Title Oo",
 				"O            This is a line. O",
 				"O      This is another line. O",
 				"OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",

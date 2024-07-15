@@ -117,26 +117,14 @@ export class Colorizer {
 	static italic(str: string) {
 		return colorizeString(str, LETTER_CODES.ITALIC);
 	}
-	static underline(str: string) {
-		return colorizeString(str, LETTER_CODES.UNDERLINE);
-	}
-	static blink(str: string) {
-		return colorizeString(str, LETTER_CODES.BLINK);
-	}
-	static fastBlink(str: string) {
-		return colorizeString(str, LETTER_CODES.FAST_BLINK);
-	}
 	static reverse(str: string) {
 		return colorizeString(str, LETTER_CODES.REVERSE);
 	}
-	static erase(str: string) {
-		return colorizeString(str, LETTER_CODES.ERASE);
+	static underline(str: string) {
+		return colorizeString(str, LETTER_CODES.UNDERLINE);
 	}
 	static strikeThrough(str: string) {
 		return colorizeString(str, LETTER_CODES.STRIKETHROUGH);
-	}
-	static doubleUnderline(str: string) {
-		return colorizeString(str, LETTER_CODES.DBL_UNDERLINE);
 	}
 	static black(str: string) {
 		return colorizeString(str, LETTER_CODES.BLACK);

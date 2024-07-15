@@ -1,6 +1,6 @@
 import { Mob } from "./dungeon.js";
 import { randomBytes, scryptSync } from "crypto";
-import { _ } from "./i18n.js";
+import { t } from "./i18n.js";
 import { MUDClient } from "./io.js";
 
 /**
@@ -52,10 +52,10 @@ export class Character {
 
 	toString() {
 		if (this._mob)
-			return _("<{{character}}>", {
+			return t("<{{character}}>", {
 				character: this._mob.toString(),
 			});
-		return _("<{{character}}>", {
+		return t("<{{character}}>", {
 			character: "!CHARACTER!",
 		});
 	}

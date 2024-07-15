@@ -1,4 +1,4 @@
-import { _ } from "../i18n.js";
+import { t } from "../i18n.js";
 import { box, BOX_STYLE, PAD_SIDE } from "../string.js";
 import { ESCAPE_SIZER, Colorizer } from "../color.js";
 import { Command } from "../command.js";

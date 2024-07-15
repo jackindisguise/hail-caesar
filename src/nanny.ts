@@ -1,5 +1,5 @@
 import { clock } from "./database.js";
-import { _ } from "./i18n.js";
+import { t } from "./i18n.js";
 import { logger } from "./winston.js";
 import { autocomplete } from "./string.js";
 import { Character } from "./character.js";
@@ -16,15 +16,15 @@ export function login(client: MUDClient) {
 		race: Classification,
 		_class: Classification;
 
-	client.sendLine(_("Welcome to {{world}}!", { world: WORLD_NAME }));
+	client.sendLine(t("Welcome to {{world}}!", { world: WORLD_NAME }));
 
 	function getName() {
-		client.ask(_("What's your name?"), confirmName);
+		client.ask(t("What's your name?"), confirmName);
 	}
 
 	function confirmName(pName: string) {
 		client.yesno(
-			_("Is your name {{name}}?", { name: pName }),
+			t("Is your name {{name}}?", { name: pName }),
 			(agreed: boolean) => {
 				if (agreed) {
 					name = pName;
@@ -35,11 +35,11 @@ export function login(client: MUDClient) {
 	}
 
 	function getPassword() {
-		client.ask(_("Please choose a password:"), confirmPassword);
+		client.ask(t("Please choose a password:"), confirmPassword);
 	}
 
 	function confirmPassword(iPassword: string) {
-		client.ask(_("Please confirm your password:"), (cPassword: string) => {
+		client.ask(t("Please confirm your password:"), (cPassword: string) => {
 			if (iPassword !== cPassword) {
 				client.sendLine("Those passwords don't match!");
 				getPassword();
@@ -51,13 +51,13 @@ export function login(client: MUDClient) {
 	}
 
 	function motd() {
-		client.sendLine(_("This is the MOTD!"));
-		client.ask(_("Hit enter to continue: "), finish);
+		client.sendLine(t("This is the MOTD!"));
+		client.ask(t("Hit enter to continue: "), finish);
 	}
 
 	function finish() {
 		logger.debug(
-			_("{{client}} is playing as {{name}}.", {
+			t("{{client}} is playing as {{name}}.", {
 				client: client,
 				name: name,
 			})
@@ -68,7 +68,7 @@ export function login(client: MUDClient) {
 		character.mob.name = name;
 		client.character = character;
 		client.sendLine(
-			_("Welcome to {{world}}, {{name}}!", { world: WORLD_NAME, name: name })
+			t("Welcome to {{world}}, {{name}}!", { world: WORLD_NAME, name: name })
 		);
 	}
 

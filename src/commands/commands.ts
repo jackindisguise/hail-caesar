@@ -1,4 +1,4 @@
-import { _ } from "../i18n.js";
+import { t } from "../i18n.js";
 import { Command } from "../command.js";
 import { commands } from "../database.js";
 import { padCenter, box, BOX_STYLE, PAD_SIDE } from "../string.js";

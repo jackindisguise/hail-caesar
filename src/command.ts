@@ -1,5 +1,5 @@
 import { Character } from "./character.js";
-import { _ } from "./i18n.js";
+import { t } from "./i18n.js";
 export class Command {
 	rule: RegExp;
 	keyword: string;
