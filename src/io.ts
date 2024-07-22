@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import { logger } from "./winston.js";
 import { t } from "./i18n.js";
-import { Socket, Server, createConnection, createServer } from "net";
+import { Socket, Server, createServer } from "net";
 import { Character } from "./character.js";
 import { autocomplete } from "./string.js";
 import { colorize, Colorizer } from "./color.js";
@@ -147,7 +147,7 @@ export class MUDServer extends EventEmitter {
 
 	start(port: number, callback?: () => void) {
 		this._server.listen(port, () => {
-			logger.debug(t("Server listening on port 23."));
+			logger.debug(t("Server listening on port {{port}}.", { port: port }));
 			if (callback) callback();
 		});
 	}

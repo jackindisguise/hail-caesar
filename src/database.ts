@@ -8,7 +8,6 @@ import { Character } from "./character.js";
 import { autocomplete, box, BOX_STYLE, PAD_SIDE } from "./string.js";
 import { ESCAPE_SIZER, Colorizer } from "./color.js";
 import json2toml from "json2toml";
-import { setAbsoluteInterval } from "./time.js";
 
 // basic paths
 const ROOT_PATH = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -50,13 +49,14 @@ export function command(character: Character, input: string) {
 			const msg = box(
 				[command.description],
 				80,
-				`{WSyntax: {y${command.syntax}{x`,
+				`Syntax: ${command.syntax}`,
 				{
 					...BOX_STYLE.PLAIN,
 					titleHAlign: PAD_SIDE.CENTER,
 					vPadding: 1,
 					hAlign: PAD_SIDE.CENTER,
 					borderColor: Colorizer.yellow,
+					titleColor: Colorizer.white,
 				},
 				ESCAPE_SIZER
 			);
@@ -138,7 +138,7 @@ async function loadCalendar() {
 }
 
 /**
- * Load world data and shit.
+ * Load clock data.
  */
 import { Clock } from "./clock.js";
 const CLOCK_PATH = join(DATA_PATH, "clock.toml");
@@ -154,6 +154,25 @@ async function loadClock() {
 	const json = parse(data);
 	clock = Clock.fromJSON(json);
 }
+
+/**
+ * Load world data.
+ */
+import { World } from "./world.js";
+const WORLD_PATH = join(DATA_PATH, "world.toml");
+export let world: World;
+async function loadWorld() {
+	logger.debug(t("Loading world."));
+	logger.debug(
+		t("Loading file {{file}}", {
+			file: relative(DATA_PATH, WORLD_PATH),
+		})
+	);
+	const data = await readFile(WORLD_PATH, "utf8");
+	const json = parse(data);
+	world = World.fromJSON(json);
+}
+
 /**
  * Front facing access to database loading.
  */
@@ -165,11 +184,12 @@ export async function load() {
 			})
 		);
 		const start = Date.now();
-		await loadCommands();
-		await loadRaces();
-		await loadClasses();
+		await loadWorld();
 		await loadCalendar();
 		await loadClock();
+		await loadRaces();
+		await loadClasses();
+		await loadCommands();
 		const end = Date.now();
 		logger.debug(
 			t("Finished loading database at {{time}}.", {

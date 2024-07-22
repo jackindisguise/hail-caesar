@@ -79,5 +79,18 @@
     "": "    Name: {{name}}."
   },
   "Name: {{name}}": "Name: {{name}}",
-  "Loaded command: {{syntax}}": "Loaded command: {{syntax}}"
+  "Loaded command: {{syntax}}": "Loaded command: {{syntax}}",
+  "Loaded {{name}}!": "Loaded {{name}}!",
+  "Loading game database": {
+    "": {
+      "": {
+        "": "Loading game database..."
+      }
+    }
+  },
+  "v{{version}}": "v{{version}}",
+  "Loaded {{name}} v{{version}}": "Loaded {{name}} v{{version}}",
+  "Server listening on port {{port}}": {
+    "": "Server listening on port {{port}}."
+  }
 }
