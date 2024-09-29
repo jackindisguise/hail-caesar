@@ -1,3 +1,9 @@
+interface DungeonOptions {
+	width: number;
+	height: number;
+	layers: number;
+}
+
 export class Dungeon {
 	protected _width: number = 0;
 	protected _height: number = 0;
@@ -5,8 +11,8 @@ export class Dungeon {
 	protected _tiles: Tile[][][] = [];
 	protected _contents: DungeonObject[] = [];
 
-	constructor(width: number, height: number, layers: number) {
-		this._setDimensions(width, height, layers);
+	constructor(options: DungeonOptions) {
+		this._setDimensions(options.width, options.height, options.layers);
 	}
 
 	get width() {
@@ -71,7 +77,8 @@ export class Dungeon {
 			for (let y = 0; y < height; y++) {
 				let row: Tile[] = [];
 				layer.push(row);
-				for (let x = 0; x < width; x++) row.push(new Tile(this));
+				for (let x = 0; x < width; x++)
+					row.push(new Tile({ dungeon: this, x: x, y: y, z: z }));
 			}
 		}
 	}
@@ -86,7 +93,9 @@ export class Dungeon {
 			for (let z = 0; z < this._layers; z++) {
 				for (let y = 0; y < this._height; y++) {
 					for (let x = this._width; x < width; x++)
-						this._tiles[z][y].push(new Tile(this));
+						this._tiles[z][y].push(
+							new Tile({ dungeon: this, x: x, y: y, z: z })
+						);
 				}
 			}
 		}
@@ -103,7 +112,8 @@ export class Dungeon {
 				for (let y = this._height; y < height; y++) {
 					let row: Tile[] = [];
 					this._tiles[z].push(row);
-					for (let x = 0; x < this._width; x++) row.push(new Tile(this));
+					for (let x = 0; x < this._width; x++)
+						row.push(new Tile({ dungeon: this, x: x, y: y, z: z }));
 				}
 			}
 		}
@@ -121,7 +131,8 @@ export class Dungeon {
 				for (let y = 0; y < this._height; y++) {
 					let row: Tile[] = [];
 					layer.push(row);
-					for (let x = 0; x < this._width; x++) row.push(new Tile(this));
+					for (let x = 0; x < this._width; x++)
+						row.push(new Tile({ dungeon: this, x: x, y: y, z: z }));
 				}
 			}
 		}
@@ -135,6 +146,13 @@ export class Dungeon {
 	}
 }
 
+interface DungeonObjectOptions {
+	dungeon?: Dungeon;
+	keyword?: string;
+	display?: string;
+	description?: string;
+}
+
 export class DungeonObject {
 	keyword: string = "object";
 	display: string = "an object";
@@ -142,8 +160,13 @@ export class DungeonObject {
 	protected _dungeon?: Dungeon;
 	protected _location?: DungeonObject;
 	protected _contents: DungeonObject[] = [];
-	constructor(dungeon?: Dungeon) {
-		if (dungeon) this.dungeon = dungeon;
+	constructor(options?: DungeonObjectOptions) {
+		if (options) {
+			if (options.dungeon) this.dungeon = options.dungeon;
+			if (options.keyword) this.keyword = options.keyword;
+			if (options.display) this.display = options.display;
+			if (options.description) this.description = options.description;
+		}
 	}
 
 	get dungeon() {
@@ -223,16 +246,49 @@ export class DungeonObject {
 	}
 }
 
+interface TileOptions extends DungeonObjectOptions {
+	x: number;
+	y: number;
+	z: number;
+}
+
 export class Tile extends DungeonObject {
 	keyword = "tile";
 	display = "Tile";
 	description = "It's a tile.";
+	x: number;
+	y: number;
+	z: number;
+	constructor(options: TileOptions) {
+		super(options);
+		this.x = options.x;
+		this.y = options.y;
+		this.z = options.z;
+	}
+}
+
+interface MovableOptions extends DungeonObjectOptions {
+	location?: DungeonObject;
 }
 
 export class Movable extends DungeonObject {
-	constructor(object?: DungeonObject) {
-		super();
-		if (object) this.moveTo(object);
+	get x(): number | undefined {
+		if (this.location instanceof Tile) return this.location.x;
+	}
+
+	get y(): number | undefined {
+		if (this.location instanceof Tile) return this.location.y;
+	}
+
+	get z(): number | undefined {
+		if (this.location instanceof Tile) return this.location.z;
+	}
+
+	constructor(options?: MovableOptions) {
+		super(options);
+		if (options) {
+			if (options.location) this.moveTo(options.location);
+		}
 	}
 
 	moveTo(object: DungeonObject) {
@@ -240,6 +296,28 @@ export class Movable extends DungeonObject {
 	}
 }
 
-export class Mob extends Movable {}
+export interface MobJSON {
+	name: string;
+	display: string;
+	description: string;
+	location?: {
+		x: number;
+		y: number;
+		z: number;
+	};
+}
+
+export class Mob extends Movable {
+	toJSON(): MobJSON {
+		const data: MobJSON = {
+			name: this.name,
+			display: this.display,
+			description: this.description,
+		};
+		if (this.location instanceof Tile)
+			data.location = { x: this.x || 0, y: this.y || 0, z: this.z || 0 };
+		return data;
+	}
+}
 export class Obj extends Movable {}
 export class Prop extends DungeonObject {}

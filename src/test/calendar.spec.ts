@@ -4,7 +4,7 @@ import {
 	Month,
 	CalendarInterface,
 	MonthInterface,
-} from "./calendar.js";
+} from "../calendar.js";
 
 describe("calendar.ts", () => {
 	describe("Calendar", () => {

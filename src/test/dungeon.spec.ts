@@ -1,11 +1,11 @@
 import { expect } from "chai";
-import { Dungeon, DungeonObject, Mob, Tile } from "./dungeon.js";
+import { Dungeon, DungeonObject, Mob, Tile } from "../dungeon.js";
 
 describe("dungeon.ts", () => {
 	describe("Dungeon", () => {
 		let d: Dungeon;
 		it("new", (done) => {
-			d = new Dungeon(2, 2, 2);
+			d = new Dungeon({ width: 2, height: 2, layers: 2 });
 			expect(d.width).is.equal(2);
 			expect(d.height).is.equal(2);
 			expect(d.layers).is.equal(2);
@@ -96,8 +96,8 @@ describe("dungeon.ts", () => {
 	});
 
 	describe("DungeonObject", () => {
-		const dung = new Dungeon(3, 3, 3);
-		const dung2 = new Dungeon(3, 3, 3);
+		const dung = new Dungeon({ width: 3, height: 3, layers: 3 });
+		const dung2 = new Dungeon({ width: 3, height: 3, layers: 3 });
 		let dungo: DungeonObject;
 		it("new", (done) => {
 			dungo = new DungeonObject();

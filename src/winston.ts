@@ -1,5 +1,5 @@
 import { createLogger, format, transports } from "winston";
-import { pad, padLeft } from "./string.js";
+import { padLeft } from "./string.js";
 
 /**
  * Generate date string for log file names.

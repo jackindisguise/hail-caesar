@@ -1,5 +1,5 @@
-import * as color from "./color.js";
-import * as string from "./string.js";
+import * as color from "../color.js";
+import * as string from "../string.js";
 import { expect } from "chai";
 
 describe("color.ts", () => {

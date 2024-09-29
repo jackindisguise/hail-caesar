@@ -75,4 +75,12 @@ export class Character {
 	yesno(question: string, callback: (agree: boolean) => void) {
 		this._client?.yesno(question, callback);
 	}
+
+	toJSON() {
+		return {
+			hash: this.hash,
+			salt: this.salt,
+			mob: this.mob?.toJSON(),
+		};
+	}
 }

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import * as time from "./time.js";
+import * as time from "../time.js";
 
 const timeout = 2000;
 const ms = 500;

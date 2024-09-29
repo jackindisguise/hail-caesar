@@ -1,4 +1,4 @@
-import { pick, replace } from "./array.js";
+import { pick, replace } from "../array.js";
 import { expect } from "chai";
 
 describe("array.ts", () => {

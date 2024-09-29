@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { MUDClient, MUDServer } from "./io.js";
+import { MUDClient, MUDServer } from "../io.js";
 import { createConnection, Socket } from "net";
-import { Colorizer, colorize } from "./color.js";
+import { Colorizer, colorize } from "../color.js";
 
 describe("io.ts", () => {
 	let server: MUDServer;

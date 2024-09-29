@@ -1,4 +1,4 @@
-import { Character } from "./character.js";
+import { Character } from "../character.js";
 import { expect } from "chai";
 
 describe("player.ts", () => {
