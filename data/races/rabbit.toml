@@ -1,0 +1,8 @@
+name = "rabbit"
+playable = false
+description = "!RABBIT!"
+
+[Offense]
+dodge = true
+fast = true
+

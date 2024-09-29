@@ -1,0 +1,14 @@
+name = "priest"
+attribute = "wisdom"
+description = "!PRIEST!"
+
+[Base]
+weapon = "mace"
+thac0 = 10
+thac0_32 = 2
+skillGroups = ["priest basics","priest default"]
+
+[Growth]
+health = [-3,20]
+mana = true
+

@@ -1,0 +1,14 @@
+name = "strider"
+attribute = "intelligence"
+description = "!STRIDER!"
+
+[Base]
+weapon = "dagger"
+thac0 = 10
+thac0_32 = -14
+skillGroups = ["strider basics","strider default"]
+
+[Growth]
+health = [10,25]
+mana = true
+

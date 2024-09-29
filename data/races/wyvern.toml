@@ -1,0 +1,20 @@
+name = "wyvern"
+playable = false
+description = "!WYVERN!"
+
+[AffectedBy]
+detectInvis = true
+detectHidden = true
+flying = true
+
+[Offense]
+bash = true
+dodge = true
+fast = true
+
+[Immunity]
+poison = true
+
+[Vulnerability]
+light = true
+

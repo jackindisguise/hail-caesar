@@ -1,0 +1,14 @@
+name = "sage"
+attribute = "wisdom"
+description = "!SAGE!"
+
+[Base]
+weapon = "polearm"
+thac0 = 10
+thac0_32 = -10
+skillGroups = ["sage basics","sage default"]
+
+[Growth]
+health = [7,20]
+mana = true
+

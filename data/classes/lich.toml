@@ -1,0 +1,14 @@
+name = "lich"
+attribute = "constitution"
+description = "!LICH!"
+
+[Base]
+weapon = "dagger"
+thac0 = 10
+thac0_32 = -40
+skillGroups = ["lich basics","lich default"]
+
+[Growth]
+health = [6,18]
+mana = true
+

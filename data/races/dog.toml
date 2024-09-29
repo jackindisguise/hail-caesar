@@ -1,0 +1,7 @@
+name = "dog"
+playable = false
+description = "!DOG!"
+
+[Offense]
+fast = true
+

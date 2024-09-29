@@ -1,0 +1,11 @@
+name = "song bird"
+playable = false
+description = "!SONG BIRD!"
+
+[AffectedBy]
+flying = true
+
+[Offense]
+dodge = true
+fast = true
+

@@ -1,0 +1,23 @@
+name = "modron"
+playable = false
+description = "!MODRON!"
+
+[AffectedBy]
+infrared = true
+
+[Offense]
+assistAlign = true
+assistRace = true
+
+[Immunity]
+charm = true
+negative = true
+holy = true
+mental = true
+disease = true
+
+[Resistance]
+fire = true
+cold = true
+acid = true
+

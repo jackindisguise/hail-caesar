@@ -1,0 +1,17 @@
+name = "dragon"
+playable = false
+description = "!DRAGON!"
+
+[AffectedBy]
+infrared = true
+flying = true
+
+[Resistance]
+charm = true
+bash = true
+fire = true
+
+[Vulnerability]
+pierce = true
+cold = true
+

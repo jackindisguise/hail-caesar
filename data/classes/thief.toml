@@ -1,2 +1,14 @@
 name = "thief"
-description = "Like a thief in the night."
+attribute = "dexterity"
+description = "!THIEF!"
+
+[Base]
+weapon = "dagger"
+thac0 = 20
+thac0_32 = -4
+skillGroups = ["thief basics","thief default"]
+
+[Growth]
+health = [8,13]
+mana = false
+

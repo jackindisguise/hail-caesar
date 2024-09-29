@@ -1,0 +1,14 @@
+name = "wizard"
+attribute = "intelligence"
+description = "!WIZARD!"
+
+[Base]
+weapon = "dagger"
+thac0 = 10
+thac0_32 = -4
+skillGroups = ["wizard basics","wizard default"]
+
+[Growth]
+health = [6,18]
+mana = true
+

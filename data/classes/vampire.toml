@@ -1,0 +1,14 @@
+name = "vampire"
+attribute = "constitution"
+description = "!VAMPIRE!"
+
+[Base]
+weapon = "dagger"
+thac0 = 20
+thac0_32 = -30
+skillGroups = ["vampire basics","vampire default"]
+
+[Growth]
+health = [6,8]
+mana = true
+

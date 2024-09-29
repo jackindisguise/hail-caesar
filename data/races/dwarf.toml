@@ -1,0 +1,14 @@
+name = "dwarf"
+playable = true
+description = "!DWARF!"
+
+[AffectedBy]
+infrared = true
+
+[Resistance]
+poison = true
+disease = true
+
+[Vulnerability]
+drowning = true
+

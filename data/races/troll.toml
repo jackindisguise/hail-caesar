@@ -1,0 +1,20 @@
+name = "troll"
+playable = false
+description = "!TROLL!"
+
+[AffectedBy]
+detectHidden = true
+infrared = true
+regeneration = true
+
+[Offense]
+berserk = true
+
+[Resistance]
+charm = true
+bash = true
+
+[Vulnerability]
+fire = true
+acid = true
+

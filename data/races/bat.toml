@@ -1,0 +1,15 @@
+name = "bat"
+playable = false
+description = "!BAT!"
+
+[AffectedBy]
+flying = true
+darkVision = true
+
+[Offense]
+dodge = true
+fast = true
+
+[Vulnerability]
+light = true
+

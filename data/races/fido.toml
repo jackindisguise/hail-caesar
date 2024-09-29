@@ -1,0 +1,11 @@
+name = "fido"
+playable = false
+description = "!FIDO!"
+
+[Offense]
+dodge = true
+assistRace = true
+
+[Vulnerability]
+magic = true
+

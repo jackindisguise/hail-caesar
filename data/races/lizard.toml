@@ -1,0 +1,10 @@
+name = "lizard"
+playable = false
+description = "!LIZARD!"
+
+[Resistance]
+poison = true
+
+[Vulnerability]
+cold = true
+

@@ -23,7 +23,7 @@ server.on("connection", (client) => {
 	login(client);
 	client.on("command", (input) => {
 		const result = command(client.character, input);
-		if (!result) client.sendLine(_("Do what, now?"));
+		if (!result) client.sendLine(t("Do what, now?"));
 	});
 });
 

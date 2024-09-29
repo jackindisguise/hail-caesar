@@ -1,0 +1,14 @@
+name = "ranger"
+attribute = "strength"
+description = "!RANGER!"
+
+[Base]
+weapon = "spear"
+thac0 = 20
+thac0_32 = -4
+skillGroups = ["ranger basics","ranger default"]
+
+[Growth]
+health = [9,13]
+mana = true
+

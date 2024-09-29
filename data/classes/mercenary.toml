@@ -1,0 +1,14 @@
+name = "mercenary"
+attribute = "dexterity"
+description = "!MERCENARY!"
+
+[Base]
+weapon = "dagger"
+thac0 = 10
+thac0_32 = -14
+skillGroups = ["mercenary basics","mercenary default"]
+
+[Growth]
+health = [8,23]
+mana = false
+

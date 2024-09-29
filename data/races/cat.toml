@@ -1,0 +1,11 @@
+name = "cat"
+playable = false
+description = "!CAT!"
+
+[AffectedBy]
+darkVision = true
+
+[Offense]
+dodge = true
+fast = true
+

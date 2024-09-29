@@ -1,0 +1,14 @@
+name = "centipede"
+playable = false
+description = "!CENTIPEDE!"
+
+[AffectedBy]
+darkVision = true
+
+[Resistance]
+pierce = true
+cold = true
+
+[Vulnerability]
+bash = true
+

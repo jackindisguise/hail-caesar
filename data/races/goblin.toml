@@ -1,6 +1,6 @@
-name = "orc"
+name = "goblin"
 playable = false
-description = "!ORC!"
+description = "!GOBLIN!"
 
 [AffectedBy]
 infrared = true
@@ -9,5 +9,5 @@ infrared = true
 disease = true
 
 [Vulnerability]
-light = true
+magic = true
 

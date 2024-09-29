@@ -1,0 +1,14 @@
+name = "school monster"
+playable = false
+description = "!SCHOOL MONSTER!"
+
+[Act]
+noAlign = true
+
+[Immunity]
+summon = true
+charm = true
+
+[Vulnerability]
+magic = true
+

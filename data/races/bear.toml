@@ -1,0 +1,13 @@
+name = "bear"
+playable = false
+description = "!BEAR!"
+
+[Offense]
+berserk = true
+disasrm = true
+crush = true
+
+[Resistance]
+bash = true
+cold = true
+

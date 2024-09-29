@@ -1,0 +1,12 @@
+name = "giant"
+playable = true
+description = "!GIANT!"
+
+[Resistance]
+fire = true
+cold = true
+
+[Vulnerability]
+lightning = true
+mental = true
+

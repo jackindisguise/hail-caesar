@@ -1,0 +1,14 @@
+name = "cleric"
+attribute = "wisdom"
+description = "!CLERIC!"
+
+[Base]
+weapon = "mace"
+thac0 = 20
+thac0_32 = 2
+skillGroups = ["cleric basics","cleric default"]
+
+[Growth]
+health = [7,10]
+mana = true
+

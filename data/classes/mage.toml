@@ -1,0 +1,14 @@
+name = "mage"
+attribute = "intelligence"
+description = "!MAGE!"
+
+[Base]
+weapon = "dagger"
+thac0 = 20
+thac0_32 = 6
+skillGroups = ["mage basics","mage default"]
+
+[Growth]
+health = [6,8]
+mana = true
+

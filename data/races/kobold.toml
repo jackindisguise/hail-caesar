@@ -1,13 +1,13 @@
-name = "orc"
+name = "kobold"
 playable = false
-description = "!ORC!"
+description = "!KOBOLD!"
 
 [AffectedBy]
 infrared = true
 
 [Resistance]
-disease = true
+poison = true
 
 [Vulnerability]
-light = true
+magic = true
 

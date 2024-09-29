@@ -1,0 +1,11 @@
+name = "water fowl"
+playable = false
+description = "!WATER FOWL!"
+
+[AffectedBy]
+flying = true
+swim = true
+
+[Resistance]
+drowning = true
+

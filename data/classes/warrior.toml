@@ -1,2 +1,14 @@
 name = "warrior"
-description = "We are warriors."
+attribute = "strength"
+description = "!WARRIOR!"
+
+[Base]
+weapon = "sword"
+thac0 = 20
+thac0_32 = -10
+skillGroups = ["warrior basics","warrior default"]
+
+[Growth]
+health = [13,18]
+mana = false
+

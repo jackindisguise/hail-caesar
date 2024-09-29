@@ -1,0 +1,14 @@
+name = "druid"
+attribute = "wisdom"
+description = "!DRUID!"
+
+[Base]
+weapon = "polearm"
+thac0 = 20
+thac0_32 = 0
+skillGroups = ["druid basics","druid default"]
+
+[Growth]
+health = [7,10]
+mana = true
+

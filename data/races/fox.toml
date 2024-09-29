@@ -1,0 +1,11 @@
+name = "fox"
+playable = false
+description = "!FOX!"
+
+[AffectedBy]
+darkVision = true
+
+[Offense]
+dodge = true
+fast = true
+

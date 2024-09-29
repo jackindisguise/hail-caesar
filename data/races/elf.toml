@@ -1,2 +1,13 @@
 name = "elf"
-description = "This almost seems kind of racist."
+playable = true
+description = "!ELF!"
+
+[AffectedBy]
+infrared = true
+
+[Resistance]
+charm = true
+
+[Vulnerability]
+iron = true
+

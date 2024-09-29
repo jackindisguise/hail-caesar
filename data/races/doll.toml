@@ -1,0 +1,24 @@
+name = "doll"
+playable = false
+description = "!DOLL!"
+
+[Immunity]
+cold = true
+poison = true
+negative = true
+holy = true
+mental = true
+disease = true
+drowning = true
+
+[Resistance]
+bash = true
+light = true
+
+[Vulnerability]
+slash = true
+fire = true
+lightning = true
+acid = true
+energy = true
+

@@ -1,0 +1,11 @@
+name = "wolf"
+playable = false
+description = "!WOLF!"
+
+[AffectedBy]
+darkVision = true
+
+[Offense]
+dodge = true
+fast = true
+

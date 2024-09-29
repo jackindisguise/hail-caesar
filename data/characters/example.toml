@@ -1,8 +1,7 @@
-[character] # character data (basically stuff about the player)
 id = 92392319
 name = "Jon" # this is their legal name. distinct from the mob's name.
 
-[character.settings]
+[settings]
 password = "asdjkajsdajlqdqerq2e4" # some hashed password
 salt = "129i3129031290" # some random bytes
 

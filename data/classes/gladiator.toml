@@ -1,0 +1,14 @@
+name = "gladiator"
+attribute = "strength"
+description = "!GLADIATOR!"
+
+[Base]
+weapon = "sword"
+thac0 = 10
+thac0_32 = -20
+skillGroups = ["gladiator basics","gladiator default"]
+
+[Growth]
+health = [14,25]
+mana = false
+
