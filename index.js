@@ -8,10 +8,11 @@ import { Colorizer } from "./build/color.js";
 import * as _package from "./package.json" assert { type: "json" };
 import chalk from "chalk";
 
-const lines = readFileSync("./data/splash.txt", "utf8").split("\n");
+const splash = readFileSync("./data/splash.txt", "utf8");
+const splashLines = splash.split("\r\n");
 logger.debug(t("Loading game database..."));
 await load();
-for (let line of lines) logger.debug(line);
+for (let line of splashLines) logger.debug(line);
 logger.debug(
 	t("Loaded {{name}} v{{version}}", {
 		name: chalk.white(world.name),

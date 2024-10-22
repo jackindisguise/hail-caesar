@@ -1,3 +1,5 @@
+import { Serializable } from "./serializable.js";
+
 interface DungeonOptions {
 	width: number;
 	height: number;
@@ -153,20 +155,26 @@ interface DungeonObjectOptions {
 	description?: string;
 }
 
-export class DungeonObject {
-	keyword: string = "object";
-	display: string = "an object";
-	description: string = "It's an object.";
+export interface DungeonObjectData {
+	keyword?: string;
+	display?: string;
+	description?: string;
+	contents?: DungeonObjectData[];
+}
+
+export class DungeonObject implements Serializable<DungeonObjectData> {
+	keyword: string = "dungeon object";
+	display: string = "dungeon object";
+	description: string = "It's a dungeon object!";
 	protected _dungeon?: Dungeon;
 	protected _location?: DungeonObject;
 	protected _contents: DungeonObject[] = [];
 	constructor(options?: DungeonObjectOptions) {
-		if (options) {
-			if (options.dungeon) this.dungeon = options.dungeon;
-			if (options.keyword) this.keyword = options.keyword;
-			if (options.display) this.display = options.display;
-			if (options.description) this.description = options.description;
-		}
+		if (!options) return;
+		if (options.dungeon) this.dungeon = options.dungeon;
+		if (options.keyword) this.keyword = options.keyword;
+		if (options.display) this.display = options.display;
+		if (options.description) this.description = options.description;
 	}
 
 	get dungeon() {
@@ -244,6 +252,51 @@ export class DungeonObject {
 			if (!this._contents.includes(object)) return false;
 		return true;
 	}
+
+	static validateData(data: any): DungeonObjectData {
+		if (typeof data !== "object")
+			throw new TypeError("given non-object for validation");
+		if (typeof data.keyword !== "string")
+			throw new TypeError("missing/bad field for 'keyword'");
+		if (typeof data.display !== "string")
+			throw new TypeError("missing/bad field for 'display'");
+		if (typeof data.description !== "string")
+			throw new TypeError("missing/bad field for 'description'");
+		if (Array.isArray(data.contents) !== true)
+			throw new TypeError("missing/bad field for 'contents'");
+		return {
+			keyword: data.keyword,
+			display: data.display,
+			description: data.description,
+		};
+	}
+
+	static fromData(data: any): DungeonObject {
+		// validate JSON
+		const validated: DungeonObjectData = DungeonObject.validateData(data);
+
+		// load character
+		const character = new DungeonObject(validated);
+		return character;
+	}
+
+	toData() {
+		const result: DungeonObjectData = {
+			keyword: this.keyword,
+			display: this.display,
+			description: this.description,
+		};
+
+		// check for contents
+		if (this._contents.length) {
+			const contents: DungeonObjectData[] = [];
+			for (let obj of this._contents) contents.push(obj.toData());
+			result.contents = contents;
+		}
+
+		// return result
+		return result;
+	}
 }
 
 interface TileOptions extends DungeonObjectOptions {
@@ -255,7 +308,7 @@ interface TileOptions extends DungeonObjectOptions {
 export class Tile extends DungeonObject {
 	keyword = "tile";
 	display = "Tile";
-	description = "It's a tile.";
+	description = "It's a tile!";
 	x: number;
 	y: number;
 	z: number;
@@ -271,7 +324,17 @@ interface MovableOptions extends DungeonObjectOptions {
 	location?: DungeonObject;
 }
 
-export class Movable extends DungeonObject {
+interface MovableInterface extends DungeonObjectData {
+	loc?: number[];
+}
+
+export class Movable
+	extends DungeonObject
+	implements Serializable<MovableInterface>
+{
+	keyword = "movable";
+	display = "movable";
+	description = "It's a movable dungeon object!";
 	get x(): number | undefined {
 		if (this.location instanceof Tile) return this.location.x;
 	}
@@ -294,29 +357,28 @@ export class Movable extends DungeonObject {
 	moveTo(object: DungeonObject) {
 		this.location = object;
 	}
-}
 
-export interface MobJSON {
-	name: string;
-	display: string;
-	description: string;
-	location?: {
-		x: number;
-		y: number;
-		z: number;
-	};
-}
-
-export class Mob extends Movable {
-	toJSON(): MobJSON {
-		const data: MobJSON = {
-			name: this.name,
-			display: this.display,
-			description: this.description,
+	toData() {
+		return {
+			...super.toData(),
+			loc: [this.x || 0, this.y || 0, this.z || 0],
 		};
-		if (this.location instanceof Tile)
-			data.location = { x: this.x || 0, y: this.y || 0, z: this.z || 0 };
-		return data;
+	}
+}
+
+export interface MobData extends MovableInterface {}
+
+export class Mob extends Movable implements Serializable<MobData> {
+	keyword = "mob";
+	display = "a mob";
+	description = "It's a mob!";
+	static fromData(data: any): Mob {
+		// validate JSON
+		const validated: DungeonObjectData = DungeonObject.validateData(data);
+
+		// load mob
+		const mob = new Mob(validated);
+		return mob;
 	}
 }
 export class Obj extends Movable {}

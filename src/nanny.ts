@@ -5,9 +5,8 @@ import { autocomplete } from "./string.js";
 import { Character } from "./character.js";
 import { Classification } from "./classification.js";
 import { MUDClient } from "./io.js";
-import { Mob } from "./dungeon.js";
-
-const WORLD_NAME = "Hail Caesar";
+import { DungeonObject, Mob } from "./dungeon.js";
+import { world } from "./database.js";
 
 export function login(client: MUDClient) {
 	let name: string,
@@ -16,7 +15,7 @@ export function login(client: MUDClient) {
 		race: Classification,
 		_class: Classification;
 
-	client.sendLine(t("Welcome to {{world}}!", { world: WORLD_NAME }));
+	client.sendLine(t("Welcome to {{world}}!", { world: world.name }));
 
 	function getName() {
 		client.ask(t("What's your name?"), confirmName);
@@ -62,13 +61,16 @@ export function login(client: MUDClient) {
 				name: name,
 			})
 		);
-		const character = new Character();
-		character.password = password;
-		character.mob = new Mob();
-		character.mob.name = name;
+		const character = new Character({ password: password });
+		const mob = new Mob();
+		const item = new DungeonObject();
+		item.name = "a sword";
+		character.mob = mob;
+		mob.name = name;
+		item.location = mob;
 		client.character = character;
 		client.sendLine(
-			t("Welcome to {{world}}, {{name}}!", { world: WORLD_NAME, name: name })
+			t("Welcome to {{world}}, {{name}}!", { world: world.name, name: name })
 		);
 	}
 

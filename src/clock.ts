@@ -1,11 +1,12 @@
 import { EventEmitter } from "events";
 import { t } from "./i18n.js";
+import { Serializable } from "./serializable.js";
 
-export interface ClockInterface {
+export interface ClockData {
 	runtime: number;
 }
 
-export class Clock extends EventEmitter {
+export class Clock extends EventEmitter implements Serializable<ClockData> {
 	/**
 	 * The global runtime of the world.
 	 */
@@ -15,6 +16,7 @@ export class Clock extends EventEmitter {
 	 * When the world started this session.
 	 */
 	protected _start: number;
+
 	constructor(runtime: number) {
 		super();
 		this._runtime = runtime;
@@ -28,7 +30,7 @@ export class Clock extends EventEmitter {
 		return this._runtime + (Date.now() - this._start);
 	}
 
-	static validateInterface(data: any): ClockInterface {
+	static validateData(data: any): ClockData {
 		if (typeof data !== "object")
 			throw new TypeError("given non-object for validation");
 		if (typeof data.runtime !== "number")
@@ -38,16 +40,16 @@ export class Clock extends EventEmitter {
 		};
 	}
 
-	static fromJSON(data: any): Clock {
+	static fromData(data: any): Clock {
 		// validate JSON
-		const wi: ClockInterface = Clock.validateInterface(data);
+		const validated: ClockData = Clock.validateData(data);
 
 		// load world
-		const w = new Clock(wi.runtime);
-		return w;
+		const world = new Clock(validated.runtime);
+		return world;
 	}
 
-	toJSON(): ClockInterface {
+	toData(): ClockData {
 		return {
 			runtime: this.runtime,
 		};

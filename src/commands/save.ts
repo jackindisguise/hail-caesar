@@ -1,14 +1,15 @@
 import { Command } from "../command.js";
-import json2toml from "json2toml";
+import { stringify, parse } from "smol-toml";
 export const COMMAND = new Command(
 	/^(?:save|sav|sa|s)$/,
 	"save",
 	"save",
 	"Save your character.",
 	(character) => {
-		const json = character.toJSON();
-		console.log(json);
-		const toml = json2toml(json);
+		const data = character.toData();
+		console.log(data);
+		const toml = stringify(data);
 		character.send(toml);
+		console.log(toml);
 	}
 );

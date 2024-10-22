@@ -1,3 +1,5 @@
+import { Serializable } from "./serializable.js";
+
 /**
  * Provides data for instantiating a calendar.
  */
@@ -18,7 +20,7 @@ const MILLISECONDS_PER_SECOND = 1000;
 /**
  * Provides the parameters for telling the time of day, as well as the days and months of the year.
  */
-export class Calendar {
+export class Calendar implements Serializable<CalendarInterface> {
 	/**
 	 * Milliseconds per year, as dictated by months within the calendar.
 	 */
@@ -47,14 +49,24 @@ export class Calendar {
 	/**
 	 * The months of the year.
 	 */
-	#months: Month[] = [];
+	months: Month[] = [];
+
+	constructor(
+		hoursPerDay: number,
+		minutesPerHour: number,
+		secondsPerMinute: number
+	) {
+		this.hoursPerDay = hoursPerDay;
+		this.minutesPerHour = minutesPerHour;
+		this.secondsPerMinute = secondsPerMinute;
+	}
 
 	/**
 	 * Checks a generic object to ensure it has all of the data necessary to act as an interface.
 	 * @param data A generic object presumably returned from parsing a file.
 	 * @returns A valid interface for the calendar.
 	 */
-	static validateInterface(data: any): CalendarInterface {
+	static validateData(data: any): CalendarInterface {
 		if (typeof data !== "object")
 			throw new TypeError("given non-object for validation");
 		if (typeof data.hoursPerDay !== "number")
@@ -69,7 +81,7 @@ export class Calendar {
 		// convert month data to interfaces
 		const MIs: MonthInterface[] = [];
 		for (let entry of data.months) {
-			const MI = Month.validateInterface(entry);
+			const MI = Month.validateData(entry);
 			MIs.push(MI);
 		}
 
@@ -86,9 +98,9 @@ export class Calendar {
 	 * @param data A generic object presumably returned from parsing a file.
 	 * @returns A new calendar.
 	 */
-	static fromJSON(data: any): Calendar {
+	static fromData(data: any): Calendar {
 		// validate JSON
-		const ci: CalendarInterface = Calendar.validateInterface(data);
+		const ci: CalendarInterface = Calendar.validateData(data);
 
 		// load calendar
 		const c = new Calendar(
@@ -98,21 +110,26 @@ export class Calendar {
 		);
 
 		for (let mi of ci.months) {
-			const month = Month.fromJSON(mi);
+			const month = Month.fromData(mi);
 			if (month) c.add(month);
 		}
 
 		return c;
 	}
 
-	constructor(
-		hoursPerDay: number,
-		minutesPerHour: number,
-		secondsPerMinute: number
-	) {
-		this.hoursPerDay = hoursPerDay;
-		this.minutesPerHour = minutesPerHour;
-		this.secondsPerMinute = secondsPerMinute;
+	toData() {
+		const months = [];
+		for (let month of this.months) {
+			const monthInterface = month.toData();
+			months.push(monthInterface);
+		}
+
+		return {
+			hoursPerDay: this.hoursPerDay,
+			minutesPerHour: this.minutesPerHour,
+			secondsPerMinute: this.secondsPerMinute,
+			months: months,
+		};
 	}
 
 	/**
@@ -122,7 +139,7 @@ export class Calendar {
 	 */
 	add(...months: Month[]) {
 		for (let month of months) {
-			this.#months.push(month);
+			this.months.push(month);
 			this.#period +=
 				month.days *
 				MILLISECONDS_PER_SECOND *
@@ -162,8 +179,8 @@ export class Calendar {
 	 */
 	dayOfMonth(timestamp: number): number {
 		let day = this.day(timestamp);
-		for (let i = 0; i < this.#months.length; i++) {
-			const month = this.#months[i];
+		for (let i = 0; i < this.months.length; i++) {
+			const month = this.months[i];
 			if (month.days <= day) day -= month.days;
 			else break;
 		}
@@ -189,8 +206,8 @@ export class Calendar {
 	month(timestamp: number): number {
 		let day = this.day(timestamp);
 		let month = 0;
-		for (month; month < this.#months.length; month++) {
-			let m = this.#months[month];
+		for (month; month < this.months.length; month++) {
+			let m = this.months[month];
 			if (m.days <= day) day -= m.days;
 			else break;
 		}
@@ -204,7 +221,7 @@ export class Calendar {
 	 * @returns The current month.
 	 */
 	monthName(timestamp: number): string {
-		const month = this.#months[this.month(timestamp)];
+		const month = this.months[this.month(timestamp)];
 		return month.name;
 	}
 
@@ -289,7 +306,7 @@ export class Month {
 	 * @param data A generic object presumably returned from parsing a file.
 	 * @returns A valid interface for the month.
 	 */
-	static validateInterface(data: any): MonthInterface {
+	static validateData(data: any): MonthInterface {
 		if (typeof data !== "object")
 			throw new TypeError("given non-object for validation");
 		if (typeof data.name !== "string")
@@ -307,12 +324,19 @@ export class Month {
 	 * @param data A generic object presumably returned from parsing a file.
 	 * @returns A new month.
 	 */
-	static fromJSON(data: any): Month {
+	static fromData(data: any): Month {
 		// validate JSON
-		const obj: MonthInterface = Month.validateInterface(data);
+		const validated: MonthInterface = Month.validateData(data);
 
 		// load month
-		const month = new Month(obj.name, obj.days);
+		const month = new Month(validated.name, validated.days);
 		return month;
+	}
+
+	toData() {
+		return {
+			name: this.name,
+			days: this.days,
+		};
 	}
 }

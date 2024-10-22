@@ -92,5 +92,35 @@
   "Loaded {{name}} v{{version}}": "Loaded {{name}} v{{version}}",
   "Server listening on port {{port}}": {
     "": "Server listening on port {{port}}."
+  },
+  "Loading '{{file}}'": "Loading '{{file}}'",
+  "Loading config": {
+    "": "Loading config."
+  },
+  "Clock set to {{time}} (@{{hour}}h {{minute}}m {{second}}s)": {
+    "": "Clock set to {{time}} (@{{hour}}h {{minute}}m {{second}}s)."
+  },
+  "Seconds per minute: {{seconds}}": "Seconds per minute: {{seconds}}",
+  "Minutes per hour: {{minutes}}": "Minutes per hour: {{minutes}}",
+  "Hours per day: {{hour}}": "Hours per day: {{hour}}",
+  "Seconds per day: {{seconds}}": "Seconds per day: {{seconds}}",
+  "> {{row}}": "> {{row}}",
+  "Minutes per hour:   {{minutes}}": "Minutes per hour:   {{minutes}}",
+  "Hours per day:      {{hour}}": "Hours per day:      {{hour}}",
+  "Seconds per day:    {{seconds}}": "Seconds per day:    {{seconds}}",
+  "Clock set to {{time}} ({{day}}d {{hour}}h {{minute}}m {{second}}s)": {
+    "": "Clock set to {{time}} ({{day}}d {{hour}}h {{minute}}m {{second}}s)."
+  },
+  "Clock set to {{time}} ({{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s)": {
+    "": "Clock set to {{time}} ({{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s)."
+  },
+  "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s": {
+    "": "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s.",
+    " (@{{time}})": "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s. (@{{time}})"
+  },
+  "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}": {
+    "{{micro}}s": {
+      " (@{{time}})": "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}.{{micro}}s. (@{{time}})"
+    }
   }
 }

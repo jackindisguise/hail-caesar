@@ -1,0 +1,14 @@
+id = "5c2d4cf9-9b24-4b09-acff-588081cd1164"
+hash = "054c9272c4c2456c1e7bf4743351ee734e6943d9cae17a9162bf350df56f8938d18d4c9d411398aafe5531038764f58437759ea991aff58dc79d2a55b5195423"
+salt = "02c7f3620c201b09b1cf9a80ffe0664a"
+
+[mob]
+keyword = "Judas"
+display = "Judas"
+description = "It's an object."
+loc = [ 0, 0, 0 ]
+
+[[mob.contents]]
+keyword = "a sword"
+display = "a sword"
+description = "It's an object."

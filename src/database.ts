@@ -3,11 +3,10 @@ import { t } from "./i18n.js";
 import { readdir, readFile } from "fs/promises";
 import { join, dirname, extname, relative } from "path";
 import { fileURLToPath } from "url";
-import { parse } from "toml";
 import { Character } from "./character.js";
 import { autocomplete, box, BOX_STYLE, PAD_SIDE } from "./string.js";
 import { ESCAPE_SIZER, Colorizer } from "./color.js";
-import json2toml from "json2toml";
+import { stringify, parse } from "smol-toml";
 
 // basic paths
 const ROOT_PATH = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -28,7 +27,7 @@ async function loadCommands() {
 		const COMMAND_PATH = join(COMMANDS_PATH, file);
 		if (extname(COMMAND_PATH) !== ".js") continue;
 		logger.debug(
-			t("Loading file {{file}}", { file: relative(DATA_PATH, COMMAND_PATH) })
+			t("Loading '{{file}}'", { file: relative(DATA_PATH, COMMAND_PATH) })
 		);
 		let data: any = await import(`file://${COMMAND_PATH}`);
 		const command: Command = data.COMMAND;
@@ -87,11 +86,11 @@ async function loadRaces() {
 		const RACE_PATH = join(RACES_PATH, file);
 		if (extname(RACE_PATH) !== ".toml") continue;
 		logger.debug(
-			t("Loading file {{file}}", { file: relative(DATA_PATH, RACE_PATH) })
+			t("Loading '{{file}}'", { file: relative(DATA_PATH, RACE_PATH) })
 		);
 		const data = await readFile(RACE_PATH, "utf8");
 		const json: any = parse(data);
-		const race = Classification.fromJSON(json);
+		const race = Classification.fromData(json);
 		races.push(race);
 	}
 }
@@ -108,13 +107,13 @@ async function loadClasses() {
 		const CLASS_PATH = join(CLASSES_PATH, file);
 		if (extname(CLASS_PATH) !== ".toml") continue;
 		logger.debug(
-			t("Loading file {{file}}", {
+			t("Loading '{{file}}'", {
 				file: relative(DATA_PATH, CLASS_PATH),
 			})
 		);
 		const data = await readFile(CLASS_PATH, "utf8");
 		const json = parse(data);
-		const _class = Classification.fromJSON(json);
+		const _class = Classification.fromData(json);
 		classes.push(_class);
 	}
 }
@@ -123,18 +122,54 @@ async function loadClasses() {
  * Load calendar and shit.
  */
 import { Calendar, Month } from "./calendar.js";
+import { table } from "table";
 const CALENDAR_PATH = join(DATA_PATH, "calendar.toml");
 export let calendar: Calendar;
 async function loadCalendar() {
 	logger.debug(t("Loading calendar."));
 	logger.debug(
-		t("Loading file {{file}}", {
+		t("Loading '{{file}}'", {
 			file: relative(DATA_PATH, CALENDAR_PATH),
 		})
 	);
 	const data = await readFile(CALENDAR_PATH, "utf8");
 	const json = parse(data);
-	calendar = Calendar.fromJSON(json);
+	calendar = Calendar.fromData(json);
+	const months: string[][] = [];
+	let line: string[] = [];
+	for (let i = 0; i < calendar.months.length; i++) {
+		if (i > 0 && i % 3 === 0) {
+			months.push(line);
+			line = [];
+		}
+		const month: Month = calendar.months[i];
+		line.push(`${i + 1}) ${month.name}`);
+	}
+	if (line.length) {
+		while (line.length < 3) line.push("");
+		months.push(line);
+	}
+	const lines = table(months).split("\n");
+	lines.pop();
+	logger.debug(`Calendar of ${calendar.months.length} months...`);
+	for (let line of lines) logger.debug(t("> {{row}}", { row: line }));
+	logger.debug(
+		t("Seconds per minute: {{seconds}}", { seconds: calendar.secondsPerMinute })
+	);
+	logger.debug(
+		t("Minutes per hour:   {{minutes}}", { minutes: calendar.minutesPerHour })
+	);
+	logger.debug(
+		t("Hours per day:      {{hour}}", { hour: calendar.hoursPerDay })
+	);
+	logger.debug(
+		t("Seconds per day:    {{seconds}}", {
+			seconds:
+				calendar.secondsPerMinute *
+				calendar.minutesPerHour *
+				calendar.hoursPerDay,
+		})
+	);
 }
 
 /**
@@ -146,13 +181,28 @@ export let clock: Clock;
 async function loadClock() {
 	logger.debug(t("Loading clock."));
 	logger.debug(
-		t("Loading file {{file}}", {
+		t("Loading '{{file}}'", {
 			file: relative(DATA_PATH, CLOCK_PATH),
 		})
 	);
 	const data = await readFile(CLOCK_PATH, "utf8");
 	const json = parse(data);
-	clock = Clock.fromJSON(json);
+	clock = Clock.fromData(json);
+	const runtime = clock.runtime;
+	logger.debug(
+		t(
+			"Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}.{{milli}}s. (@{{time}})",
+			{
+				time: runtime,
+				year: calendar.year(runtime),
+				day: calendar.day(runtime),
+				hour: calendar.hour(runtime),
+				minute: calendar.minute(runtime),
+				second: calendar.second(runtime),
+				milli: calendar.millisecond(runtime),
+			}
+		)
+	);
 }
 
 /**
@@ -164,7 +214,7 @@ export let world: World;
 async function loadWorld() {
 	logger.debug(t("Loading world."));
 	logger.debug(
-		t("Loading file {{file}}", {
+		t("Loading '{{file}}'", {
 			file: relative(DATA_PATH, WORLD_PATH),
 		})
 	);
@@ -177,19 +227,26 @@ async function loadWorld() {
  * Front facing access to database loading.
  */
 export async function load() {
-	return new Promise<void>(async (resolve) => {
+	return new Promise<void>(async (resolve, reject) => {
 		logger.debug(
 			t("Started loading database at {{time}}.", {
 				time: new Date().toLocaleTimeString(),
 			})
 		);
 		const start = Date.now();
+		logger.debug(">>>");
 		await loadWorld();
+		logger.debug(">>>");
 		await loadCalendar();
+		logger.debug(">>>");
 		await loadClock();
+		logger.debug(">>>");
 		await loadRaces();
+		logger.debug(">>>");
 		await loadClasses();
+		logger.debug(">>>");
 		await loadCommands();
+		logger.debug(">>>");
 		const end = Date.now();
 		logger.debug(
 			t("Finished loading database at {{time}}.", {

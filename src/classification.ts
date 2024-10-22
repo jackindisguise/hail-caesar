@@ -1,9 +1,11 @@
-interface ClassificationInterface {
+import { Serializable } from "./serializable.js";
+
+interface ClassificationData {
 	name: string;
 	description: string;
 }
 
-export class Classification {
+export class Classification implements Serializable<ClassificationData> {
 	name: string;
 	description: string;
 	constructor(name: string, description: string) {
@@ -11,7 +13,7 @@ export class Classification {
 		this.description = description;
 	}
 
-	static validateInterface(data: any): ClassificationInterface {
+	static validateData(data: any): ClassificationData {
 		if (typeof data !== "object")
 			throw new TypeError("given non-object for validation");
 		if (typeof data.name !== "string")
@@ -24,16 +26,19 @@ export class Classification {
 		};
 	}
 
-	static fromJSON(data: any): Classification {
+	static fromData(data: any): Classification {
 		// validate JSON
-		const obj: ClassificationInterface = Classification.validateInterface(data);
+		const validated: ClassificationData = Classification.validateData(data);
 
 		// load classification
-		const c = new Classification(obj.name, obj.description);
-		return c;
+		const classification = new Classification(
+			validated.name,
+			validated.description
+		);
+		return classification;
 	}
 
-	toJSON(): ClassificationInterface {
+	toData(): ClassificationData {
 		return {
 			name: this.name,
 			description: this.description,

@@ -11,7 +11,7 @@ describe("calendar.ts", () => {
 		let calendarInterface: CalendarInterface;
 		it("validateInterface", (done) => {
 			try {
-				Calendar.validateInterface(1);
+				Calendar.validateData(1);
 			} catch (e) {
 				expect((e as Error).message).is.equal(
 					"given non-object for validation"
@@ -19,7 +19,7 @@ describe("calendar.ts", () => {
 			}
 			const json: any = {};
 			try {
-				Calendar.validateInterface(json);
+				Calendar.validateData(json);
 			} catch (e) {
 				expect((e as Error).message).is.equal(
 					"missing/bad field 'hoursPerDay'"
@@ -27,7 +27,7 @@ describe("calendar.ts", () => {
 			}
 			json.hoursPerDay = 24;
 			try {
-				Calendar.validateInterface(json);
+				Calendar.validateData(json);
 			} catch (e) {
 				expect((e as Error).message).is.equal(
 					"missing/bad field 'minutesPerHour'"
@@ -35,7 +35,7 @@ describe("calendar.ts", () => {
 			}
 			json.minutesPerHour = 10;
 			try {
-				Calendar.validateInterface(json);
+				Calendar.validateData(json);
 			} catch (e) {
 				expect((e as Error).message).is.equal(
 					"missing/bad field 'secondsPerMinute'"
@@ -43,7 +43,7 @@ describe("calendar.ts", () => {
 			}
 			json.secondsPerMinute = 5;
 			try {
-				Calendar.validateInterface(json);
+				Calendar.validateData(json);
 			} catch (e) {
 				expect((e as Error).message).is.equal("missing/bad field 'months'");
 			}
@@ -52,7 +52,7 @@ describe("calendar.ts", () => {
 				{ name: "February", days: 28 },
 			];
 			try {
-				Calendar.validateInterface(json);
+				Calendar.validateData(json);
 			} catch (e) {
 				expect((e as Error).message).is.equal("missing/bad field 'days'");
 			}
@@ -60,12 +60,12 @@ describe("calendar.ts", () => {
 				{ name: "January", days: 30 },
 				{ name: "February", days: 28 },
 			];
-			calendarInterface = Calendar.validateInterface(json);
+			calendarInterface = Calendar.validateData(json);
 			done();
 		});
 
 		it("fromJSON", (done) => {
-			const c: Calendar = Calendar.fromJSON(calendarInterface);
+			const c: Calendar = Calendar.fromData(calendarInterface);
 			done();
 		});
 
@@ -161,7 +161,7 @@ describe("calendar.ts", () => {
 		let monthInterface: MonthInterface;
 		it("validateInterface", (done) => {
 			try {
-				Month.validateInterface(1);
+				Month.validateData(1);
 			} catch (e) {
 				expect((e as Error).message).is.equal(
 					"given non-object for validation"
@@ -169,23 +169,23 @@ describe("calendar.ts", () => {
 			}
 			const json: any = {};
 			try {
-				Month.validateInterface(json);
+				Month.validateData(json);
 			} catch (e) {
 				expect((e as Error).message).is.equal("missing/bad field 'name'");
 			}
 			json.name = "January";
 			try {
-				Month.validateInterface(json);
+				Month.validateData(json);
 			} catch (e) {
 				expect((e as Error).message).is.equal("missing/bad field 'days'");
 			}
 			json.days = 30;
-			monthInterface = Month.validateInterface(json);
+			monthInterface = Month.validateData(json);
 			done();
 		});
 
 		it("fromJSON", (done) => {
-			const m: Month = Month.fromJSON(monthInterface);
+			const m: Month = Month.fromData(monthInterface);
 			done();
 		});
 	});
