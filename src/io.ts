@@ -4,7 +4,8 @@ import { t } from "./i18n.js";
 import { Socket, Server, createServer } from "net";
 import { Character } from "./character.js";
 import { autocomplete } from "./string.js";
-import { colorize, Colorizer } from "./color.js";
+import { colorize } from "./color.js";
+import { EOL } from "./telnet.js";
 
 export declare interface MUDClient {
 	on(event: "close", listener: () => void): this;
@@ -33,7 +34,7 @@ export class MUDClient extends EventEmitter {
 		);
 		socket.on("data", (data: Buffer) => {
 			let safe: string = data.toString("utf8");
-			const commands = safe.split("\r\n");
+			const commands = safe.split(EOL);
 			const remainder = commands.pop();
 			if (remainder)
 				logger.debug(
@@ -70,7 +71,7 @@ export class MUDClient extends EventEmitter {
 	}
 
 	sendLine(message: string) {
-		this.send(`${message}\r\n`);
+		this.send(`${message}${EOL}`);
 	}
 
 	ask(question: string, callback: (command: string) => void) {

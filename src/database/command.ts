@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import { Character } from "../character.js";
 import { autocomplete, box, BOX_STYLE, PAD_SIDE } from "../string.js";
 import { ESCAPE_SIZER, Colorizer } from "../color.js";
+import { EOL } from "../telnet.js";
 
 // basic paths
 const ROOT_PATH = join(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -58,7 +59,7 @@ export function command(character: Character, input: string) {
 				},
 				ESCAPE_SIZER
 			);
-			character.sendLine(msg.join("\r\n"));
+			character.sendLine(msg.join(EOL));
 			return true;
 		}
 		const args = safe.match(command.rule);

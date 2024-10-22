@@ -1,7 +1,8 @@
 import { expect } from "chai";
 import { MUDClient, MUDServer } from "../io.js";
 import { createConnection, Socket } from "net";
-import { Colorizer, colorize } from "../color.js";
+import { colorize } from "../color.js";
+import { EOL } from "../telnet.js";
 
 describe("io.ts", () => {
 	let server: MUDServer;
@@ -24,20 +25,20 @@ describe("io.ts", () => {
 			expect(command).is.equal("cake");
 			done();
 		});
-		client.write("cake\r\n");
+		client.write(`cake${EOL}`);
 	});
 	it("Telnet protocol ignored", (done) => {
 		mClient.once("command", (command: string) => {
 			done("failure");
 		});
-		client.write(Buffer.from([255, 255, 255]));
+		client.write(Uint8Array.from([255, 255, 255]));
 		setTimeout(() => done(), 500);
 	});
 	it("receiving messages", (done) => {
 		const str = "Sup {{{Ydude{x}?";
 		const colorized = colorize(str);
 		client.once("data", (data: string) => {
-			expect(data).is.equal(`${colorized}\r\n`);
+			expect(data).is.equal(`${colorized}${EOL}`);
 			done();
 		});
 		mClient.sendLine(str);
@@ -45,7 +46,7 @@ describe("io.ts", () => {
 	it("asking questions", (done) => {
 		client.once("data", (data: string) => {
 			expect(data).is.equal("What's your name? ");
-			client.write("Judas\r\n");
+			client.write(`Judas${EOL}`);
 		});
 		mClient.ask("What's your name?", (name: string) => {
 			expect(name).is.equal("Judas");
@@ -55,7 +56,7 @@ describe("io.ts", () => {
 	it("y/n: yes", (done) => {
 		client.once("data", (data: string) => {
 			expect(data).is.equal("Are you cool? [y/n] ");
-			client.write("y\r\n");
+			client.write(`y${EOL}`);
 		});
 		mClient.yesno("Are you cool?", (agree) => {
 			if (agree) done();
@@ -65,7 +66,7 @@ describe("io.ts", () => {
 	it("y/n: no", (done) => {
 		client.once("data", (data: string) => {
 			expect(data).is.equal("Are you cool? [y/n] ");
-			client.write("n\r\n");
+			client.write(`n${EOL}`);
 		});
 		mClient.yesno("Are you cool?", (agree) => {
 			if (agree) done("wtf");
@@ -75,7 +76,7 @@ describe("io.ts", () => {
 	it("y/n: maybe", (done) => {
 		client.once("data", (data: string) => {
 			expect(data).is.equal("Are you cool? [y/n] ");
-			client.write("m\r\n");
+			client.write(`m${EOL}`);
 			// again
 			client.once("data", (data: string) => {
 				expect(data).is.equal("Are you cool? [y/n] ");

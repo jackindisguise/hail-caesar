@@ -15,3 +15,4 @@ export const DM = 242; /* data mark--for connect. cleaning */
 export const NOP = 241; /* nop */
 export const SE = 240; /* end sub negotiation */
 export const EOR = 239; /* end of record (transparent mode) */
+export const EOL = "\r\n";

@@ -1,6 +1,7 @@
 import { Mob, MobData } from "./dungeon.js";
 import { randomBytes, scryptSync, randomUUID } from "crypto";
 import { t } from "./i18n.js";
+import { EOL } from "./telnet.js";
 import { MUDClient } from "./io.js";
 import { Serializable } from "./serializable.js";
 
@@ -95,7 +96,7 @@ export class Character implements Serializable<CharacterData> {
 	}
 
 	sendLine(message: string) {
-		this.send(`${message}\r\n`);
+		this.send(`${message}${EOL}`);
 	}
 
 	ask(question: string, callback: (command: string) => void) {

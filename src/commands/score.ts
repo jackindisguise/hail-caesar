@@ -1,4 +1,5 @@
 import { t } from "../i18n.js";
+import { EOL } from "../telnet.js";
 import { box, BOX_STYLE, PAD_SIDE } from "../string.js";
 import { ESCAPE_SIZER, Colorizer } from "../color.js";
 import { Command } from "../command.js";
@@ -58,6 +59,6 @@ export const COMMAND = new Command(
 			},
 			ESCAPE_SIZER
 		);
-		character.sendLine(msg.join("\r\n"));
+		character.sendLine(msg.join(EOL));
 	}
 );

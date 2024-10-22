@@ -47,5 +47,21 @@
   "Loaded {{name}} v{{version}}": "Loaded {{name}} v{{version}}",
   "Server listening on port {{port}}": {
     "": "Server listening on port {{port}}."
-  }
+  },
+  "New client connection": {
+    "": {
+      "": {
+        "": "New client connection..."
+      }
+    }
+  },
+  "Assigned address: @{{address}}": "Assigned address: @{{address}}",
+  "Server opened connection to {{client}}!": "Server opened connection to {{client}}!",
+  "[{{character}}]": "[{{character}}]",
+  "{{client}}: '{{input}}'": "{{client}}: '{{input}}'",
+  "@{{address}}: non-command input from client: {{input}}": "@{{address}}: non-command input from client: {{input}}",
+  "{{client}} closed connection": {
+    "": "{{client}} closed connection."
+  },
+  "Server closed connection to {{client}}!": "Server closed connection to {{client}}!"
 }

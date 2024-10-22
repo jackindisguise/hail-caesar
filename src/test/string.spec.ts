@@ -1,85 +1,95 @@
-import * as string from "../string.js";
+import {
+	padLeft,
+	padRight,
+	padCenter,
+	pad,
+	wrap,
+	box as _box,
+	matchKeywords,
+	autocomplete,
+	toOrdinal,
+	TERM_SIZER,
+	BOX_STYLE,
+	BoxStyle,
+	PAD_SIDE,
+} from "../string.js";
 import { expect } from "chai";
 import chalk from "chalk";
 
 describe("string.ts", () => {
 	it("pad", (done) => {
-		expect(string.pad("test", 3, string.PAD_SIDE.LEFT)).is.equal("test");
-		expect(string.pad("test", 10, string.PAD_SIDE.LEFT)).is.equal("      test");
-		expect(
-			string.pad({ string: "test", width: 10, side: string.PAD_SIDE.LEFT })
-		).is.equal("      test");
-		expect(string.pad("test", 10, string.PAD_SIDE.LEFT, "-")).is.equal(
-			"------test"
+		expect(pad("test", 3, PAD_SIDE.LEFT)).is.equal("test");
+		expect(pad("test", 10, PAD_SIDE.LEFT)).is.equal("      test");
+		expect(pad({ string: "test", width: 10, side: PAD_SIDE.LEFT })).is.equal(
+			"      test"
 		);
-		expect(string.pad("50", 10, string.PAD_SIDE.LEFT, "0")).is.equal(
-			"0000000050"
+		expect(pad("test", 10, PAD_SIDE.LEFT, "-")).is.equal("------test");
+		expect(pad("50", 10, PAD_SIDE.LEFT, "0")).is.equal("0000000050");
+		expect(pad({ string: "test", width: 10, side: PAD_SIDE.RIGHT })).is.equal(
+			"test      "
 		);
 		expect(
-			string.pad({ string: "test", width: 10, side: string.PAD_SIDE.RIGHT })
-		).is.equal("test      ");
-		expect(
-			string.pad({
+			pad({
 				string: "test",
 				width: 10,
-				side: string.PAD_SIDE.RIGHT,
+				side: PAD_SIDE.RIGHT,
 				padder: "<>{}",
 			})
 		).is.equal("test<>{}<>");
 		expect(
-			string.pad({
+			pad({
 				string: "test",
 				width: 10,
-				side: string.PAD_SIDE.RIGHT,
+				side: PAD_SIDE.RIGHT,
 				padder: "-",
 			})
 		).is.equal("test------");
 		expect(
-			string.pad({
+			pad({
 				string: "50.",
 				width: 10,
-				side: string.PAD_SIDE.RIGHT,
+				side: PAD_SIDE.RIGHT,
 				padder: "0",
 			})
 		).is.equal("50.0000000");
 		expect(
-			string.pad({
+			pad({
 				string: "test",
-				side: string.PAD_SIDE.CENTER,
+				side: PAD_SIDE.CENTER,
 				width: 10,
 			})
 		).is.equal("   test   ");
 		expect(
-			string.pad({
+			pad({
 				string: "test",
 				width: 10,
-				side: string.PAD_SIDE.CENTER,
+				side: PAD_SIDE.CENTER,
 				padder: "<>",
 			})
 		).is.equal("<><test><>");
 		expect(
-			string.pad({
+			pad({
 				string: "test",
 				width: 80,
-				side: string.PAD_SIDE.CENTER,
+				side: PAD_SIDE.CENTER,
 				padder: "<->",
 			})
 		).is.equal(
 			"<-><-><-><-><-><-><-><-><-><-><-><-><-test<-><-><-><-><-><-><-><-><-><-><-><-><-"
 		);
 		expect(
-			string.pad({
+			pad({
 				string: "test",
 				width: 10,
-				side: string.PAD_SIDE.CENTER,
+				side: PAD_SIDE.CENTER,
 				padder: "-",
 			})
 		).is.equal("---test---");
 		expect(
-			string.pad({
+			pad({
 				string: "test",
 				width: 11,
-				side: string.PAD_SIDE.CENTER,
+				side: PAD_SIDE.CENTER,
 				padder: "-",
 			})
 		).is.equal("---test----");
@@ -87,84 +97,76 @@ describe("string.ts", () => {
 	});
 
 	it("padLeft", (done) => {
-		expect(string.padLeft("test", 3)).is.equal("test");
-		expect(string.padLeft("test", 10)).is.equal("      test");
-		expect(string.padLeft("test", 10, "<><>")).is.equal("<><><>test");
-		expect(
-			string.padLeft("test", 10, "<>", string.TERM_SIZER, chalk.yellow)
-		).is.equal(`${chalk.yellow("<><><>")}test`);
-		expect(string.padLeft({ string: "test", width: 10 })).is.equal(
-			"      test"
+		expect(padLeft("test", 3)).is.equal("test");
+		expect(padLeft("test", 10)).is.equal("      test");
+		expect(padLeft("test", 10, "<><>")).is.equal("<><><>test");
+		expect(padLeft("test", 10, "<>", TERM_SIZER, chalk.yellow)).is.equal(
+			`${chalk.yellow("<><><>")}test`
 		);
-		expect(string.padLeft({ string: "test", width: 10, padder: "-" })).is.equal(
+		expect(padLeft({ string: "test", width: 10 })).is.equal("      test");
+		expect(padLeft({ string: "test", width: 10, padder: "-" })).is.equal(
 			"------test"
 		);
-		expect(string.padLeft({ string: "50", width: 10, padder: "0" })).is.equal(
+		expect(padLeft({ string: "50", width: 10, padder: "0" })).is.equal(
 			"0000000050"
 		);
 		done();
 	});
 
 	it("padRight", (done) => {
-		expect(string.padRight("test", 3)).is.equal("test");
-		expect(string.padRight("test", 10)).is.equal("test      ");
-		expect(string.padRight("test", 10, "<><>")).is.equal("test<><><>");
-		expect(
-			string.padRight("test", 10, "<>", string.TERM_SIZER, chalk.yellow)
-		).is.equal(`test${chalk.yellow("<><><>")}`);
-		expect(string.padRight({ string: "test", width: 10 })).is.equal(
-			"test      "
+		expect(padRight("test", 3)).is.equal("test");
+		expect(padRight("test", 10)).is.equal("test      ");
+		expect(padRight("test", 10, "<><>")).is.equal("test<><><>");
+		expect(padRight("test", 10, "<>", TERM_SIZER, chalk.yellow)).is.equal(
+			`test${chalk.yellow("<><><>")}`
 		);
-		expect(
-			string.padRight({ string: "test", width: 10, padder: "<>{}" })
-		).is.equal("test<>{}<>");
-		expect(
-			string.padRight({ string: "test", width: 10, padder: "-" })
-		).is.equal("test------");
-		expect(string.padRight({ string: "50.", width: 10, padder: "0" })).is.equal(
+		expect(padRight({ string: "test", width: 10 })).is.equal("test      ");
+		expect(padRight({ string: "test", width: 10, padder: "<>{}" })).is.equal(
+			"test<>{}<>"
+		);
+		expect(padRight({ string: "test", width: 10, padder: "-" })).is.equal(
+			"test------"
+		);
+		expect(padRight({ string: "50.", width: 10, padder: "0" })).is.equal(
 			"50.0000000"
 		);
 		done();
 	});
 
 	it("padCenter", (done) => {
-		expect(string.padCenter("test", 3)).is.equal("test");
-		expect(string.padCenter("test", 10)).is.equal("   test   ");
-		expect(string.padCenter("test", 10, "<><>")).is.equal("<><test><>");
-		expect(
-			string.padCenter("test", 10, "<>", string.TERM_SIZER, chalk.yellow)
-		).is.equal(`${chalk.yellow("<><")}test${chalk.yellow("><>")}`);
-		expect(
-			string.padCenter("test", 5, "<>", string.TERM_SIZER, chalk.yellow)
-		).is.equal(`test${chalk.yellow("<")}`);
-
-		expect(string.padCenter({ string: "test", width: 10 })).is.equal(
-			"   test   "
+		expect(padCenter("test", 3)).is.equal("test");
+		expect(padCenter("test", 10)).is.equal("   test   ");
+		expect(padCenter("test", 10, "<><>")).is.equal("<><test><>");
+		expect(padCenter("test", 10, "<>", TERM_SIZER, chalk.yellow)).is.equal(
+			`${chalk.yellow("<><")}test${chalk.yellow("><>")}`
 		);
-		expect(
-			string.padCenter({ string: "test", width: 10, padder: "<>" })
-		).is.equal("<><test><>");
-		expect(
-			string.padCenter({ string: "test", width: 80, padder: "<->" })
-		).is.equal(
+		expect(padCenter("test", 5, "<>", TERM_SIZER, chalk.yellow)).is.equal(
+			`test${chalk.yellow("<")}`
+		);
+
+		expect(padCenter({ string: "test", width: 10 })).is.equal("   test   ");
+		expect(padCenter({ string: "test", width: 10, padder: "<>" })).is.equal(
+			"<><test><>"
+		);
+		expect(padCenter({ string: "test", width: 80, padder: "<->" })).is.equal(
 			"<-><-><-><-><-><-><-><-><-><-><-><-><-test<-><-><-><-><-><-><-><-><-><-><-><-><-"
 		);
-		expect(
-			string.padCenter({ string: "test", width: 10, padder: "-" })
-		).is.equal("---test---");
-		expect(
-			string.padCenter({ string: "test", width: 11, padder: "-" })
-		).is.equal("---test----");
+		expect(padCenter({ string: "test", width: 10, padder: "-" })).is.equal(
+			"---test---"
+		);
+		expect(padCenter({ string: "test", width: 11, padder: "-" })).is.equal(
+			"---test----"
+		);
 		done();
 	});
 
 	it("color", (done) => {
 		const str = chalk.red("this is a test");
-		const padded = string.padCenter({
+		const padded = padCenter({
 			string: str,
 			width: 50,
 			padder: "-",
-			sizer: string.TERM_SIZER,
+			sizer: TERM_SIZER,
 			color: chalk.blue,
 		});
 		const expected = `${chalk.blue("------------------")}${str}${chalk.blue(
@@ -176,21 +178,19 @@ describe("string.ts", () => {
 
 	describe("wrap", () => {
 		it("bug", (done) => {
-			const line = string.padCenter(
+			const line = padCenter(
 				chalk.green(" Centered "),
 				76,
 				"<*>",
-				string.TERM_SIZER,
+				TERM_SIZER,
 				chalk.yellow
 			);
-			const box = string
-				.box({
-					input: [line],
-					width: 80,
-					style: string.BOX_STYLE.O,
-					sizer: string.TERM_SIZER,
-				})
-				.join("\n");
+			const box = _box({
+				input: [line],
+				width: 80,
+				style: BOX_STYLE.O,
+				sizer: TERM_SIZER,
+			}).join("\n");
 			const expected = `\
 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\n\
 O ${chalk.yellow("<*><*><*><*><*><*><*><*><*><*><*>")}${chalk.green(
@@ -217,9 +217,11 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 				`This is a ${chalk.yellow("test")}.`,
 				`This is a ${chalk.cyan("test")}.`,
 			].join("\n");
-			const wrapped = string
-				.wrap({ string: lorem.join(" "), width: 15, sizer: string.TERM_SIZER })
-				.join("\n");
+			const wrapped = wrap({
+				string: lorem.join(" "),
+				width: 15,
+				sizer: TERM_SIZER,
+			}).join("\n");
 			expect(wrapped).is.equal(expected);
 			done();
 		});
@@ -236,7 +238,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 				"Vestibulum dolor magna, iaculis in velit eu, fermentum tincidunt metus.",
 			];
 			const blob = lorem.join(" ");
-			const limited = string.wrap(blob, 80).join("-");
+			const limited = wrap(blob, 80).join("-");
 			const expected = [
 				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis",
 				"tortor a risus varius, sed euismod lectus ultricies. Nam sodales gravida lectus",
@@ -251,7 +253,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 		it("long", (done) => {
 			const lorem = "a".repeat(80) + "b".repeat(80);
-			const limited = string.wrap({ string: lorem, width: 80 }).join("*");
+			const limited = wrap({ string: lorem, width: 80 }).join("*");
 			const expected = [
 				//12345678901234567890123456789012345678901234567890123456789012345678901234567890
 				"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-",
@@ -265,7 +267,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		it("short and long", (done) => {
 			const lorem =
 				"a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaa aaaaaaaaa aaaaaaaaaa aa aaaaaaaaa";
-			const limited = string.wrap({ string: lorem, width: 10 }).join("*");
+			const limited = wrap({ string: lorem, width: 10 }).join("*");
 			const expected = [
 				"a aa aaa",
 				"aaaa aaaaa",
@@ -284,7 +286,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 	describe("box", () => {
 		it("plain", (done) => {
-			const box = string.box(["cake", "pie"], 80);
+			const box = _box(["cake", "pie"], 80);
 			const expected = [
 				"cake                                                                            ",
 				"pie                                                                             ",
@@ -293,7 +295,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("top-right specified with title but no top-left", (done) => {
-			const box = string.box(["cake", "pie"], 80, "title", {
+			const box = _box(["cake", "pie"], 80, "title", {
 				top: { right: "." },
 			});
 			const expected = [
@@ -305,7 +307,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("top-left specified with title but no top-right", (done) => {
-			const box = string.box(["cake", "pie"], 80, "title", {
+			const box = _box(["cake", "pie"], 80, "title", {
 				top: { left: "." },
 			});
 			const expected = [
@@ -317,7 +319,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("top-right specified with no title but no top-left", (done) => {
-			const box = string.box(["cake", "pie"], 80, undefined, {
+			const box = _box(["cake", "pie"], 80, undefined, {
 				top: { right: "." },
 			});
 			const expected = [
@@ -329,7 +331,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("top-left specified with no title but no top-right", (done) => {
-			const box = string.box(["cake", "pie"], 80, undefined, {
+			const box = _box(["cake", "pie"], 80, undefined, {
 				top: { left: "." },
 			});
 			const expected = [
@@ -341,7 +343,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("titled", (done) => {
-			const box = string.box(["cake", "pie"], 80, "A title.");
+			const box = _box(["cake", "pie"], 80, "A title.");
 			const expected = [
 				"A title.                                                                        ",
 				"cake                                                                            ",
@@ -351,13 +353,13 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("super long centered title", (done) => {
-			const box = string.box(
+			const box = _box(
 				["cake", "pie"],
 				30,
 				"A really long title for this box.",
 				{
 					top: { middle: "-" },
-					titleHAlign: string.PAD_SIDE.CENTER,
+					titleHAlign: PAD_SIDE.CENTER,
 				}
 			);
 			const expected = [
@@ -369,8 +371,8 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("title centered", (done) => {
-			const box = string.box(["cake", "pie"], 80, "A title.", {
-				titleHAlign: string.PAD_SIDE.CENTER,
+			const box = _box(["cake", "pie"], 80, "A title.", {
+				titleHAlign: PAD_SIDE.CENTER,
 			});
 			const expected = [
 				"                                    A title.                                    ",
@@ -381,12 +383,12 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("right specified but no left", (done) => {
-			const style: string.BoxStyle = {
+			const style: BoxStyle = {
 				horizontal: "-",
 				corner: "+",
 				right: "<",
 			};
-			const box = string.box(["cake", "pie"], 80, "cake", style);
+			const box = _box(["cake", "pie"], 80, "cake", style);
 			const expected = [
 				"+- cake ----------------------------------------------------------------------+",
 				" cake                                                                         <",
@@ -396,12 +398,12 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("left specified but no right", (done) => {
-			const style: string.BoxStyle = {
+			const style: BoxStyle = {
 				horizontal: "-",
 				corner: "+",
 				left: ">",
 			};
-			const box = string.box(["cake", "pie"], 80, "cake", style);
+			const box = _box(["cake", "pie"], 80, "cake", style);
 			const expected = [
 				"+- cake ----------------------------------------------------------------------+",
 				"> cake                                                                         ",
@@ -411,8 +413,8 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("left-only title border", (done) => {
-			const box = string.box(["cake", "pie"], 80, "cake", {
-				...string.BOX_STYLE.PLAIN,
+			const box = _box(["cake", "pie"], 80, "cake", {
+				...BOX_STYLE.PLAIN,
 				titleBorder: { left: ">" },
 			});
 			const expected = [
@@ -425,8 +427,8 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("right-only title border", (done) => {
-			const box = string.box(["cake", "pie"], 80, "cake", {
-				...string.BOX_STYLE.PLAIN,
+			const box = _box(["cake", "pie"], 80, "cake", {
+				...BOX_STYLE.PLAIN,
 				titleBorder: { right: "<" },
 			});
 			const expected = [
@@ -439,19 +441,19 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			done();
 		});
 		it("color", (done) => {
-			const style: string.BoxStyle = {
-				...string.BOX_STYLE.PLAIN,
+			const style: BoxStyle = {
+				...BOX_STYLE.PLAIN,
 				titleBorder: { left: "<", right: ">" },
-				hAlign: string.PAD_SIDE.CENTER,
+				hAlign: PAD_SIDE.CENTER,
 				borderColor: chalk.yellow,
 			};
 
-			const box = string.box({
+			const box = _box({
 				input: ["This is a test.", `This is a ${chalk.red("test")}.`],
 				style: style,
 				title: `Go to ${chalk.yellow.bold("HELL")}`,
 				width: 30,
-				sizer: string.TERM_SIZER,
+				sizer: TERM_SIZER,
 			});
 
 			const expected = [
@@ -466,22 +468,22 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		});
 
 		it("color + multiline", (done) => {
-			const style: string.BoxStyle = {
-				...string.BOX_STYLE.PLAIN,
+			const style: BoxStyle = {
+				...BOX_STYLE.PLAIN,
 				titleBorder: { left: "<", right: ">" },
-				hAlign: string.PAD_SIDE.CENTER,
+				hAlign: PAD_SIDE.CENTER,
 				borderColor: chalk.yellow,
 				bodyColor: chalk.greenBright,
 			};
 
-			const box = string.box(
+			const box = _box(
 				[
 					"This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test.",
 				],
 				30,
 				`Go to ${chalk.yellow.bold("HELL")}`,
 				style,
-				string.TERM_SIZER
+				TERM_SIZER
 			);
 
 			const expected = [
@@ -499,29 +501,27 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		});
 
 		it("weird", (done) => {
-			const style: string.BoxStyle = {
+			const style: BoxStyle = {
 				hPadding: 2,
 				vPadding: 1,
-				hAlign: string.PAD_SIDE.LEFT,
-				titleHAlign: string.PAD_SIDE.LEFT,
+				hAlign: PAD_SIDE.LEFT,
+				titleHAlign: PAD_SIDE.LEFT,
 				top: { middle: "v " },
 				bottom: { middle: "^ " },
 				left: ">",
 				right: "<",
 			};
 
-			const generated = string
-				.box({
-					style: style,
-					width: 25,
-					input: [
-						"This is line 1.",
-						"This is line 2.",
-						"This is line 3.",
-						"Go to hell.",
-					],
-				})
-				.join("\n");
+			const generated = _box({
+				style: style,
+				width: 25,
+				input: [
+					"This is line 1.",
+					"This is line 2.",
+					"This is line 3.",
+					"Go to hell.",
+				],
+			}).join("\n");
 
 			const expected = [
 				"v v v v v v v v v v v v v",
@@ -539,21 +539,19 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		});
 
 		it("right-aligned (default)", (done) => {
-			const generated = string
-				.box({
-					style: {
-						...string.BOX_STYLE.PLAIN,
-						hPadding: 2,
-						top: { left: ">>", right: "<<" },
-						bottom: { left: ">>", right: "<<" },
-						left: ">>",
-						right: "<<",
-					},
-					title: "Box Title",
-					input: ["This is a line.", "This is another line."],
-					width: 30,
-				})
-				.join("\n");
+			const generated = _box({
+				style: {
+					...BOX_STYLE.PLAIN,
+					hPadding: 2,
+					top: { left: ">>", right: "<<" },
+					bottom: { left: ">>", right: "<<" },
+					left: ">>",
+					right: "<<",
+				},
+				title: "Box Title",
+				input: ["This is a line.", "This is another line."],
+				width: 30,
+			}).join("\n");
 
 			const expected = [
 				">>- Box Title --------------<<",
@@ -569,21 +567,19 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		it("center-aligned", (done) => {
 			// copy rounded box style
 			const rounded = {
-				...string.BOX_STYLE.ROUNDED,
-				hAlign: string.PAD_SIDE.CENTER,
-				titleHAlign: string.PAD_SIDE.CENTER,
+				...BOX_STYLE.ROUNDED,
+				hAlign: PAD_SIDE.CENTER,
+				titleHAlign: PAD_SIDE.CENTER,
 				vPadding: 1,
 			};
 
 			// generate a rounded box
-			const generated = string
-				.box({
-					style: rounded,
-					title: "Box Title",
-					input: ["This is a line.", "This is another line."],
-					width: 30,
-				})
-				.join("\n");
+			const generated = _box({
+				style: rounded,
+				title: "Box Title",
+				input: ["This is a line.", "This is another line."],
+				width: 30,
+			}).join("\n");
 
 			// test against expected
 			const expected = [
@@ -601,22 +597,20 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 		it("left-aligned", (done) => {
 			// copy O box style
-			const obox: string.BoxStyle = {
-				...string.BOX_STYLE.O,
+			const obox: BoxStyle = {
+				...BOX_STYLE.O,
 				top: { corner: "o" },
-				hAlign: string.PAD_SIDE.LEFT,
-				titleHAlign: string.PAD_SIDE.LEFT,
+				hAlign: PAD_SIDE.LEFT,
+				titleHAlign: PAD_SIDE.LEFT,
 			};
 
 			// generate an O box
-			const generated = string
-				.box({
-					style: obox,
-					title: "Box Title",
-					input: ["This is a line.", "This is another line."],
-					width: 30,
-				})
-				.join("\n");
+			const generated = _box({
+				style: obox,
+				title: "Box Title",
+				input: ["This is a line.", "This is another line."],
+				width: 30,
+			}).join("\n");
 
 			// test against expected
 			const expected = [
@@ -633,20 +627,18 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		it("blank boxes", (done) => {
 			// blank-ass box
 			const blank = {
-				hAlign: string.PAD_SIDE.CENTER,
-				titleHAlign: string.PAD_SIDE.CENTER,
+				hAlign: PAD_SIDE.CENTER,
+				titleHAlign: PAD_SIDE.CENTER,
 				corner: "+",
 			};
 
 			// generate a rounded box
-			const generated = string
-				.box({
-					style: blank,
-					title: "Box Title",
-					input: ["This is a line.", "This is another line."],
-					width: 30,
-				})
-				.join("\n");
+			const generated = _box({
+				style: blank,
+				title: "Box Title",
+				input: ["This is a line.", "This is another line."],
+				width: 30,
+			}).join("\n");
 
 			// test against expected
 			const expected = [
@@ -662,18 +654,18 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 	});
 
 	it("autocomplete", (done) => {
-		expect(string.autocomplete("", "partial")).is.true;
-		expect(string.autocomplete("p", "partial")).is.true;
-		expect(string.autocomplete("part", "partial")).is.true;
-		expect(string.autocomplete("partial", "part")).is.false;
+		expect(autocomplete("", "partial")).is.true;
+		expect(autocomplete("p", "partial")).is.true;
+		expect(autocomplete("part", "partial")).is.true;
+		expect(autocomplete("partial", "part")).is.false;
 		done();
 	});
 
 	it("matchKeywords", (done) => {
-		expect(string.matchKeywords("the", "the cake is a lie")).is.true;
-		expect(string.matchKeywords("cake", "the cake is a lie")).is.true;
-		expect(string.matchKeywords("the cake", "the cake is a lie")).is.true;
-		expect(string.matchKeywords("the pie", "the cake is a lie")).is.false;
+		expect(matchKeywords("the", "the cake is a lie")).is.true;
+		expect(matchKeywords("cake", "the cake is a lie")).is.true;
+		expect(matchKeywords("the cake", "the cake is a lie")).is.true;
+		expect(matchKeywords("the pie", "the cake is a lie")).is.false;
 		done();
 	});
 
@@ -696,7 +688,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 			"24th",
 			"25th",
 		];
-		for (let i = 0; i < 15; i++) expect(string.toOrdinal(a[i])).is.equal(b[i]);
+		for (let i = 0; i < 15; i++) expect(toOrdinal(a[i])).is.equal(b[i]);
 		done();
 	});
 });

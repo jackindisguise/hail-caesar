@@ -6,6 +6,7 @@ import {
 	Colorizer,
 } from "../color.js";
 import { padRight, box, BOX_STYLE, padCenter, PAD_SIDE } from "../string.js";
+import { EOL } from "../telnet.js";
 
 export const COMMAND = new Command(
 	/^(?:colors|color|colo|col|co|c)$/,
@@ -41,6 +42,6 @@ export const COMMAND = new Command(
 			},
 			ESCAPE_SIZER
 		);
-		character.sendLine(msg.join("\r\n"));
+		character.sendLine(msg.join(EOL));
 	}
 );
