@@ -1,4 +1,4 @@
-import { clock } from "./database.js";
+import { clock } from "./db.js";
 import { t } from "./i18n.js";
 import { logger } from "./winston.js";
 import { autocomplete } from "./string.js";
@@ -6,7 +6,7 @@ import { Character } from "./character.js";
 import { Classification } from "./classification.js";
 import { MUDClient } from "./io.js";
 import { DungeonObject, Mob } from "./dungeon.js";
-import { world } from "./database.js";
+import { world } from "./db.js";
 
 export function login(client: MUDClient) {
 	let name: string,

@@ -1,86 +1,4 @@
 {
-  "Started loading database at {{time}}": {
-    "": "Started loading database at {{time}}."
-  },
-  "Loading races": {
-    "": "Loading races."
-  },
-  "Loading file {{file}}": "Loading file {{file}}",
-  "Loading classes": {
-    "": "Loading classes."
-  },
-  "Loading calendar": {
-    "": "Loading calendar."
-  },
-  "Loading world": {
-    "": "Loading world."
-  },
-  "Finished loading database at {{time}}": {
-    "": "Finished loading database at {{time}}."
-  },
-  "Database loaded in {{duration}} seconds": {
-    "": "Database loaded in {{duration}} seconds."
-  },
-  "Server listening on port 23": {
-    "": "Server listening on port 23."
-  },
-  "Instantiating MUDClient": {
-    "": "Instantiating MUDClient."
-  },
-  "Assigned address @{{address}}": "Assigned address @{{address}}",
-  "Server opened connection to {{client}}!": "Server opened connection to {{client}}!",
-  "[{{character}}]": "[{{character}}]",
-  "new connection @{{address}}": "new connection @{{address}}",
-  "Welcome to {{world}}!": "Welcome to {{world}}!",
-  "What's your name?": "What's your name?",
-  "{{client}}: '{{input}}'": "{{client}}: '{{input}}'",
-  "Is your name {{name}}? [y/n]": "Is your name {{name}}? [y/n]",
-  "yes": "yes",
-  "This is the MOTD!": "This is the MOTD!",
-  "Hit enter to continue: ": "Hit enter to continue: ",
-  "{{client}} is playing as {{name}}": {
-    "": "{{client}} is playing as {{name}}."
-  },
-  "Welcome to {{world}}, {{name}}!": "Welcome to {{world}}, {{name}}!",
-  "<{{character}}>": "<{{character}}>",
-  "You OOC: {{comment}}": "You OOC: {{comment}}",
-  "Loading clock": {
-    "": "Loading clock."
-  },
-  "Is your name {{name}}?": "Is your name {{name}}?",
-  "Do what, now?": "Do what, now?",
-  "{{client}} closed connection": {
-    "": "{{client}} closed connection."
-  },
-  "Server closed connection to {{client}}!": "Server closed connection to {{client}}!",
-  "@{{address}}: non-command input from client: {{input}}": "@{{address}}: non-command input from client: {{input}}",
-  "New client connection": {
-    "": {
-      "": {
-        "": "New client connection..."
-      }
-    }
-  },
-  "Assigned address: @{{address}}": "Assigned address: @{{address}}",
-  "Loading commands": {
-    "": "Loading commands."
-  },
-  "What's your password?": "What's your password?",
-  "Please confirm your password:": "Please confirm your password:",
-  "Your name is {{name}}": {
-    "": "Your name is {{name}}."
-  },
-  "Your password is {{password}}": {
-    "": "Your password is {{password}}."
-  },
-  "Please choose a password:": "Please choose a password:",
-  "Your password hash is:": "Your password hash is:",
-  "    Name: {{name}}": {
-    "": "    Name: {{name}}."
-  },
-  "Name: {{name}}": "Name: {{name}}",
-  "Loaded command: {{syntax}}": "Loaded command: {{syntax}}",
-  "Loaded {{name}}!": "Loaded {{name}}!",
   "Loading game database": {
     "": {
       "": {
@@ -88,39 +6,46 @@
       }
     }
   },
-  "v{{version}}": "v{{version}}",
-  "Loaded {{name}} v{{version}}": "Loaded {{name}} v{{version}}",
-  "Server listening on port {{port}}": {
-    "": "Server listening on port {{port}}."
+  "Started loading database at {{time}}": {
+    "": "Started loading database at {{time}}."
+  },
+  "Loading world": {
+    "": "Loading world."
   },
   "Loading '{{file}}'": "Loading '{{file}}'",
-  "Loading config": {
-    "": "Loading config."
+  "Loading calendar": {
+    "": "Loading calendar."
   },
-  "Clock set to {{time}} (@{{hour}}h {{minute}}m {{second}}s)": {
-    "": "Clock set to {{time}} (@{{hour}}h {{minute}}m {{second}}s)."
-  },
-  "Seconds per minute: {{seconds}}": "Seconds per minute: {{seconds}}",
-  "Minutes per hour: {{minutes}}": "Minutes per hour: {{minutes}}",
-  "Hours per day: {{hour}}": "Hours per day: {{hour}}",
-  "Seconds per day: {{seconds}}": "Seconds per day: {{seconds}}",
   "> {{row}}": "> {{row}}",
+  "Seconds per minute: {{seconds}}": "Seconds per minute: {{seconds}}",
   "Minutes per hour:   {{minutes}}": "Minutes per hour:   {{minutes}}",
   "Hours per day:      {{hour}}": "Hours per day:      {{hour}}",
   "Seconds per day:    {{seconds}}": "Seconds per day:    {{seconds}}",
-  "Clock set to {{time}} ({{day}}d {{hour}}h {{minute}}m {{second}}s)": {
-    "": "Clock set to {{time}} ({{day}}d {{hour}}h {{minute}}m {{second}}s)."
-  },
-  "Clock set to {{time}} ({{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s)": {
-    "": "Clock set to {{time}} ({{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s)."
-  },
-  "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s": {
-    "": "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s.",
-    " (@{{time}})": "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}s. (@{{time}})"
+  "Loading clock": {
+    "": "Loading clock."
   },
   "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}": {
-    "{{micro}}s": {
-      " (@{{time}})": "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}.{{micro}}s. (@{{time}})"
+    "{{milli}}s": {
+      " (@{{time}})": "Clock set to {{year}}y {{day}}d {{hour}}h {{minute}}m {{second}}.{{milli}}s. (@{{time}})"
     }
+  },
+  "Loading races": {
+    "": "Loading races."
+  },
+  "Loading classes": {
+    "": "Loading classes."
+  },
+  "Loading commands": {
+    "": "Loading commands."
+  },
+  "Finished loading database at {{time}}": {
+    "": "Finished loading database at {{time}}."
+  },
+  "Database loaded in {{duration}} seconds": {
+    "": "Database loaded in {{duration}} seconds."
+  },
+  "Loaded {{name}} v{{version}}": "Loaded {{name}} v{{version}}",
+  "Server listening on port {{port}}": {
+    "": "Server listening on port {{port}}."
   }
 }

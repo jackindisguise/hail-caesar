@@ -2,9 +2,9 @@ import { t } from "./build/i18n.js";
 import { logger } from "./build/winston.js";
 import { MUDServer } from "./build/io.js";
 import { login } from "./build/nanny.js";
-import { command, load, world } from "./build/database.js";
+import { command, load, world } from "./build/database/db.js";
 import { readFileSync } from "fs";
-import { Colorizer } from "./build/color.js";
+//import { Colorizer } from "./build/color.js";
 import * as _package from "./package.json" assert { type: "json" };
 import chalk from "chalk";
 
