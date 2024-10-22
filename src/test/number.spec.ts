@@ -1,10 +1,10 @@
-import * as number from "../number.js";
+import { lerp, roll, actualRoll, randomInt } from "../number.js";
 import { expect, assert } from "chai";
 
 describe("number.ts", () => {
 	it("lerp", (done) => {
-		expect(number.lerp(0, 100, 0.5)).is.equal(50);
-		expect(number.lerp(-50, 50, 0.5)).is.equal(0);
+		expect(lerp(0, 100, 0.5)).is.equal(50);
+		expect(lerp(-50, 50, 0.5)).is.equal(0);
 		done();
 	});
 
@@ -14,7 +14,7 @@ describe("number.ts", () => {
 			const low = 100;
 			const high = 500;
 			for (let i = 0; i < tests; i++) {
-				const result = number.randomInt(low, high);
+				const result = randomInt(low, high);
 				assert(low <= result && result <= high);
 			}
 			done();
@@ -27,7 +27,7 @@ describe("number.ts", () => {
 			const range = high - low + 1;
 			const results: number[] = [];
 			for (let i = 0; i < tests; i++) {
-				const result = number.randomInt(low, high);
+				const result = randomInt(low, high);
 				if (results.includes(result)) continue;
 				results.push(result);
 			}
@@ -43,7 +43,7 @@ describe("number.ts", () => {
 			const results: number[] = new Array(range);
 			const expectedDistribution = tests / range;
 			for (let i = 0; i < tests; i++) {
-				const result = number.randomInt(low, high);
+				const result = randomInt(low, high);
 				if (results[result - low]) results[result - low]++;
 				else results[result - low] = 1;
 			}
@@ -58,12 +58,9 @@ describe("number.ts", () => {
 
 	it("roll", (done) => {
 		const tests = 10000;
-		for (let i = 0; i < tests; i++)
-			expect(number.roll(2, 100)).is.within(2, 200);
-		for (let i = 0; i < tests; i++)
-			expect(number.roll(2, 100, 5)).is.within(7, 205);
-		for (let i = 0; i < tests; i++)
-			expect(number.roll(2, 100, -5)).is.within(-3, 195);
+		for (let i = 0; i < tests; i++) expect(roll(2, 100)).is.within(2, 200);
+		for (let i = 0; i < tests; i++) expect(roll(2, 100, 5)).is.within(7, 205);
+		for (let i = 0; i < tests; i++) expect(roll(2, 100, -5)).is.within(-3, 195);
 		done();
 	});
 
@@ -72,7 +69,7 @@ describe("number.ts", () => {
 		const sides = 6;
 		const tests = 10000;
 		for (let i = 0; i < tests; i++) {
-			const results = number.actualRoll(die, sides);
+			const results = actualRoll(die, sides);
 			for (const result of results) expect(result).is.within(1, sides);
 			expect(results.reduce((sum, a) => (sum += a), 0)).is.within(
 				die,

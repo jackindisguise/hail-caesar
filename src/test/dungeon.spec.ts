@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Dungeon, DungeonObject, Mob, Tile } from "../dungeon.js";
+import { Dungeon, DungeonObject } from "../dungeon.js";
 
 describe("dungeon.ts", () => {
 	describe("Dungeon", () => {
