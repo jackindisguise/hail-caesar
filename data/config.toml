@@ -1,0 +1,8 @@
+[world]
+name = "Hail Caesar"
+
+[server]
+port = 23
+
+[clock]
+runtime = 89389

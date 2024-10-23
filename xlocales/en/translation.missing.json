@@ -63,5 +63,13 @@
   "{{client}} closed connection": {
     "": "{{client}} closed connection."
   },
-  "Server closed connection to {{client}}!": "Server closed connection to {{client}}!"
+  "Server closed connection to {{client}}!": "Server closed connection to {{client}}!",
+  "Loading config": {
+    "": "Loading config."
+  },
+  "Failed to load file '{{file}}' (#{{err}})": "Failed to load file '{{file}}' (#{{err}})",
+  "Using default config settings": {
+    "": "Using default config settings."
+  },
+  "missing/bad field for {{field}}: '{{value}}'": "missing/bad field for {{field}}: '{{value}}'"
 }

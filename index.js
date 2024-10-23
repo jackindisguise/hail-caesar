@@ -3,7 +3,9 @@ import { t } from "./build/i18n.js";
 import { logger } from "./build/winston.js";
 import { MUDServer } from "./build/io.js";
 import { login } from "./build/nanny.js";
-import { command, load, world } from "./build/db.js";
+import { command, load, config } from "./build/db.js";
+import { setAbsoluteInterval } from "./build/time.js";
+import { save } from "./build/database/config.js";
 import { readFileSync } from "fs";
 //import { Colorizer } from "./build/color.js";
 import * as _package from "./package.json" assert { type: "json" };
@@ -16,7 +18,7 @@ await load();
 for (let line of splashLines) logger.debug(line);
 logger.debug(
 	t("Loaded {{name}} v{{version}}", {
-		name: chalk.white(world.name),
+		name: chalk.white(config.world.name),
 		version: chalk.yellowBright(_package.default.version),
 	})
 );
@@ -29,4 +31,8 @@ server.on("connection", (client) => {
 	});
 });
 
-server.start(world.port);
+server.start(config.server.port);
+
+setAbsoluteInterval((delay) => {
+	save();
+}, 1000 * 10);

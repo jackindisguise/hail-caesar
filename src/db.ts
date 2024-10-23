@@ -1,21 +1,21 @@
 import { logger } from "./winston.js";
 import { t } from "./i18n.js";
+import { load as loadConfig, config } from "./database/config.js";
 import { load as loadCalendar, calendar } from "./database/calendar.js";
 import { load as loadClasses, classes } from "./database/classes.js";
 import { load as loadClock, clock } from "./database/clock.js";
 import { load as loadCommands, commands, command } from "./database/command.js";
 import { load as loadRaces, races } from "./database/races.js";
-import { load as loadWorld, world } from "./database/world.js";
 
 // exports for later use
-export { calendar, classes, clock, commands, command, races, world };
+export { calendar, classes, clock, commands, command, races, config };
 
 /**
  * Should create a load handler to automate the load order.
  */
 const loadOrder = [
-	// world always gets loaded first
-	loadWorld,
+	// config always gets loaded first
+	loadConfig,
 
 	// calendar always before clock
 	loadCalendar,
