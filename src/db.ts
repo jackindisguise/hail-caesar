@@ -28,29 +28,29 @@ const loaders: Loader[] = [
 ];
 
 /**
- * Describe required loaders for other loaders.
+ * Describe loaders that have to be loaded before other loaders.
  */
-const requirements: Map<Loader, Loader[]> = new Map<Loader, Loader[]>();
-requirements.set(loadCalendar, [loadConfig]);
-requirements.set(loadClock, [loadConfig]);
+const prerequisites: Map<Loader, Loader[]> = new Map<Loader, Loader[]>();
 
-/**
- * Handles the actual loading.
- */
+// these refer to the config file
+prerequisites.set(loadCalendar, [loadConfig]);
+prerequisites.set(loadClock, [loadConfig]);
+
+// data for handling deep loads
 const loaded: Loader[] = []; // tracks loaders that have completed a deep load
 const loading: Loader[] = []; // tracks loaders that are being deep loaded
 
 /**
- * Executes a loader while ensuring required loaders are loaded first load load load.
+ * Executes a loader while ensuring required loaders are loaded first loaded loader loding.
  * @param loader The loader to loadify.
  */
 async function deepLoad(loader: Loader) {
 	if (loading.includes(loader))
-		throw new Error(`loader recursive dependency ${loader} < {{${loading}}}`);
+		throw new Error(`loader recursive dependency [${Array.from(loading, (loader)=>loader.name)}]+${loader.name}`);
 	if (loaded.includes(loader)) return;
 	loading.push(loader);
-	const required = requirements.get(loader);
-	if (required) for (let requiredLoader of required) deepLoad(requiredLoader);
+	const preloaders = prerequisites.get(loader);
+	if (preloaders) for (let preloader of preloaders) deepLoad(preloader);
 	await loader();
 	loading.pop();
 	loaded.push(loader);
