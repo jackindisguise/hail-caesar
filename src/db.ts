@@ -11,21 +11,50 @@ import { load as loadRaces, races } from "./database/races.js";
 export { calendar, classes, clock, commands, command, races, config };
 
 /**
- * Should create a load handler to automate the load order.
+ * Describes the loaders fed into the loading system.
  */
-const loadOrder = [
-	// config always gets loaded first
-	loadConfig,
+export type Loader = () => Promise<void>;
 
-	// calendar always before clock
+/**
+ * Set of all of the loaders.
+ */
+const loaders: Loader[] = [
+	loadConfig,
 	loadCalendar,
 	loadClock,
-
-	// no requirements :)
 	loadRaces,
 	loadClasses,
 	loadCommands,
 ];
+
+/**
+ * Describe required loaders for other loaders.
+ */
+const requirements: Map<Loader, Loader[]> = new Map<Loader, Loader[]>();
+requirements.set(loadCalendar, [loadConfig]);
+requirements.set(loadClock, [loadConfig]);
+
+/**
+ * Handles the actual loading.
+ */
+const loaded: Loader[] = []; // tracks loaders that have completed a deep load
+const loading: Loader[] = []; // tracks loaders that are being deep loaded
+
+/**
+ * Executes a loader while ensuring required loaders are loaded first load load load.
+ * @param loader The loader to loadify.
+ */
+async function deepLoad(loader: Loader) {
+	if (loading.includes(loader))
+		throw new Error(`loader recursive dependency ${loader} < {{${loading}}}`);
+	if (loaded.includes(loader)) return;
+	loading.push(loader);
+	const required = requirements.get(loader);
+	if (required) for (let requiredLoader of required) deepLoad(requiredLoader);
+	await loader();
+	loading.pop();
+	loaded.push(loader);
+}
 
 /**
  * Front facing access to database loading.
@@ -37,7 +66,7 @@ export async function load() {
 		})
 	);
 	const start = Date.now();
-	for (let loader of loadOrder) await loader();
+	for (let loader of loaders) await deepLoad(loader);
 	const end = Date.now();
 	logger.debug(
 		t("Finished loading database at {{time}}.", {

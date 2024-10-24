@@ -114,10 +114,8 @@ export async function load() {
 		);
 		const data = await readFile(CONFIG_PATH, "utf8");
 		const json = parse(data);
-		config = validateConfig(json);
-		world = config.world;
-		server = config.server;
-		clock = config.clock;
+		const validated: Config = validateConfig(json);
+		setConfig(validated);
 	} catch (e) {
 		logger.debug(
 			t("Failed to load file '{{file}}' (#{{err}})", {
