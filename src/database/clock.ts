@@ -1,5 +1,5 @@
 import { logger } from "../winston.js";
-import { t } from "../i18n.js";
+import { t } from "i18next";
 import { calendar } from "./calendar.js";
 import { runtime } from "./runtime.js";
 import { table, getBorderCharacters } from "table";

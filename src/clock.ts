@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { t } from "./i18n.js";
+import { t } from "i18next";
 import { Serializable } from "./serializable.js";
 
 export interface ClockData {

@@ -1,4 +1,4 @@
-import { t } from "../i18n.js";
+import { t } from "i18next";
 import { EOL } from "../telnet.js";
 import { Command } from "../command.js";
 import { commands } from "../db.js";

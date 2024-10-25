@@ -1,4 +1,4 @@
-import { t } from "../i18n.js";
+import { t } from "i18next";
 import { Command } from "../command.js";
 import { Colorizer } from "../color.js";
 export const COMMAND = new Command(

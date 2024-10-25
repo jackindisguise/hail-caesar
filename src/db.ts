@@ -1,5 +1,5 @@
 import { logger } from "./winston.js";
-import { t } from "./i18n.js";
+import { t } from "i18next";
 import { load as loadConfig, config } from "./database/config.js";
 import { load as loadRuntime, runtime } from "./database/runtime.js";
 import { load as loadCalendar, calendar } from "./database/calendar.js";
@@ -9,12 +9,18 @@ import { load as loadCommands, commands, command } from "./database/command.js";
 import { load as loadRaces, races } from "./database/races.js";
 
 // exports for later use
-export { calendar, classes, clock, commands, command, races, config, runtime };
+export { config, runtime, calendar, classes, clock, commands, command, races };
 
 /**
  * Describes the loaders fed into the loading system.
  */
 export type Loader = () => Promise<void>;
+
+/**
+ * Describe loaders that have to be loaded before other loaders.
+ */
+const prerequisites: Map<Loader, Loader[]> = new Map<Loader, Loader[]>();
+prerequisites.set(loadClock, [loadCalendar, loadRuntime]);
 
 /**
  * Set of all of the loaders.
@@ -28,12 +34,6 @@ const loaders: Loader[] = [
 	loadClasses,
 	loadCommands,
 ];
-
-/**
- * Describe loaders that have to be loaded before other loaders.
- */
-const prerequisites: Map<Loader, Loader[]> = new Map<Loader, Loader[]>();
-prerequisites.set(loadClock, [loadCalendar, loadRuntime]);
 
 // data for handling deep loads
 const loaded: Loader[] = []; // tracks loaders that have completed a deep load

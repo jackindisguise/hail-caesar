@@ -1,6 +1,6 @@
 import { Mob, MobData } from "./dungeon.js";
 import { randomBytes, scryptSync, randomUUID } from "crypto";
-import { t } from "./i18n.js";
+import { t } from "i18next";
 import { EOL } from "./telnet.js";
 import { MUDClient } from "./io.js";
 import { Serializable } from "./serializable.js";

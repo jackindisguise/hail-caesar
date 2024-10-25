@@ -1,5 +1,5 @@
 import { logger } from "../winston.js";
-import { t } from "../i18n.js";
+import { t } from "i18next";
 import { readFile } from "fs/promises";
 import { join, dirname, relative } from "path";
 import { fileURLToPath } from "url";

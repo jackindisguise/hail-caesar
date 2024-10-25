@@ -1,5 +1,5 @@
 import { clock } from "./db.js";
-import { t } from "./i18n.js";
+import { t } from "i18next";
 import { logger } from "./winston.js";
 import { autocomplete } from "./string.js";
 import { Character } from "./character.js";

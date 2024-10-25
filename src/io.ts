@@ -1,6 +1,6 @@
 import { EventEmitter } from "node:events";
 import { logger } from "./winston.js";
-import { t } from "./i18n.js";
+import { t } from "i18next";
 import { Socket, Server, createServer } from "net";
 import { Character } from "./character.js";
 import { autocomplete } from "./string.js";
