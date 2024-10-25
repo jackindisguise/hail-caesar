@@ -76,5 +76,9 @@
   "> Loading required loader {{loader}}": "> Loading required loader {{loader}}",
   "Loader {{loader}} already loaded": {
     "": "Loader {{loader}} already loaded."
-  }
+  },
+  "Loading runtime": {
+    "": "Loading runtime."
+  },
+  "{{row}}": "{{row}}"
 }

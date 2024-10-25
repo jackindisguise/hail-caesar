@@ -1,6 +1,7 @@
 import { logger } from "./winston.js";
 import { t } from "./i18n.js";
 import { load as loadConfig, config } from "./database/config.js";
+import { load as loadRuntime, runtime } from "./database/runtime.js";
 import { load as loadCalendar, calendar } from "./database/calendar.js";
 import { load as loadClasses, classes } from "./database/classes.js";
 import { load as loadClock, clock } from "./database/clock.js";
@@ -8,7 +9,7 @@ import { load as loadCommands, commands, command } from "./database/command.js";
 import { load as loadRaces, races } from "./database/races.js";
 
 // exports for later use
-export { calendar, classes, clock, commands, command, races, config };
+export { calendar, classes, clock, commands, command, races, config, runtime };
 
 /**
  * Describes the loaders fed into the loading system.
@@ -20,6 +21,7 @@ export type Loader = () => Promise<void>;
  */
 const loaders: Loader[] = [
 	loadConfig,
+	loadRuntime,
 	loadCalendar,
 	loadClock,
 	loadRaces,
@@ -31,10 +33,7 @@ const loaders: Loader[] = [
  * Describe loaders that have to be loaded before other loaders.
  */
 const prerequisites: Map<Loader, Loader[]> = new Map<Loader, Loader[]>();
-
-// these refer to the config file
-prerequisites.set(loadCalendar, [loadConfig]);
-prerequisites.set(loadClock, [loadConfig]);
+prerequisites.set(loadClock, [loadCalendar, loadRuntime]);
 
 // data for handling deep loads
 const loaded: Loader[] = []; // tracks loaders that have completed a deep load
@@ -46,7 +45,12 @@ const loading: Loader[] = []; // tracks loaders that are being deep loaded
  */
 async function deepLoad(loader: Loader) {
 	if (loading.includes(loader))
-		throw new Error(`loader recursive dependency [${Array.from(loading, (loader)=>loader.name)}]+${loader.name}`);
+		throw new Error(
+			`loader recursive dependency [${Array.from(
+				loading,
+				(loader) => loader.name
+			)}]+${loader.name}`
+		);
 	if (loaded.includes(loader)) return;
 	loading.push(loader);
 	const preloaders = prerequisites.get(loader);

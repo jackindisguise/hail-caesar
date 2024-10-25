@@ -3,40 +3,40 @@ import { t } from "./i18n.js";
 import { Serializable } from "./serializable.js";
 
 export interface ClockData {
-	runtime: number;
+	time: number;
 }
 
 export class Clock extends EventEmitter implements Serializable<ClockData> {
 	/**
 	 * The global runtime of the world.
 	 */
-	protected _runtime: number;
+	protected _time: number;
 
 	/**
 	 * When the world started this session.
 	 */
 	protected _start: number;
 
-	constructor(runtime: number) {
+	constructor(time: number) {
 		super();
-		this._runtime = runtime;
+		this._time = time;
 		this._start = Date.now();
 	}
 
 	/**
 	 * Gets the *current* runtime, which is the stored runtime and this session combined.
 	 */
-	get runtime() {
-		return this._runtime + (Date.now() - this._start);
+	get time() {
+		return this._time + (Date.now() - this._start);
 	}
 
 	static validateData(data: any): ClockData {
 		if (typeof data !== "object")
 			throw new TypeError("given non-object for validation");
-		if (typeof data.runtime !== "number")
+		if (typeof data.time !== "number")
 			throw new TypeError("missing/bad field 'runtime'");
 		return {
-			runtime: data.runtime,
+			time: data.time,
 		};
 	}
 
@@ -44,14 +44,14 @@ export class Clock extends EventEmitter implements Serializable<ClockData> {
 		// validate JSON
 		const validated: ClockData = Clock.validateData(data);
 
-		// load world
-		const world = new Clock(validated.runtime);
-		return world;
+		// load clock
+		const clock = new Clock(validated.time);
+		return clock;
 	}
 
 	toData(): ClockData {
 		return {
-			runtime: this.runtime,
+			time: this.time,
 		};
 	}
 }

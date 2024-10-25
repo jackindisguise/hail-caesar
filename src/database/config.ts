@@ -16,7 +16,6 @@ const DATA_PATH = join(ROOT_PATH, "data");
 export interface Config {
 	world: WorldConfig;
 	server: ServerConfig;
-	clock: ClockConfig;
 }
 
 /**
@@ -34,13 +33,6 @@ export interface ServerConfig {
 }
 
 /**
- * Clock configuration.
- */
-export interface ClockConfig {
-	runtime: number;
-}
-
-/**
  * Default configuration settings.
  */
 export const DefaultConfig: Config = {
@@ -50,10 +42,6 @@ export const DefaultConfig: Config = {
 
 	server: {
 		port: 23,
-	},
-
-	clock: {
-		runtime: 0,
 	},
 };
 
@@ -84,14 +72,6 @@ function validateConfig(data: any): Config {
 				mobf("data.server.port", data.server.port);
 			else config.server.port = data.server.port;
 	}
-	if ("clock" in data) {
-		if (typeof data.clock !== "object")
-			throw new TypeError("missing/bad field for 'clock'");
-		if ("runtime" in data.clock)
-			if (typeof data.clock.runtime !== "number")
-				mobf("data.clock.runtime", data.clock.runtime);
-			else config.clock.runtime = data.clock.runtime;
-	}
 	return config;
 }
 
@@ -103,7 +83,6 @@ export let config: Config = JSON.parse(JSON.stringify(DefaultConfig));
 /** shortcuts */
 export let world: WorldConfig = config.world;
 export let server: ServerConfig = config.server;
-export let clock: ClockConfig = config.clock;
 export async function load() {
 	logger.debug(t("Loading config."));
 	try {
@@ -127,29 +106,8 @@ export async function load() {
 	}
 }
 
-/**
- * TODO: This seems kind of messy to me, but I don't know what to do about it.
- * The config file is referenced by the clock database loader to determine the
- * starting runtime of the clock.
- */
-export async function save() {
-	config.clock.runtime = realClock.runtime;
-	const toml = stringify(config);
-	try {
-		await writeFile(CONFIG_PATH, toml, "utf8");
-	} catch (e) {
-		logger.debug(
-			t("Failed to save file '{{file}}' (#{{err}})", {
-				file: relative(DATA_PATH, CONFIG_PATH),
-				err: e,
-			})
-		);
-	}
-}
-
 function setConfig(_config: Config) {
 	config = _config;
 	world = config.world;
 	server = config.server;
-	clock = config.clock;
 }

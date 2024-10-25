@@ -5,7 +5,7 @@ import { MUDServer } from "./build/io.js";
 import { login } from "./build/nanny.js";
 import { command, load, config } from "./build/db.js";
 import { setAbsoluteInterval } from "./build/time.js";
-import { save } from "./build/database/config.js";
+import { save } from "./build/database/runtime.js";
 import { readFileSync } from "fs";
 //import { Colorizer } from "./build/color.js";
 import * as _package from "./package.json" assert { type: "json" };
@@ -35,4 +35,4 @@ server.start(config.server.port);
 
 setAbsoluteInterval((delay) => {
 	save();
-}, 1000 * 10);
+}, 1000 * 60);
