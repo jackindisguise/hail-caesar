@@ -1,6 +1,6 @@
 import { EOL } from "os";
 import { t } from "i18next";
-import { setup } from "./build/i18n.js";
+import { configureBackend } from "./build/i18n.js";
 import { logger } from "./build/winston.js";
 import { MUDServer } from "./build/io.js";
 import { login } from "./build/nanny.js";
@@ -13,7 +13,7 @@ import * as _package from "./package.json" assert { type: "json" };
 import chalk from "chalk";
 
 // configure i18next
-await setup();
+await configureBackend();
 
 // start the game
 const splash = readFileSync("./data/splash.txt", "utf8");

@@ -5,6 +5,8 @@ import { join, dirname, relative } from "path";
 import { fileURLToPath } from "url";
 import { parse, stringify } from "smol-toml";
 import { clock as realClock } from "./clock.js";
+import { table, getBorderCharacters } from "table";
+import { EOL } from "os";
 
 // basic paths
 const ROOT_PATH = join(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -93,9 +95,19 @@ export async function load() {
  */
 export async function save() {
 	runtime.clock.time = realClock.time;
-	const toml = stringify(runtime);
+	const comments = [
+		["DO NOT EDIT WHILE GAME IS RUNNING."],
+		["CHANGES WILL BE AUTOMATICALLY OVERWRITTEN."],
+	];
+	const box = table(comments, {
+		columns: [{ alignment: "center" }],
+		border: getBorderCharacters("ramac"),
+	}).split("\n");
+	box.pop();
+	const header = Array.from(box, (str) => `#${str}`);
+	const doc = `${header.join("\n")}${EOL}${stringify(runtime)}`;
 	try {
-		await writeFile(RUNTIME_PATH, toml, "utf8");
+		await writeFile(RUNTIME_PATH, doc, "utf8");
 	} catch (e) {
 		logger.debug(
 			t("Failed to save file '{{file}}' (#{{err}})", {

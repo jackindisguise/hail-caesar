@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import Backend, { FsBackendOptions } from "i18next-fs-backend";
 
-export async function setup() {
+export async function configureBackend() {
 	await i18next.use(Backend).init<FsBackendOptions>({
 		lng: "en",
 		interpolation: { escapeValue: false },
