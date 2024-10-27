@@ -12,6 +12,16 @@ import { EOL } from "os";
 const ROOT_PATH = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const DATA_PATH = join(ROOT_PATH, "data");
 
+// file header
+const header = [
+	"##════════════════════════════════════════════#",
+	"##     DO NOT EDIT WHILE GAME IS RUNNING.     #",
+	"###############################################",
+	"## CHANGES WILL BE AUTOMATICALLY OVERWRITTEN. #",
+	"###############################################",
+	"#:schema ./schemas/runtime.toml.json",
+];
+
 /**
  * Template for runtime file.
  */
@@ -95,16 +105,6 @@ export async function load() {
  */
 export async function save() {
 	runtime.clock.time = realClock.time;
-	const comments = [
-		["DO NOT EDIT WHILE GAME IS RUNNING."],
-		["CHANGES WILL BE AUTOMATICALLY OVERWRITTEN."],
-	];
-	const box = table(comments, {
-		columns: [{ alignment: "center" }],
-		border: getBorderCharacters("ramac"),
-	}).split("\n");
-	box.pop();
-	const header = Array.from(box, (str) => `#${str}`);
 	const doc = `${header.join("\n")}${EOL}${stringify(runtime)}`;
 	try {
 		await writeFile(RUNTIME_PATH, doc, "utf8");

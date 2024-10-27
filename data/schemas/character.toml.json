@@ -1,0 +1,41 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "character.toml",
+	"properties": {
+		"id": {
+			"type": "string"
+		},
+		"hash": {
+			"type": "string"
+		},
+		"salt": {
+			"type": "string"
+		},
+		"mob": {
+			"type": "object",
+			"properties": {
+				"keyword": {
+					"type": "string"
+				},
+				"display": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"loc": {
+					"type": "array",
+					"items": [
+						{ "type": "number" },
+						{ "type": "number" },
+						{ "type": "number" }
+					],
+					"minItems": 3,
+					"maxItems": 3
+				}
+			},
+			"required": ["keyword", "display", "description"]
+		}
+	},
+	"required": ["mob"]
+}

@@ -1,3 +1,4 @@
+#:schema ./schemas/config.toml.json
 [world]
 name = "Hail Caesar"
 

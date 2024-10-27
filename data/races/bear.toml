@@ -1,6 +1,6 @@
 name = "bear"
 playable = false
-description = "!BEAR!"
+description = "Black bears frequent temperate forests. Generally they are non-aggressive, but will fight to defend cubs or a food source. Upright, they stand at about 5 feet; on all fours they are about 3-4 feet high."
 
 [Offense]
 berserk = true

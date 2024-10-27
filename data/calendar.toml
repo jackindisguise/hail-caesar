@@ -1,3 +1,4 @@
+#:schema ./schemas/calendar.toml.json
 hoursPerDay = 24
 minutesPerHour = 60
 secondsPerMinute = 1

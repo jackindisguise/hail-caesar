@@ -49,16 +49,16 @@ export async function load() {
 			width: 15,
 		},
 		columns: [{ width: 17 }],
-		border: getBorderCharacters("ramac"),
 		header: {
 			alignment: "center",
-			content: "Calendar",
+			content: "Months",
 		},
 	}).split("\n");
 	lines.pop();
 	for (let line of lines) logger.debug(t("{{row}}", { row: line }));
 	const dTable = [
-		["Minutes:", `${calendar.secondsPerMinute} real second/s`],
+		["Seconds:", "1 real-world second"], // never changes
+		["Minutes:", `${calendar.secondsPerMinute} in-game second/s`],
 		["Hours:", `${calendar.minutesPerHour} in-game minute/s`],
 		["Days:", `${calendar.hoursPerDay} in-game hour/s`],
 		[
@@ -77,13 +77,12 @@ export async function load() {
 		spanningCells: [
 			{
 				col: 0,
-				row: 2,
+				row: 3,
 				rowSpan: 2,
 				verticalAlignment: "middle",
 			},
 		],
 		columns: [{ alignment: "right" }, { alignment: "left" }],
-		border: getBorderCharacters("ramac"),
 		header: {
 			alignment: "center",
 			content: "Time Scale",

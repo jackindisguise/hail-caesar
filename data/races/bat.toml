@@ -1,6 +1,6 @@
 name = "bat"
 playable = false
-description = "!BAT!"
+description = "Monstrous varieties of bats usually behave much like their smaller cousins. They are primarily nocturnal predators that prey almost exclusively on creatures smaller than themselves, and only a few varieties are any real threat to humanoid creatures."
 
 [AffectedBy]
 flying = true

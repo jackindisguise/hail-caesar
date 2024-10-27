@@ -1,7 +1,8 @@
-#+--------------------------------------------+
-#|     DO NOT EDIT WHILE GAME IS RUNNING.     |
-#|--------------------------------------------|
-#| CHANGES WILL BE AUTOMATICALLY OVERWRITTEN. |
-#+--------------------------------------------+
+##════════════════════════════════════════════#
+##     DO NOT EDIT WHILE GAME IS RUNNING.     #
+###############################################
+## CHANGES WILL BE AUTOMATICALLY OVERWRITTEN. #
+###############################################
+#:schema ./schemas/runtime.toml.json
 [clock]
-time = 4036137
+time = 6568709

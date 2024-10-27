@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "calendar.toml",
+	"properties": {
+		"hoursPerDay": {
+			"type": "number",
+			"description": "In-game hours per in-game day."
+		},
+		"minutesPerHour": {
+			"type": "number",
+			"description": "In-game minutes per in-game hour."
+		},
+		"secondsPerMinute": {
+			"type": "number",
+			"description": "In-game seconds per in-game minute."
+		},
+		"months": {
+			"type": "array",
+			"description": "A list of months in the order they occur temporally.",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "The name of this month."
+					},
+					"days": {
+						"type": "number",
+						"description": "The number of days in this month."
+					}
+				},
+				"required": ["name", "days"]
+			}
+		}
+	},
+	"required": ["hoursPerDay", "minutesPerHour", "secondsPerMinute", "months"]
+}

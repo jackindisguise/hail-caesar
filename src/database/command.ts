@@ -18,21 +18,37 @@ import { Command } from "../command.js";
 /**
  * Load commands and shit.
  */
+import { table } from "table";
 const COMMANDS_PATH = join(ROOT_PATH, "build", "commands");
 export const commands: Command[] = [];
 export async function load() {
 	logger.debug(t("Loading commands."));
 	const files = await readdir(COMMANDS_PATH);
+	const info: string[] = [];
 	for (let file of files) {
 		const COMMAND_PATH = join(COMMANDS_PATH, file);
 		if (extname(COMMAND_PATH) !== ".js") continue;
-		logger.debug(
-			t("Loading '{{file}}'", { file: relative(DATA_PATH, COMMAND_PATH) })
-		);
 		let data: any = await import(`file://${COMMAND_PATH}`);
 		const command: Command = data.COMMAND;
 		commands.push(command);
+		info.push(command.syntax);
 	}
+
+	const original = [];
+	while (info.length)
+		original.push([info.shift() || "", info.shift() || "", info.shift() || ""]);
+	const lines = table(original, {
+		columns: [{ width: 16 }, { width: 16 }, { width: 17 }],
+		drawVerticalLine: (index, cols) => index == 0 || index == cols,
+		drawHorizontalLine: (index, rows) =>
+			(index >= 0 && index <= 1) || index === rows,
+		header: {
+			alignment: "center",
+			content: "Commands",
+		},
+	}).split("\n");
+	lines.pop();
+	for (let line of lines) logger.debug(line);
 }
 
 export function command(character: Character, input: string) {

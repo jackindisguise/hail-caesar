@@ -23,14 +23,19 @@ export async function load() {
 		["Millisecond:", calendar.millisecond(currentTime)],
 	];
 	let lines = table(clockData, {
-		columnDefault: {
-			width: 25,
-		},
-		columns: [{ alignment: "right" }, { alignment: "left" }],
-		border: getBorderCharacters("ramac"),
+		columns: [
+			{ alignment: "right", width: 25 },
+			{ alignment: "left", width: 26 },
+		],
 		header: {
 			alignment: "center",
-			content: "Time",
+			content: "Universal Clock",
+		},
+		drawVerticalLine: (index, columns) => {
+			return index === 0 || index == columns;
+		},
+		drawHorizontalLine: (index, rows) => {
+			return (index >= 0 && index <= 2) || index === rows;
 		},
 	}).split("\n");
 	lines.pop();
