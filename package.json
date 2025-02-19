@@ -11,7 +11,7 @@
 		"build": "npx tsc",
 		"test": "node --test",
 		"test:coverage": "npx c8 npm test",
-		"docs": "npx jsdoc . -c .jsdocrc"
+		"docs": "npx typedoc"
 	},
 	"devDependencies": {
 		"c8": "^10.1.3",
