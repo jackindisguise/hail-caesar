@@ -1,0 +1,8 @@
+{
+	"name": "Hail Caesar",
+	"entryPoints": ["src/*.ts"],
+	"exclude": ["src/*.test.ts", "src/index.ts"],
+	"readme": "README.md",
+	"out": "docs",
+	"includeVersion": true
+}
