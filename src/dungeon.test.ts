@@ -2,7 +2,7 @@ import { equal, notEqual, ok, fail, throws } from "node:assert/strict";
 import { test, suite } from "node:test";
 import { Dungeon, Tile } from "./dungeon.js";
 
-suite("Dungeon.js", () => {
+suite("dungeon.js", () => {
 	suite("Dungeon", () => {
 		test("constructor()", () => {
 			const d = new Dungeon({ name: "cake" });
