@@ -1,0 +1,25 @@
+# Template helpfile
+[[helpfile]]
+keywords = "template cake"
+summary = "Template structure for creating help files"
+see_also = ["help"]
+body = """
+This is the main body of the helpfile. It can contain multiple lines
+and detailed information about the topic.
+
+You can format it with multiple paragraphs and include various
+details about commands, systems, or game mechanics.
+"""
+
+# Help helpfile
+[[helpfile]]
+keywords = "help"
+summary = "Some helpfile stuff."
+see_also = ["template"]
+body = """
+This is the main body of the helpfile. It can contain multiple lines
+and detailed information about the topic.
+
+You can format it with multiple paragraphs and include various
+details about commands, systems, or game mechanics.
+"""

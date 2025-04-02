@@ -1,0 +1,5 @@
+[game]
+name = "Hail Caesar"
+
+[server]
+port = 23
